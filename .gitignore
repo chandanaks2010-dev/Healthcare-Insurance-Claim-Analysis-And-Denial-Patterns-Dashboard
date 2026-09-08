@@ -1,0 +1,13 @@
+# Ignore raw dataset if not meant for git tracking
+/data/raw/*.csv
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# MySQL local artifacts
+*.sql~
+
+# Python cache
+__pycache__/
+*.pyc
