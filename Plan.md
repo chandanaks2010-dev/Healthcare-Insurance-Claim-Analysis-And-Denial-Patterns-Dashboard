@@ -1109,8 +1109,10 @@ This section is the full operational checklist for every Tableau task in the pro
   2. `hospital_name`
   3. `provider_name`
 - [ ] Confirm the hierarchy works as a drill-down structure in a table or tree view.
-- [ ] Use the hierarchy in a sheet to show progressive detail from region to hospital to provider.
+- [ ] Use the hierarchy in a dedicated worksheet to show progressive detail from region to hospital to provider.
+- [ ] Create a separate sheet named `Region-Hospital-Provider Hierarchy` or `Location Hierarchy Drilldown` so the hierarchy is a proper analytical view and not only a filter.
 - [ ] Validate that each level is unique and understandable to a business user.
+- [ ] This is a visualization sheet, not just a data-prep step.
 
 
 #### 4) Create date hierarchy: Year → Quarter → Month
@@ -1125,6 +1127,7 @@ This section is the full operational checklist for every Tableau task in the pro
   - `DATENAME('month', [Claim Date])`
 - [ ] Use this hierarchy to build monthly and quarterly trend analyses.
 - [ ] Ensure filters and drill-down work correctly across all sheets.
+- [ ] This is a data-preparation step for the time-series chart; it does not count as a separate analytical sheet on its own.
 
 
 #### 5) Build a clean Tableau field structure
@@ -1137,6 +1140,7 @@ This section is the full operational checklist for every Tableau task in the pro
   - Financial fields: `claim_amount`, `claim_status`, `cost_tier`, `denial_flag`
 - [ ] Verify there are no duplicate field names or ambiguous date fields.
 - [ ] Rename fields to cleaner business labels before building visualizations.
+- [ ] This is a preparation step in the data model, not a separate chart sheet.
 
 
 #### 6) Create calculated fields required for analysis
@@ -1205,6 +1209,7 @@ Create and validate each of these fields in Tableau:
 
 - [ ] `Top N Hospital Rank` (optional parameterized ranking logic)
   - Use a parameter to control top N values in rank-based charts.
+- [ ] These are calculated metrics used by the visual sheets; they are not separate dashboard worksheets by themselves.
 
 
 #### 7) Build parameters for dashboard interactivity
@@ -1214,9 +1219,27 @@ Create and validate each of these fields in Tableau:
 - [ ] Create a measure selector parameter if a single sheet must toggle between `Total Cost`, `Average Cost`, and `Denial Rate`.
 - [ ] Test the parameter values to ensure charts update correctly.
 - [ ] Use parameter controls in the dashboard for business-friendly interaction.
+- [ ] Parameters are dashboard controls, not extra chart sheets; they support interactivity across the existing worksheets.
 
 
 #### 8) Create the required worksheets
+
+Yes — for this project, every analytical view should be built as a separate Tableau worksheet. Data source setup, hierarchy creation, and calculated fields are preparation steps, but the actual charts should each live in their own sheet and then be assembled into the final dashboard. In practice, the workbook includes the individual worksheets plus the final dashboard/storyboard view that brings them together.
+
+Recommended naming convention for the workbook:
+
+- `Executive KPI Summary`
+- `Monthly Spend Trend`
+- `Region-Hospital-Provider Hierarchy`
+- `Cost Concentration by Hospital`
+- `Denial vs Cost by Hospital`
+- `Regional Cost and Denial Profile`
+- `Provider Performance Detail`
+- `Patient Risk Segments`
+- `Claims Status Distribution`
+- `Healthcare Claims and Denial Dashboard` (final dashboard sheet)
+
+> Rule: if the item below is an analytical visualization, create a separate worksheet for it. Do not combine several major analyses into one sheet unless it is only a small KPI tile or a filter control.
 
 ##### Worksheet 1: Monthly Cost Trend
 
@@ -1238,8 +1261,17 @@ Create and validate each of these fields in Tableau:
 - [ ] Use `COUNT([Claim ID])`, `SUM([Claim Amount])`, `AVG([Claim Amount])`, `AVG([Approval Flag])`.
 - [ ] Format using currency, percentage, and whole-number display rules.
 - [ ] Give the sheet a title such as `Executive KPI Summary`.
+- [ ] This sheet should remain a dedicated worksheet, not merged into the dashboard background.
 
-##### Worksheet 3: Hospital Pareto Analysis
+##### Worksheet 3: Hierarchy Drilldown
+
+- [ ] Create a separate sheet named `Region-Hospital-Provider Hierarchy`.
+- [ ] Put `region`, `hospital_name`, and `provider_name` into a hierarchy or tree-style drill-down.
+- [ ] Use `SUM([Claim Amount])` or `COUNT([Claim ID])` as the value measure.
+- [ ] This is a full visual analysis sheet and should not be replaced by a filter only.
+- [ ] Add a tooltip showing provider-level metrics, cost, and denial rate if possible.
+
+##### Worksheet 4: Hospital Pareto Analysis
 
 - [ ] Drag `hospital_name` to Rows.
 - [ ] Drag `SUM(Claim Amount)` to Columns.
@@ -1248,7 +1280,7 @@ Create and validate each of these fields in Tableau:
 - [ ] Mark the 80% threshold to demonstrate Pareto concentration.
 - [ ] Label the sheet `Cost Concentration by Hospital`.
 
-##### Worksheet 4: Denial vs Cost Scatter/Bubble Chart
+##### Worksheet 5: Denial vs Cost Scatter/Bubble Chart
 
 - [ ] Place `Denial Rate` on X-axis.
 - [ ] Place `Average Claim Amount` on Y-axis.
@@ -1257,32 +1289,42 @@ Create and validate each of these fields in Tableau:
 - [ ] Add labels for hospitals with outlier behavior.
 - [ ] Label the sheet `Denial vs Cost by Hospital`.
 
-##### Worksheet 5: Regional Performance Heatmap
+##### Worksheet 6: Regional Performance Heatmap
 
 - [ ] Use `region` as the geographic dimension.
 - [ ] Color the map using `Average Claim Amount` or `Denial Rate`.
 - [ ] Add tooltips showing region-level metrics.
 - [ ] Label the sheet `Regional Cost and Denial Profile`.
 
-##### Worksheet 6: Provider Drill-down Table
+##### Worksheet 7: Provider Drill-down Table
 
 - [ ] Use a table or bar chart with `region`, `hospital_name`, `provider_name`, and `specialty`.
 - [ ] Display `Claim Volume`, `Average Cost`, and `Denial Rate` by provider.
 - [ ] Keep it readable and use filters to isolate specific hospitals or regions.
 - [ ] Label the sheet `Provider Performance Detail`.
 
-##### Worksheet 7: Demographic Risk View
+##### Worksheet 8: Demographic Risk View
 
 - [ ] Use `age_group`, `smoking_status`, or `bmi_category` on the view.
 - [ ] Display `Average Claim Amount` or `Claim Volume`.
 - [ ] This supports the risk segmentation story.
 - [ ] Label the sheet `Patient Risk Segments`.
 
-##### Worksheet 8: Claims Status Breakdown
+##### Worksheet 9: Claims Status Breakdown
 
 - [ ] Create a bar or stacked bar chart for `claim_status`.
 - [ ] Add breakdown by `region` or `hospital_type` if needed.
 - [ ] Label the sheet `Claims Status Distribution`.
+
+##### Final Dashboard Sheet
+
+- [ ] Create the final dashboard named `Healthcare Claims and Denial Dashboard`.
+- [ ] This is the assembled storytelling view that combines all worksheets into one executive dashboard.
+- [ ] Place the 4 KPI cards in the top row.
+- [ ] Place trend and Pareto charts in the middle row.
+- [ ] Place scatter and regional views in the bottom row.
+- [ ] Keep filters at the top or left side, linked to all sheets.
+- [ ] The dashboard/story is present as the final composed view in the workbook, but the underlying charts remain separate worksheets for analysis.
 
 
 #### 9) Add filters and interaction controls
@@ -1471,7 +1513,7 @@ Create these 3 visuals first:
 
 #### Required workbook sheets for `healthcare_insurance_dashboard.twbx`
 
-The final Tableau workbook should contain a minimum of 6 sheets; the recommended structure is 8 sheets to fully satisfy the project brief and the executive dashboard story.
+The final Tableau workbook should contain a minimum of 6 sheets; the recommended structure is 9 sheets to fully satisfy the project brief, executive dashboard narrative, and hierarchy drill-down requirement.
 
 1. `Executive KPI Summary`  
    Top-level summary with total claims, total cost, average cost per claim, approval rate.
@@ -1479,25 +1521,30 @@ The final Tableau workbook should contain a minimum of 6 sheets; the recommended
 2. `Monthly Spend Trend`  
    Time-series view of claim spend over time with monthly granularity and trend line.
 
-3. `Cost Concentration by Hospital`  
+3. `Region-Hospital-Provider Hierarchy`  
+   Dedicated hierarchy sheet showing the drill-down path from region to hospital to provider with claim value or volume.
+
+4. `Cost Concentration by Hospital`  
    Pareto/80-20 chart showing how a small number of hospitals account for most spend.
 
-4. `Denial vs Cost by Hospital`  
+5. `Denial vs Cost by Hospital`  
    Scatter/bubble chart for denial rate vs average claim amount by hospital.
 
-5. `Regional Cost and Denial Profile`  
+6. `Regional Cost and Denial Profile`  
    Geographic or regional comparison of cost and denial patterns.
 
-6. `Provider Performance Detail`  
+7. `Provider Performance Detail`  
    Drill-down table or bar chart by region, hospital, provider, and specialty.
 
-7. `Patient Risk Segments`  
+8. `Patient Risk Segments`  
    Demographic segmentation view using age group, smoking status, or BMI category.
 
-8. `Claims Status Distribution`  
+9. `Claims Status Distribution`  
    Breakdown of approved, denied, and pending claims by region or hospital type.
 
 The final dashboard should combine these sheets into a single executive story titled `Healthcare Claims and Denial Dashboard`, with filters for date range, region, claim status, hospital type, and smoking status.
+
+> Hierarchy-based analysis should not be hidden inside a single filter only. A workbook should include at least one dedicated hierarchy sheet because it is a meaningful analytical view that supports drill-down and storytelling.
 
 #### Step 3.6: Build the first calculated fields
 
