@@ -6,9 +6,14 @@
 USE healthcare_claims_db;
 
 -- IMPORTANT:
--- Download the raw Kaggle insurance dataset and place it in:
--- C:/Sem1/Mini_project/data/raw/insurance_claims_raw.csv
--- Update the path below if your local folder differs.
+-- MySQL 8.0 enforces the secure_file_priv setting. If the server blocks
+-- LOAD DATA INFILE, copy the CSV into the directory reported by:
+-- SHOW VARIABLES LIKE 'secure_file_priv';
+-- and/or use LOAD DATA LOCAL INFILE (if local_infile is enabled).
+--
+-- The repo expects the file here on this machine:
+-- C:/Sem1/Healthcare-Insurance-Claim-Analysis-And-Denial-Patterns-Dashboard/data/raw/insurance_claims_raw.csv
+-- If your MySQL server runs on a different machine, update the path below.
 
 -- Optional staging table for the raw flat file.
 DROP TABLE IF EXISTS staging_claims;
@@ -23,7 +28,22 @@ CREATE TABLE staging_claims (
 ) ENGINE=InnoDB;
 
 -- Load raw dataset into staging table.
-LOAD DATA INFILE 'C:/Sem1/Mini_project/data/raw/insurance_claims_raw.csv'
+-- MySQL may reject LOAD DATA INFILE unless the path is inside secure_file_priv.
+-- If needed, copy the file to that approved directory and point the path there.
+-- Example:
+-- SHOW VARIABLES LIKE 'secure_file_priv';
+-- Then use the output directory + file name below.
+--
+-- If the server still blocks access, run this instead:
+-- SET GLOBAL local_infile = 1;
+-- LOAD DATA LOCAL INFILE 'C:/Sem1/Healthcare-Insurance-Claim-Analysis-And-Denial-Patterns-Dashboard/data/raw/insurance_claims_raw.csv'
+-- INTO TABLE staging_claims
+-- FIELDS TERMINATED BY ','
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 LINES;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/insurance_claims_raw.csv'
 INTO TABLE staging_claims
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'

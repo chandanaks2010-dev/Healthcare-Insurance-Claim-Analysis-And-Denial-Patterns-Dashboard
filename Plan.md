@@ -198,6 +198,8 @@ hospitals (Dimension)
 
   - Save to: `./data/raw/insurance_claims_raw.csv`
 
+  - If MySQL blocks the file load because of `secure_file_priv`, also copy the same CSV into the server's approved upload folder returned by `SHOW VARIABLES LIKE 'secure_file_priv';` (for example `C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/insurance_claims_raw.csv`).
+
   - Initial profiling: row count, column types, cardinality, null rates, distribution shapes
 
 - [ ] **Task 1.3** - Establish project repository structure
@@ -484,37 +486,51 @@ hospitals (Dimension)
 
     ```sql
 
-    -- CTE chain: segment → aggregate → filter (analytical pipeline pattern)
+    -- CTE chain: segment → aggregate → filter (MySQL-compatible percentile logic)
 
     WITH patient_totals AS (
 
-      SELECT patient_id, SUM(claim_amount) AS lifetime_cost, COUNT(*) AS claim_count
+      SELECT patient_id, SUM(claim_amount) AS lifetime_cost
 
-      FROM claims GROUP BY patient_id
+      FROM claims
+
+      GROUP BY patient_id
 
     ),
 
-    cost_segments AS (
+    ranked_costs AS (
 
-      SELECT *,
+      SELECT
 
-             CASE
+        patient_id,
 
-               WHEN lifetime_cost >= (SELECT PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY lifetime_cost) FROM patient_totals) THEN 'High'
+        lifetime_cost,
 
-               WHEN lifetime_cost >= (SELECT PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY lifetime_cost) FROM patient_totals) THEN 'Medium'
-
-               ELSE 'Low'
-
-             END AS cost_tier
+        PERCENT_RANK() OVER (ORDER BY lifetime_cost) AS percentile_rank
 
       FROM patient_totals
 
     )
 
-    SELECT cost_tier, COUNT(*) AS patient_count, AVG(lifetime_cost) AS avg_cost
+    SELECT
 
-    FROM cost_segments GROUP BY cost_tier;
+      CASE
+
+        WHEN percentile_rank >= 0.75 THEN 'High'
+
+        WHEN percentile_rank >= 0.25 THEN 'Medium'
+
+        ELSE 'Low'
+
+      END AS cost_tier,
+
+      COUNT(*) AS patient_count,
+
+      ROUND(AVG(lifetime_cost), 2) AS avg_cost
+
+    FROM ranked_costs
+
+    GROUP BY cost_tier;
 
     ```
 
@@ -594,13 +610,19 @@ hospitals (Dimension)
 
  
 
-- [ ] **Task 2.7** - Export analytical views for Tableau consumption
+- [ ] **Task 2.7** - Create a Tableau-ready live view for BI ingestion
 
-  - Create denormalized analytical views/exports optimized for BI tool ingestion
+  - Preferred approach: create a denormalized MySQL view optimized for live Tableau access
 
-  - Output: `./data/processed/claims_analysis.csv`
+  - View name: `v_claims_tableau`
+
+  - Use this view in Tableau as a live connection to the MySQL database rather than exporting a CSV every time
+
+  - Optional fallback export: `./data/processed/claims_analysis.csv`
 
   - Include calculated fields: cost_tier, age_group, bmi_category, denial_flag
+
+  - Keep the export file only as a backup or for offline analysis if the database is unavailable
 
  
 
@@ -616,13 +638,17 @@ hospitals (Dimension)
 
 - [ ] **Task 3.1** - Configure Tableau data source
 
-  - Connect to processed CSV or live database connection
+  - Preferred: live connection to MySQL using the view `v_claims_tableau`
+
+  - Alternate: connect to processed CSV as a static export fallback
 
   - Define data types, hierarchies (Region → Hospital → Provider)
 
   - Create date hierarchy (Year → Quarter → Month)
 
   - Set up data relationships/joins if using multiple tables
+
+  - For live access, use Tableau's MySQL connector with server, database, and credentials configured
 
  
 

@@ -16,13 +16,20 @@ SELECT
 FROM claims;
 
 -- Query 2: Percentile distribution of claim costs
+WITH ordered_claims AS (
+    SELECT
+        claim_amount,
+        ROW_NUMBER() OVER (ORDER BY claim_amount) AS rn,
+        COUNT(*) OVER () AS total_rows
+    FROM claims
+)
 SELECT
-    ROUND(PERCENTILE_CONT(0.10) WITHIN GROUP (ORDER BY claim_amount), 2) AS p10,
-    ROUND(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY claim_amount), 2) AS p25,
-    ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY claim_amount), 2) AS p50,
-    ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY claim_amount), 2) AS p75,
-    ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY claim_amount), 2) AS p90
-FROM claims;
+    ROUND(MAX(CASE WHEN rn = CEIL(total_rows * 0.10) THEN claim_amount END), 2) AS p10,
+    ROUND(MAX(CASE WHEN rn = CEIL(total_rows * 0.25) THEN claim_amount END), 2) AS p25,
+    ROUND(MAX(CASE WHEN rn = CEIL(total_rows * 0.50) THEN claim_amount END), 2) AS p50,
+    ROUND(MAX(CASE WHEN rn = CEIL(total_rows * 0.75) THEN claim_amount END), 2) AS p75,
+    ROUND(MAX(CASE WHEN rn = CEIL(total_rows * 0.90) THEN claim_amount END), 2) AS p90
+FROM ordered_claims;
 
 -- Query 3: Coefficient of variation by hospital
 SELECT

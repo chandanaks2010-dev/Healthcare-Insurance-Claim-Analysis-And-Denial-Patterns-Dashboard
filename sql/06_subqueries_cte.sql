@@ -25,29 +25,27 @@ ORDER BY c.claim_amount DESC;
 WITH patient_totals AS (
     SELECT
         patient_id,
-        SUM(claim_amount) AS lifetime_cost,
-        COUNT(*) AS claim_count
+        SUM(claim_amount) AS lifetime_cost
     FROM claims
     GROUP BY patient_id
 ),
-segment_thresholds AS (
+ranked_costs AS (
     SELECT
-        MIN(lifetime_cost) AS min_cost,
-        MAX(lifetime_cost) AS max_cost,
-        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY lifetime_cost) AS p25,
-        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY lifetime_cost) AS p75
+        patient_id,
+        lifetime_cost,
+        PERCENT_RANK() OVER (ORDER BY lifetime_cost) AS pct_rank
     FROM patient_totals
 ),
 segmented AS (
     SELECT
-        pt.patient_id,
-        pt.lifetime_cost,
+        patient_id,
+        lifetime_cost,
         CASE
-            WHEN pt.lifetime_cost >= (SELECT p75 FROM segment_thresholds) THEN 'High'
-            WHEN pt.lifetime_cost >= (SELECT p25 FROM segment_thresholds) THEN 'Medium'
+            WHEN pct_rank >= 0.75 THEN 'High'
+            WHEN pct_rank >= 0.25 THEN 'Medium'
             ELSE 'Low'
         END AS cost_tier
-    FROM patient_totals pt
+    FROM ranked_costs
 )
 SELECT
     cost_tier,
@@ -55,7 +53,12 @@ SELECT
     ROUND(AVG(lifetime_cost), 2) AS avg_lifetime_cost
 FROM segmented
 GROUP BY cost_tier
-ORDER BY cost_tier;
+ORDER BY
+    CASE cost_tier
+        WHEN 'Low' THEN 1
+        WHEN 'Medium' THEN 2
+        WHEN 'High' THEN 3
+    END;
 
 -- Query 3: Patients with denied claims but no approved claims
 SELECT
