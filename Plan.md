@@ -8,9 +8,9 @@
 
 **Project Duration:** 15-18 hours (2-person team)  
 
-**Submission Date:** [Add your deadline]  
+**Submission Date:** 09 Sep 2026  
 
-**Team Members:** [Add names]  
+**Team Members:** Team A and Team B  
 
 **Industry Domain:** Healthcare Revenue Cycle Management (RCM)
 
@@ -45,6 +45,57 @@ Design and implement an end-to-end analytics solution that leverages structured 
 - ✅ Final PPT Presentation (7 slides) — Executive summary with data-backed recommendations
 
 - ✅ Project Report Documentation — Methodology, findings, and business impact analysis
+
+
+### Requirement Traceability Matrix
+
+| Requirement | What it means in this project | Where it is implemented | Completion status |
+|-----------|-------------------------------|-------------------------|------------------|
+| 1. Data understanding | Understand healthcare claims domain, model design, data quality and normalization | Dataset section, schema design, data profiling tasks | In progress |
+| 2. Relational schema design | Build normalized tables with keys, constraints and referential integrity | `sql/01_schema_creation.sql` | In progress |
+| 3. ETL / data loading | Load raw CSV into normalized tables and validate data quality | `sql/02_data_loading.sql` | In progress |
+| 4. SQL retrieval queries | Multi-table joins, filtering, patient and hospital analysis | `sql/03_data_retrieval_queries.sql` | In progress |
+| 5. Aggregation analysis | GROUP BY, HAVING, conditional aggregates, segmentation | `sql/04_aggregation_analysis.sql` | In progress |
+| 6. Window functions | RANK, DENSE_RANK, ROW_NUMBER, LAG/LEAD, cumulative totals | `sql/05_window_functions.sql` | In progress |
+| 7. Subqueries and CTEs | Correlated subqueries, recursive/stepwise CTE logic | `sql/06_subqueries_cte.sql` | In progress |
+| 8. Statistical analysis | Descriptive stats, percentiles, Pareto, variability analysis | `sql/07_statistical_analysis.sql` | In progress |
+| 9. Tableau workbook | At least 6 sheets, interactive dashboard and filters | `tableau/healthcare_insurance_dashboard.twbx` | Pending |
+| 10. KPI and executive summary | Summary cards for claims, spend, approval and cost per claim | Dashboard sheet `Executive KPI Summary` | Pending |
+| 11. Cost and denial analysis | Trend, Pareto, denial vs cost, regional comparison | Sheets: `Monthly Spend Trend`, `Cost Concentration by Hospital`, `Denial vs Cost by Hospital`, `Regional Cost and Denial Profile` | Pending |
+| 12. Demographic risk analysis | Age, BMI and smoking-related cost patterns | Sheet: `Patient Risk Segments` | Pending |
+| 13. Provider and operational drill-down | Provider specialty and hospital detail analysis | Sheet: `Provider Performance Detail` | Pending |
+| 14. Storytelling / dashboard narrative | Clear executive dashboard flow and narrative story points | Dashboard layout and storyboard section | Pending |
+| 15. Business insights and recommendations | Quantified insights, SMART actions, cost/denial impact | Report + Presentation | Pending |
+| 16. Documentation | Methodology, findings, limitations, references | `report/project_report.md` and `README.md` | Pending |
+| 17. Presentation | 7-slide executive summary for review / viva | `report/presentation.pptx` | Pending |
+
+
+### Project Requirement Checklist
+
+- [ ] Data source identified and profiled
+- [ ] 3NF schema created and documented
+- [ ] ETL process implemented and validated
+- [ ] SQL retrieval queries completed
+- [ ] Aggregation and segmentation logic completed
+- [ ] Window function analysis completed
+- [ ] CTE/subquery analysis completed
+- [ ] Statistical analysis completed
+- [ ] Tableau dataset view created (`v_claims_tableau`)
+- [ ] Workbook contains at least 6 sheets
+- [ ] Executive KPI summary sheet included
+- [ ] Monthly trend sheet included
+- [ ] Pareto cost concentration sheet included
+- [ ] Denial vs cost visualization included
+- [ ] Regional performance view included
+- [ ] Provider drill-down included
+- [ ] Demographic risk segmentation included
+- [ ] Claims status distribution included
+- [ ] Dashboard filters and interactivity configured
+- [ ] Final dashboard narrative and storyboard completed
+- [ ] Findings quantified and documented
+- [ ] Recommendations and business impact defined
+- [ ] Final report submitted
+- [ ] Presentation deck completed
 
  
 
@@ -630,7 +681,993 @@ hospitals (Dimension)
 
  
 
+## Tableau Beginner Quick Start Guide (Step-by-Step for New Users)
+
+This section is designed for students who are new to Tableau and want a simple, practical way to complete the dashboard part of the project. Follow these steps in order.
+
+### Step 1: Install and open Tableau Desktop
+
+- Install Tableau Desktop (student/trial version is acceptable for coursework).
+- Open Tableau and choose the option to connect to a data source.
+- If you are using MySQL, select MySQL from the connector list.
+- If you are using a CSV backup, choose Text File instead.
+
+### Step 2: Connect to the MySQL database
+
+- Click the MySQL connector.
+- Enter the server name, port number, username, password, and database name.
+- Use the database named `healthcare_claims_db`.
+- Choose the option “Live” connection rather than extract, since the project requires a live SQL-based dashboard flow.
+- In the left pane, select the view `v_claims_tableau`.
+
+### Step 3: Understand the Tableau workspace
+
+The Tableau workspace has 4 key areas:
+
+- Data Source pane: shows all tables and fields from the imported dataset.
+- Sheets area: where you build each chart.
+- Dashboard area: where you combine multiple charts into a single view.
+- Filters pane: used to add user filters and controls.
+
+Important beginner concepts:
+
+- Dimensions: categorical fields such as region, hospital, claim status, sex.
+- Measures: numeric values such as claim amount, count of claims, average claim amount.
+- Rows shelf: controls the x-axis or list arrangement.
+- Columns shelf: controls the y-axis or comparison values.
+- Marks card: controls colors, sizes, labels, and tooltips.
+- Filters shelf: restricts the data shown.
+
+### Tableau Field Placement Reference (Rows, Columns, Filters)
+
+This is the simplest way to remember where each field goes in Tableau.
+
+#### 1) Hierarchy drill-down: Region → Hospital → Provider
+
+```text
+Rows:
++-----------------------------------------------------------+
+| Region → Hospital → Provider                                |
+|   region   |   hospital_name   |   provider_name            |
++-----------------------------------------------------------+
+
+Columns:
++-----------------------------------------------------------+
+| SUM([Claim Amount])                                        |
+| or COUNT([Claim ID])                                       |
++-----------------------------------------------------------+
+
+Filters:
++-----------------------------------------------------------+
+| Region       | Hospital Name      | Provider Name           |
+| Claim Status | Hospital Type      | Date Range              |
++-----------------------------------------------------------+
+```
+
+Use this for a drill-down view:
+
+```text
+Rows shelf:   Location Hierarchy
+Columns shelf: SUM([Claim Amount])
+
+Example:
+Northeast
+  ├─ Hospital_A
+  │  ├─ Dr. Patel   -> $4,200
+  │  └─ Dr. Shah    -> $3,900
+  └─ Hospital_B
+     └─ Dr. Mehta  -> $5,100
+```
+
+#### 2) Date hierarchy: Year → Quarter → Month
+
+```text
+Columns:
++-----------------------------------------------------------+
+| Date Hierarchy                                            |
+| Year -> Quarter -> Month                                   |
++-----------------------------------------------------------+
+
+Rows:
++-----------------------------------------------------------+
+| SUM([Claim Amount])                                        |
+| AVG([Claim Amount])                                        |
++-----------------------------------------------------------+
+
+Filters:
++-----------------------------------------------------------+
+| Date Range     | Claim Status | Region                    |
++-----------------------------------------------------------+
+```
+
+Example:
+
+```text
+Columns:  Year -> Quarter -> Month
+Rows:     SUM([Claim Amount])
+
+2024
+  ├─ Q1 -> Jan, Feb, Mar
+  ├─ Q2 -> Apr, May, Jun
+  └─ Q3 -> Jul, Aug, Sep
+```
+
+#### 3) KPI cards layout
+
+```text
+Dashboard top row:
++---------------------------------------------------------------+
+| Total Claims | Total Cost | Avg Cost/Claim | Approval Rate    |
++---------------------------------------------------------------+
+```
+
+Typical field placements:
+
+```text
+KPI Card 1: Total Claims
+  Measure used: COUNT([Claim ID])
+  Position: Text/Single Value card
+
+KPI Card 2: Total Cost
+  Measure used: SUM([Claim Amount])
+  Position: Text/Single Value card
+
+KPI Card 3: Avg Cost per Claim
+  Measure used: SUM([Claim Amount]) / COUNT([Claim ID])
+  Position: Text/Single Value card
+
+KPI Card 4: Approval Rate
+  Measure used: AVG([Approval Flag])
+  Position: Text/Single Value card
+```
+
+#### 4) Scatter/Bubble chart placement
+
+```text
+Columns:
++-----------------------------------------------------------+
+| Denial Rate                                               |
++-----------------------------------------------------------+
+
+Rows:
++-----------------------------------------------------------+
+| Average Claim Amount                                      |
++-----------------------------------------------------------+
+
+Marks card:
++-----------------------------------------------------------+
+| Size = Claim Volume                                       |
+| Color = Hospital Type or Region                            |
+| Label = Hospital Name                                     |
++-----------------------------------------------------------+
+
+Filters:
++-----------------------------------------------------------+
+| Region | Claim Status | Hospital Type                     |
++-----------------------------------------------------------+
+```
+
+This chart helps identify outlier hospitals:
+
+```text
+X-axis: Denial Rate
+Y-axis: Average Claim Amount
+Bubble size: Claim Volume
+Color: Hospital Type
+```
+
+#### 5) Pareto chart placement
+
+```text
+Rows:
++-----------------------------------------------------------+
+| Hospital Name                                             |
++-----------------------------------------------------------+
+
+Columns:
++-----------------------------------------------------------+
+| SUM([Claim Amount])                                       |
++-----------------------------------------------------------+
+
+Secondary axis:
++-----------------------------------------------------------+
+| Cumulative % of Total Spend                               |
++-----------------------------------------------------------+
+
+Sort:
++-----------------------------------------------------------+
+| Descending by Total Cost                                  |
++-----------------------------------------------------------+
+
+Filters:
++-----------------------------------------------------------+
+| Date Range | Region | Hospital Type                       |
++-----------------------------------------------------------+
+```
+
+#### 6) Dashboard filters placement
+
+```text
+Filter Pane:
++-----------------------------------------------------------+
+| Date Range    | Region      | Claim Status                 |
+| Hospital Type | Smoking Status | Specialty                 |
++-----------------------------------------------------------+
+```
+
+These are usually placed at the top of the dashboard and linked to all sheets so every chart updates together.
+
+#### 7) Final dashboard layout pattern
+
+```text
++---------------------------------------------------------------+
+| KPI Card 1 | KPI Card 2 | KPI Card 3 | KPI Card 4              |
++---------------------------------------------------------------+
+| Monthly Trend Chart      | Pareto Chart                       |
+|-------------------------|-------------------------------------|
+| Scatter/Bubble Chart     | Regional Heatmap / Map            |
++---------------------------------------------------------------+
+| Global Filters: Date Range | Region | Claim Status | Hospital |
++---------------------------------------------------------------+
+```
+
+This layout matches the executive dashboard structure:
+- Top row = KPI summary
+- Middle row = trend + cost concentration
+- Bottom row = risk/outlier + regional view
+- Filters at the top or left side of the dashboard
+
+### Step 4: Create the first worksheet
+
+- Click the “New Worksheet” button.
+- Drag a date field such as claim_date to Columns.
+- Drag a measure such as SUM(Claim Amount) to Rows.
+- Change the date granularity to Month if needed.
+- This creates a time series chart.
+
+This will become your first visual: monthly claim cost trend.
+
+### Step 5: Build the required chart types
+
+Use the following chart logic for the dashboard:
+
+1. Time Series Chart
+   - Columns: claim_date (Month)
+   - Rows: SUM(claim_amount)
+   - Add a trend line for the overall pattern
+   - Use color to differentiate status or region if needed
+
+2. KPI Cards
+   - Use a text table or single value chart
+   - Example metrics:
+     - Total claims
+     - Total cost
+     - Average cost per claim
+     - Approval rate
+   - Format numbers as currency or percentages
+
+3. Pareto Chart
+   - Sort hospitals by total claim amount descending
+   - Add a cumulative percentage line
+   - This helps explain the 80/20 cost concentration idea
+
+4. Scatter/Bubble Chart
+   - X-axis: denial rate
+   - Y-axis: average claim cost
+   - Size: claim volume
+   - Color: hospital type or region
+
+5. Map/Heatmap
+   - Use region as the geographic dimension
+   - Color by average claim cost or denial rate
+
+### Step 6: Create calculated fields
+
+Go to Analysis > Create Calculated Field and define fields such as:
+
+- Cost Tier:
+  - IF [Claim Amount] >= 20000 THEN 'High'
+  - ELSEIF [Claim Amount] >= 10000 THEN 'Medium'
+  - ELSE 'Low'
+  - END
+
+- Denial Flag:
+  - IF [Claim Status] = 'Denied' THEN 1 ELSE 0 END
+
+- Age Group:
+  - IF [Age] < 30 THEN '18-29'
+  - ELSEIF [Age] < 40 THEN '30-39'
+  - ELSEIF [Age] < 50 THEN '40-49'
+  - ELSEIF [Age] < 60 THEN '50-59'
+  - ELSE '60+'
+  - END
+
+- BMI Category:
+  - IF [BMI] < 18.5 THEN 'Underweight'
+  - ELSEIF [BMI] < 25 THEN 'Normal'
+  - ELSEIF [BMI] < 30 THEN 'Overweight'
+  - ELSE 'Obese'
+  - END
+
+These calculations will directly support the project’s required business storytelling.
+
+### Step 7: Add filters
+
+Use filters to make the dashboard interactive.
+
+Common filters for this project:
+
+- Date range
+- Region
+- Claim status
+- Hospital type
+- Smoking status
+
+To add a filter:
+
+- Drag a field to the Filters shelf
+- Choose the filter type (single value, multiple values, range, etc.)
+- Click the filter card to customize options
+
+### Step 8: Use dashboard actions
+
+The plan asks for interactivity. In Tableau, the common actions are:
+
+- Filter action: clicking one chart affects another chart
+- Highlight action: highlights matching values across sheets
+- URL action: opens a detail page or external link
+- Parameter action: changes dashboard values dynamically
+
+For beginners, start with simple filter actions only.
+
+### Step 9: Create a dashboard layout
+
+For a simple executive dashboard:
+
+- Top row: KPI cards (4 tiles)
+- Middle row: trend chart and Pareto chart
+- Bottom row: scatter plot and regional heatmap
+
+Keep the layout clean:
+
+- use consistent fonts
+- avoid too many colors
+- maintain spacing between elements
+- ensure text remains readable
+
+### Step 10: Format for clarity
+
+Use these formatting principles:
+
+- Use a maximum of 5 colors in the dashboard
+- Keep all titles clear and short
+- Use currency formatting for claim amounts
+- Use percentage formatting for rates
+- Use tooltips to explain values
+- Ensure text contrast is readable
+
+### Step 11: Publish or export the final workbook
+
+When the dashboard is complete:
+
+- Save the workbook as `healthcare_insurance_dashboard.twb`
+- If requested, package it into a `.twbx` file for export
+- Test all filters, tooltips, and chart interactions
+- Check that the dashboard still works when changing date or region filters
+
+### Step 12: Checklist before submission
+
+Before final submission, confirm:
+
+- [ ] Data source is connected to MySQL or a valid backup file
+- [ ] All charts have titles and labels
+- [ ] Dashboard includes at least 6 charts
+- [ ] Filters work correctly
+- [ ] KPIs are readable and formatted properly
+- [ ] Storyboard is coherent and business-oriented
+- [ ] Workbook has been saved and tested
+
+---
+
+### Detailed Tableau Operations Checklist (Complete Implementation Guide)
+
+This section is the full operational checklist for every Tableau task in the project. It is written to match the depth of the SQL section so that the dashboard build is reproducible and review-ready.
+
+#### 1) Data source setup and connection
+
+- [ ] Open Tableau Desktop.
+- [ ] Select the connector for the source used in the project:
+  - Preferred: MySQL live connection to `healthcare_claims_db`
+  - Fallback: CSV import from `./data/processed/claims_analysis.csv`
+- [ ] Connect using the correct server details, database name, username, and password.
+- [ ] If using a live MySQL connection, select the view `v_claims_tableau`.
+- [ ] If using a CSV file, confirm that all required columns are available:
+  - `claim_id`, `claim_date`, `claim_amount`, `claim_status`, `region`, `hospital_name`, `hospital_type`, `provider_name`, `specialty`, `age`, `bmi`, `smoking_status`, `denial_flag`, etc.
+- [ ] Review the data source preview to confirm the row count and field names are correct.
+- [ ] Rename fields if required so they are clear and presentation-ready (for example, `Claim Amount` instead of `claim_amount`).
+
+
+#### 2) Define data types correctly in Tableau
+
+- [ ] Set `claim_date` as a Date field.
+- [ ] Set `claim_amount` as a Number (Decimal) field.
+- [ ] Set `claim_status` as a String field.
+- [ ] Set `region`, `hospital_name`, `provider_name`, `specialty`, `sex`, `smoking_status` as Strings.
+- [ ] Set `hospital_id`, `provider_id`, `claim_id`, `patient_id` as Whole Numbers.
+- [ ] Set `age`, `bmi`, `bed_count`, and `num_dependents` as Number fields.
+- [ ] Set calculated KPI fields such as denial rate, approval rate, and cost per claim as Decimal or Percentage as required.
+- [ ] Check field roles in the Data pane so Tableau recognizes date, dimension, and measure behavior correctly.
+
+
+#### 3) Create hierarchy: Region → Hospital → Provider
+
+- [ ] Right-click the field `region` in the Data pane.
+- [ ] Select Create → Hierarchy.
+- [ ] Name the hierarchy `Location Hierarchy` or `Region → Hospital → Provider`.
+- [ ] Add the following fields in order:
+  1. `region`
+  2. `hospital_name`
+  3. `provider_name`
+- [ ] Confirm the hierarchy works as a drill-down structure in a table or tree view.
+- [ ] Use the hierarchy in a sheet to show progressive detail from region to hospital to provider.
+- [ ] Validate that each level is unique and understandable to a business user.
+
+
+#### 4) Create date hierarchy: Year → Quarter → Month
+
+- [ ] Right-click the `claim_date` field.
+- [ ] Select Create → Hierarchy.
+- [ ] Name it `Date Hierarchy`.
+- [ ] Add `Year`, `Quarter`, and `Month` in the correct order.
+- [ ] If Tableau does not automatically interpret the date parts, create custom date calculations using:
+  - `YEAR([Claim Date])`
+  - `DATENAME('quarter', [Claim Date])`
+  - `DATENAME('month', [Claim Date])`
+- [ ] Use this hierarchy to build monthly and quarterly trend analyses.
+- [ ] Ensure filters and drill-down work correctly across all sheets.
+
+
+#### 5) Build a clean Tableau field structure
+
+- [ ] Keep the data source organized into clearly labeled dimensions and measures.
+- [ ] Group fields logically:
+  - Demographic fields: `age`, `sex`, `smoking_status`, `bmi`, `age_group`
+  - Geographic fields: `region`, `location`, `hospital_name`
+  - Operational fields: `claim_status`, `provider_name`, `specialty`, `hospital_type`
+  - Financial fields: `claim_amount`, `claim_status`, `cost_tier`, `denial_flag`
+- [ ] Verify there are no duplicate field names or ambiguous date fields.
+- [ ] Rename fields to cleaner business labels before building visualizations.
+
+
+#### 6) Create calculated fields required for analysis
+
+Create and validate each of these fields in Tableau:
+
+- [ ] `Cost Tier`
+  - Example formula:
+    ```
+    IF [Claim Amount] >= 20000 THEN 'High'
+    ELSEIF [Claim Amount] >= 10000 THEN 'Medium'
+    ELSE 'Low'
+    END
+    ```
+
+- [ ] `Denial Flag`
+  - Example formula:
+    ```
+    IF [Claim Status] = 'Denied' THEN 1 ELSE 0 END
+    ```
+
+- [ ] `Approval Flag`
+  - Example formula:
+    ```
+    IF [Claim Status] = 'Approved' THEN 1 ELSE 0 END
+    ```
+
+- [ ] `Age Group`
+  - Example formula:
+    ```
+    IF [Age] < 30 THEN '18-29'
+    ELSEIF [Age] < 40 THEN '30-39'
+    ELSEIF [Age] < 50 THEN '40-49'
+    ELSEIF [Age] < 60 THEN '50-59'
+    ELSE '60+'
+    END
+    ```
+
+- [ ] `BMI Category`
+  - Example formula:
+    ```
+    IF [BMI] < 18.5 THEN 'Underweight'
+    ELSEIF [BMI] < 25 THEN 'Normal'
+    ELSEIF [BMI] < 30 THEN 'Overweight'
+    ELSE 'Obese'
+    END
+    ```
+
+- [ ] `Average Cost per Claim`
+  - Example formula:
+    ```
+    SUM([Claim Amount]) / COUNT([Claim ID])
+    ```
+
+- [ ] `Denial Rate`
+  - Example formula:
+    ```
+    SUM(IIF([Claim Status] = 'Denied', 1, 0)) / COUNT([Claim ID])
+    ```
+
+- [ ] `Approval Rate`
+  - Example formula:
+    ```
+    SUM(IIF([Claim Status] = 'Approved', 1, 0)) / COUNT([Claim ID])
+    ```
+
+- [ ] `Top N Hospital Rank` (optional parameterized ranking logic)
+  - Use a parameter to control top N values in rank-based charts.
+
+
+#### 7) Build parameters for dashboard interactivity
+
+- [ ] Create a date range parameter or use a date filter for `claim_date`.
+- [ ] Create a `Top N` parameter with values like 5, 10, 15, 20.
+- [ ] Create a measure selector parameter if a single sheet must toggle between `Total Cost`, `Average Cost`, and `Denial Rate`.
+- [ ] Test the parameter values to ensure charts update correctly.
+- [ ] Use parameter controls in the dashboard for business-friendly interaction.
+
+
+#### 8) Create the required worksheets
+
+##### Worksheet 1: Monthly Cost Trend
+
+- [ ] Drag `claim_date` to Columns.
+- [ ] Set the date level to Month.
+- [ ] Drag `SUM(Claim Amount)` to Rows.
+- [ ] Add a line chart.
+- [ ] Add a reference line for average monthly cost.
+- [ ] Optional: color by `claim_status` or `region`.
+- [ ] Label the sheet `Monthly Spend Trend`.
+
+##### Worksheet 2: KPI Summary
+
+- [ ] Create four KPI cards:
+  - Total Claims
+  - Total Cost
+  - Average Cost per Claim
+  - Approval Rate
+- [ ] Use `COUNT([Claim ID])`, `SUM([Claim Amount])`, `AVG([Claim Amount])`, `AVG([Approval Flag])`.
+- [ ] Format using currency, percentage, and whole-number display rules.
+- [ ] Give the sheet a title such as `Executive KPI Summary`.
+
+##### Worksheet 3: Hospital Pareto Analysis
+
+- [ ] Drag `hospital_name` to Rows.
+- [ ] Drag `SUM(Claim Amount)` to Columns.
+- [ ] Sort descending by total cost.
+- [ ] Add a cumulative percentage line on the secondary axis.
+- [ ] Mark the 80% threshold to demonstrate Pareto concentration.
+- [ ] Label the sheet `Cost Concentration by Hospital`.
+
+##### Worksheet 4: Denial vs Cost Scatter/Bubble Chart
+
+- [ ] Place `Denial Rate` on X-axis.
+- [ ] Place `Average Claim Amount` on Y-axis.
+- [ ] Use `Claim Volume` as bubble size.
+- [ ] Color marks by `hospital_type` or `region`.
+- [ ] Add labels for hospitals with outlier behavior.
+- [ ] Label the sheet `Denial vs Cost by Hospital`.
+
+##### Worksheet 5: Regional Performance Heatmap
+
+- [ ] Use `region` as the geographic dimension.
+- [ ] Color the map using `Average Claim Amount` or `Denial Rate`.
+- [ ] Add tooltips showing region-level metrics.
+- [ ] Label the sheet `Regional Cost and Denial Profile`.
+
+##### Worksheet 6: Provider Drill-down Table
+
+- [ ] Use a table or bar chart with `region`, `hospital_name`, `provider_name`, and `specialty`.
+- [ ] Display `Claim Volume`, `Average Cost`, and `Denial Rate` by provider.
+- [ ] Keep it readable and use filters to isolate specific hospitals or regions.
+- [ ] Label the sheet `Provider Performance Detail`.
+
+##### Worksheet 7: Demographic Risk View
+
+- [ ] Use `age_group`, `smoking_status`, or `bmi_category` on the view.
+- [ ] Display `Average Claim Amount` or `Claim Volume`.
+- [ ] This supports the risk segmentation story.
+- [ ] Label the sheet `Patient Risk Segments`.
+
+##### Worksheet 8: Claims Status Breakdown
+
+- [ ] Create a bar or stacked bar chart for `claim_status`.
+- [ ] Add breakdown by `region` or `hospital_type` if needed.
+- [ ] Label the sheet `Claims Status Distribution`.
+
+
+#### 9) Add filters and interaction controls
+
+- [ ] Add a global filter for `Date Range`.
+- [ ] Add a filter for `region`.
+- [ ] Add a filter for `claim_status`.
+- [ ] Add a filter for `hospital_type`.
+- [ ] Add a filter for `smoking_status`.
+- [ ] Add a filter for `specialty` if using provider analysis.
+- [ ] Ensure all sheets update correctly when filters are changed.
+- [ ] Use single-select or multi-select options depending on the story.
+- [ ] If a chart is meant to be used as a drill-down, set the filter action to work with all sheets.
+
+
+#### 10) Dashboard actions and drill-down behavior
+
+- [ ] Add a filter action from the region chart to all other sheets.
+- [ ] Add a highlight action for a hospital name across multiple charts.
+- [ ] If desired, add a parameter action to switch the top-N view dynamically.
+- [ ] Add a URL action only if a detail page or external resource is required.
+- [ ] Keep interaction design simple and intuitive for business users.
+- [ ] Ensure dashboard actions do not create confusing or broken dependencies.
+
+
+#### 11) Design the dashboard layout
+
+- [ ] Create a new dashboard titled `Healthcare Claims and Denial Dashboard`.
+- [ ] Place the KPI cards in the top row.
+- [ ] Place trend and Pareto visualizations in the middle row.
+- [ ] Place scatter and geographic views in the bottom row.
+- [ ] Keep all chart titles short and readable.
+- [ ] Use a maximum of 5 colors throughout the dashboard.
+- [ ] Ensure alignment and spacing are consistent.
+- [ ] Use readable fonts and avoid visual clutter.
+
+
+#### 12) Add narrative storytelling to the workbook
+
+The dashboard should not only show charts — it should tell a business story.
+
+- [ ] Story Point 1: The Cost Landscape
+  - Show total spend, trend, and cost growth.
+- [ ] Story Point 2: Where the Money Goes
+  - Use Pareto analysis to identify concentration of claims spend.
+- [ ] Story Point 3: Denial Hotspots
+  - Use the scatter plot to identify hospitals with high denial rate and high cost.
+- [ ] Story Point 4: Risk and Demographic Drivers
+  - Use age, BMI, and smoking segmentation to explain cost variation.
+- [ ] Story Point 5: Recommendations and Next Steps
+  - Highlight the operational interventions suggested by the analysis.
+
+
+#### 13) Format and polish for executive quality
+
+- [ ] Apply consistent currency formatting to claim and cost measures.
+- [ ] Format percentages with one or two decimal places.
+- [ ] Use tooltips to explain key numbers.
+- [ ] Ensure chart labels are large enough to read in presentation mode.
+- [ ] Use neutral and professional colors with accessible contrast.
+- [ ] Remove unnecessary marks, gridlines, and chart clutter.
+- [ ] Align dashboard containers for a clean executive layout.
+
+
+#### 14) Final QA checklist before submission
+
+- [ ] All worksheets load without errors.
+- [ ] Data source is valid and refreshes correctly.
+- [ ] All filter actions work properly.
+- [ ] All dashboard titles and labels are correct.
+- [ ] KPI cards update correctly when filters are changed.
+- [ ] At least 6 visualizations are included.
+- [ ] The workbook is saved as `.twb` and packaged as `.twbx` if required.
+- [ ] The dashboard is readable and presentation-ready.
+- [ ] Final workbook is tested on freshly opened Tableau before submission.
+
+
+#### 15) Tableau deliverables checklist
+
+- [ ] MySQL live connection or CSV fallback data source connected
+- [ ] Correct field types assigned
+- [ ] Hierarchies created: Region → Hospital → Provider and Year → Quarter → Month
+- [ ] Calculated fields created and validated
+- [ ] Filters and parameters implemented
+- [ ] At least 6 analysis sheets created
+- [ ] Dashboard assembled with narrative flow
+- [ ] Interactions and drill-down implemented
+- [ ] Workbook exported and tested
+
+---
+
 ### **PHASE 3: Tableau Dashboard Engineering (Days 6-8 | 5-6 hours)**
+
+This phase is where the SQL analysis becomes a presentation-ready dashboard. If you are new to Tableau, do not try to make the final dashboard in one step. Build it in a sequence so the logic stays simple and easy to debug.
+
+---
+
+## Beginner Step-by-Step Guide for Phase 3
+
+### Day 6: Data Connection & Foundational Visualizations
+
+#### Step 3.1: Connect Tableau to the live MySQL data source
+
+1. Open Tableau Desktop.
+2. Click on “Connect to Data”.
+3. Select “MySQL” from the list of connectors.
+4. Enter your server information:
+   - Server: localhost or your MySQL host
+   - Port: 3306 (unless configured differently)
+   - Username and password
+   - Database: `healthcare_claims_db`
+5. Choose the “Live” connection option.
+6. In the list of available objects, select the view `v_claims_tableau`.
+7. Click “Sheet 1” to begin building charts.
+
+Important beginner note:
+
+- Use your live SQL view as the main data source.
+- Do not start by building a dashboard from multiple raw tables.
+- Keep one clean source with all required analysis fields already exposed by SQL.
+
+#### Step 3.2: Understand the data fields
+
+When the data loads, check whether the following fields are available:
+
+- `claim_id`
+- `claim_date`
+- `claim_amount`
+- `claim_status`
+- `region`
+- `hospital_name`
+- `hospital_type`
+- `provider_name`
+- `specialty`
+- `smoker`
+- `age_group`
+- `bmi_category`
+- `cost_tier`
+- `denial_flag`
+
+If some fields are missing, go back to the SQL view and add them.
+
+#### Step 3.3: Set the field roles correctly
+
+In the data pane:
+
+- Date fields: set as Date
+- Currency fields: set as Number (Decimal)
+- Status fields: set as String
+- Counts: set as Number (Whole)
+- Percent/ratio fields: set as Number (Decimal)
+
+This helps Tableau calculate measures correctly and makes the charts behave properly.
+
+#### Step 3.4: Create the first chart
+
+Create a worksheet called “Monthly Spend Trend”.
+
+- Drag `claim_date` to Columns.
+- Change the date granularity to Month.
+- Drag `SUM(claim_amount)` to Rows.
+- This creates a line chart showing cost over time.
+
+This is the simplest starting point for the dashboard and matches the project requirement for a time series view.
+
+#### Step 3.5: Add the required foundational charts
+
+Create these 3 visuals first:
+
+1. Time Series Trend Chart
+   - Columns: `claim_date` (Month)
+   - Rows: `SUM(claim_amount)`
+   - Add a trend line if needed
+   - Optional: color by `claim_status`
+
+2. Volume vs Value by Hospital
+   - Use hospital as the dimension
+   - Left axis: count of claims
+   - Right axis: average claim amount
+   - This is a dual-axis chart and is useful for operational review
+
+3. Top N Hospitals by Volume
+   - Sort hospitals by claim count descending
+   - Add a cumulative line or reference line
+   - This makes it easy to identify the most active institutions
+
+#### Required workbook sheets for `healthcare_insurance_dashboard.twbx`
+
+The final Tableau workbook should contain a minimum of 6 sheets; the recommended structure is 8 sheets to fully satisfy the project brief and the executive dashboard story.
+
+1. `Executive KPI Summary`  
+   Top-level summary with total claims, total cost, average cost per claim, approval rate.
+
+2. `Monthly Spend Trend`  
+   Time-series view of claim spend over time with monthly granularity and trend line.
+
+3. `Cost Concentration by Hospital`  
+   Pareto/80-20 chart showing how a small number of hospitals account for most spend.
+
+4. `Denial vs Cost by Hospital`  
+   Scatter/bubble chart for denial rate vs average claim amount by hospital.
+
+5. `Regional Cost and Denial Profile`  
+   Geographic or regional comparison of cost and denial patterns.
+
+6. `Provider Performance Detail`  
+   Drill-down table or bar chart by region, hospital, provider, and specialty.
+
+7. `Patient Risk Segments`  
+   Demographic segmentation view using age group, smoking status, or BMI category.
+
+8. `Claims Status Distribution`  
+   Breakdown of approved, denied, and pending claims by region or hospital type.
+
+The final dashboard should combine these sheets into a single executive story titled `Healthcare Claims and Denial Dashboard`, with filters for date range, region, claim status, hospital type, and smoking status.
+
+#### Step 3.6: Build the first calculated fields
+
+Go to Analysis → Create Calculated Field and create:
+
+- Cost Tier
+  ```
+  IF [Claim Amount] >= 20000 THEN 'High'
+  ELSEIF [Claim Amount] >= 10000 THEN 'Medium'
+  ELSE 'Low'
+  END
+  ```
+
+- Denial Flag
+  ```
+  IF [Claim Status] = 'Denied' THEN 1 ELSE 0 END
+  ```
+
+- Age Group
+  ```
+  IF [Age] < 30 THEN '18-29'
+  ELSEIF [Age] < 40 THEN '30-39'
+  ELSEIF [Age] < 50 THEN '40-49'
+  ELSEIF [Age] < 60 THEN '50-59'
+  ELSE '60+'
+  END
+  ```
+
+- BMI Category
+  ```
+  IF [BMI] < 18.5 THEN 'Underweight'
+  ELSEIF [BMI] < 25 THEN 'Normal'
+  ELSEIF [BMI] < 30 THEN 'Overweight'
+  ELSE 'Obese'
+  END
+  ```
+
+These match the project plan and give you dimensions for segmentation and risk analysis.
+
+---
+
+### Day 7: Executive KPI Dashboard & Advanced Visualizations
+
+#### Step 3.7: Build 4 KPI cards
+
+Create a dashboard with four KPI tiles at the top:
+
+1. Total Claims
+   - Use `COUNT([Claim ID])`
+2. Total Cost
+   - Use `SUM([Claim Amount])`
+3. Approval Rate
+   - Use `AVG([Approval Flag])` or a calculated approval measure
+4. Average Cost per Claim
+   - Use `SUM([Claim Amount]) / COUNT([Claim ID])`
+
+Format them as:
+
+- Total Cost → currency
+- Approval Rate → percentage
+- Average Cost → currency
+- Total Claims → whole number
+
+Add small trend arrows if possible.
+
+#### Step 3.8: Build advanced chart 1 — Pareto chart
+
+Create a sheet called “Cost Concentration”.
+
+- Drag `hospital_name` to Rows
+- Drag `SUM(claim_amount)` to Columns
+- Sort descending by total cost
+- Add a cumulative percentage line on the secondary axis
+- Include a marker at 80%
+
+This helps show the project requirement: “Top X hospitals drive Y% of cost.”
+
+#### Step 3.9: Build advanced chart 2 — Scatter/Bubble matrix
+
+Create a sheet called “Denial vs Cost”.
+
+- X-axis: Denial Rate
+- Y-axis: Average Claim Amount
+- Size: Claim Volume
+- Color: Hospital Type
+
+This is a strong executive-level chart because it reveals outlier hospitals and denial-risk patterns.
+
+#### Step 3.10: Build advanced chart 3 — Regional heatmap
+
+Create a sheet called “Regional Spend”.
+
+- Use `region` as the geographic dimension
+- Color by average claim cost or denial rate
+- Add tooltips for region-level numbers
+
+If your Tableau version supports geographic mapping, this is ideal.
+
+---
+
+### Day 8: Dashboard Composition & Narrative Storyboard
+
+#### Step 3.11: Assemble the dashboard layout
+
+Create a new dashboard and arrange the visuals as follows:
+
+- Top row: 4 KPI cards
+- Middle row: time series chart + Pareto chart
+- Bottom row: bubble chart + regional heatmap
+
+Keep the layout simple and balanced.
+
+Recommended layout principles:
+
+- Read left-to-right and top-to-bottom
+- Put the most important KPI cards at the top
+- Use consistent spacing between tiles
+- Keep titles short and clear
+- Use no more than 5 colors
+
+#### Step 3.12: Add filters
+
+Add global filters for:
+
+- Date Range
+- Region
+- Claim Status
+- Hospital Type
+
+To add a filter:
+
+1. Drag the field to the Filters shelf
+2. Choose the type (single value, range, or multiple values)
+3. Place it at the top of the dashboard
+
+#### Step 3.13: Enable dashboard interactions
+
+Set up simple interactions:
+
+- Filter action: select a region and all charts update
+- Highlight action: click one hospital and highlight related metrics across charts
+- Parameter actions: optional for Top N hospital view
+
+For beginners, filter actions are enough.
+
+#### Step 3.14: Add the narrative story
+
+Your dashboard should tell a story, not just show charts. Use this story structure:
+
+- Story Point 1: The Cost Landscape
+- Story Point 2: Where the Money Goes
+- Story Point 3: Denial Hotspots
+- Story Point 4: Demographic Risk Factors
+- Story Point 5: Recommendations
+
+This matches the plan and makes the dashboard executive-friendly.
+
+#### Step 3.15: Final QA check
+
+Before submitting:
+
+- [ ] All filters work
+- [ ] All charts update correctly
+- [ ] The dashboard has a clear title
+- [ ] KPI cards are readable
+- [ ] Colors are consistent
+- [ ] No chart is overly cluttered
+- [ ] Workbook is saved as `.twb` or packaged as `.twbx`
+
+---
 
  
 
@@ -1332,9 +2369,9 @@ hospitals (Dimension)
 
 **Program:** Executive MTech — Data Science & AI  
 
-**Last Updated:** 27 Aug 2026  
+**Last Updated:** 09 Sep 2026  
 
-**Status:** Ready for Implementation ✅
+**Status:** Implementation Ready / Ready for Review ✅
 
  
 

@@ -8,23 +8,6 @@ USE healthcare_claims_db;
 -- ================================================================
 -- SECTION 8: TABLEAU LIVE DATA VIEW (PREFERRED CONNECTION METHOD)
 -- ================================================================
--- Tableau can connect directly to MySQL using a database view instead of
--- importing a CSV every time. This is the recommended live-data approach.
---
--- Tableau connection steps:
--- 1. Open Tableau
--- 2. Connect to MySQL
--- 3. Enter Server, Database = healthcare_claims_db, Username, Password
--- 4. Choose the view named v_claims_tableau
--- 5. Build dashboards from the live data source
---
--- Optional CSV export (fallback only):
--- SELECT *
--- FROM v_claims_tableau
--- INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/claims_analysis.csv'
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n';
 
 DROP VIEW IF EXISTS v_claims_tableau;
 CREATE VIEW v_claims_tableau AS
