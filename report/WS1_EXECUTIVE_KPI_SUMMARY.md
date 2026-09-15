@@ -152,7 +152,7 @@ Average Cost per Claim = SUM([Claim Amount]) / COUNTD([Claim ID])
 |--------|-----------------|---------|-------|
 | Total Claims | 1,591 | COUNT DISTINCT([Claim ID]) | Blue |
 | Total Cost | $4.3M | SUM([Claim Amount]) | Blue |
-| Approval Rate | 82% | COUNTIF("Approved") / COUNT | Green |
+| Approval Rate | 82% | SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID]) | Green |
 | Avg Cost | $2,689 | SUM($) / COUNT(Claims) | Blue |
 
 ---

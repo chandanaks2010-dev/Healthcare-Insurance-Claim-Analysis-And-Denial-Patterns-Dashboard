@@ -41,7 +41,7 @@
 
 ### WS1: KPI Calculations
 ```
-Approval Rate = COUNTIF([Claim Status]="Approved") / COUNT([Claim ID])
+Approval Rate = SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID])
 Avg Cost/Claim = SUM([Claim Amount]) / COUNT([Claim ID])
 ```
 
@@ -53,7 +53,7 @@ Add Reference Line: Value=80, Label="80% Threshold"
 
 ### WS4: Denial Rate
 ```
-Denial Rate % = (COUNTIF([Claim Status]="Denied") / COUNT([Claim ID])) * 100
+Denial Rate % = (SUM(IF [Claim Status] = "Denied" THEN 1 ELSE 0 END) / COUNTD([Claim ID])) * 100
 Add Reference Lines: 
   - X-axis (Avg Cost): Portfolio average cost
   - Y-axis (Denial %): Portfolio average denial rate

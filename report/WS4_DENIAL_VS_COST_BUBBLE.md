@@ -39,7 +39,7 @@ Rename: "Denial vs Cost by Hospital"
 - [ ] Create calculated field:
   ```
   Name: Denial Rate %
-  Formula: (COUNTIF([Claim Status]="Denied") / COUNT([Claim ID])) * 100
+  Formula: (SUM(IF [Claim Status] = "Denied" THEN 1 ELSE 0 END) / COUNTD([Claim ID])) * 100
   ```
 - [ ] Drag `Denial Rate %` → **ROWS**
 - [ ] Tableau creates scatter plot (dots)

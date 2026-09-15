@@ -281,7 +281,7 @@ KEY INSIGHT: Top 5 hospitals (25% of network) = 80% of cost
 - [ ] Drag `Claim Amount` to COLUMNS (X-axis) → Aggregate = AVG
   - This shows "Average cost per claim by hospital"
 - [ ] Create calculated field: `Denial Rate %`
-  - Formula: `COUNTIF([Claim Status]="Denied") / COUNT([Claim ID]) * 100`
+  - Formula: `SUM(IF [Claim Status] = "Denied" THEN 1 ELSE 0 END) / COUNTD([Claim ID]) * 100`
 - [ ] Drag `Denial Rate %` to ROWS (Y-axis)
 - [ ] Tableau auto-creates bubble chart
 
@@ -387,7 +387,7 @@ KEY INSIGHT:
 
 **STEP 5.2: Add Second Measure (Denial Rate)**
 - [ ] Create calculated field: `Denial Rate %` (if not already done)
-  - Formula: `COUNTIF([Claim Status]="Denied") / COUNT([Claim ID]) * 100`
+  - Formula: `SUM(IF [Claim Status] = "Denied" THEN 1 ELSE 0 END) / COUNTD([Claim ID]) * 100`
 - [ ] Drag to secondary ROWS axis (right-click → Dual Axis)
 - [ ] This adds a second Y-axis for denial rate
 
