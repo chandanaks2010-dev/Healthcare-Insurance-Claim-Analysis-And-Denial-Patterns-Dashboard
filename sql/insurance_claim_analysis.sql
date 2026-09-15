@@ -150,11 +150,11 @@ SELECT
     h.hospital_name,
     h.location,
     h.hospital_type,
-    h.state,                        -- KEY: For Tableau state-level filtering
-    h.city,                         -- KEY: For Tableau city-level filtering
-    h.region,                       -- KEY: For Tableau regional grouping
-    h.latitude,                     -- KEY: For Tableau geographic map visualization
-    h.longitude,                    -- KEY: For Tableau geographic map visualization
+    h.state,
+    h.city,
+    h.region,
+    h.latitude,
+    h.longitude,
 
     -- ======== PROVIDER DIMENSIONS ========
     pr.provider_id,
@@ -170,7 +170,7 @@ SELECT
     -- ======== FINANCIAL METRICS ========
     c.claim_amount,
     c.claim_status,
-    cd.procedure_cost,
+    COALESCE(cd_agg.procedure_cost, 0) AS procedure_cost,
 
     -- ======== CALCULATED FIELDS FOR ANALYTICS & FILTERING ========
     CASE
@@ -209,12 +209,20 @@ LEFT JOIN patients p
     ON p.patient_id = c.patient_id
 LEFT JOIN hospitals h
     ON h.hospital_id = c.hospital_id
-LEFT JOIN claim_details cd
-    ON cd.claim_id = c.claim_id
+LEFT JOIN (
+    SELECT
+        claim_id,
+        MAX(diagnosis_id) AS diagnosis_id,
+        MAX(provider_id) AS provider_id,
+        MAX(procedure_cost) AS procedure_cost
+    FROM claim_details
+    GROUP BY claim_id
+) AS cd_agg
+    ON cd_agg.claim_id = c.claim_id
 LEFT JOIN diagnoses d
-    ON d.diagnosis_id = cd.diagnosis_id
+    ON d.diagnosis_id = cd_agg.diagnosis_id
 LEFT JOIN providers pr
-    ON pr.provider_id = cd.provider_id;
+    ON pr.provider_id = cd_agg.provider_id;
 
 -- ================================================================
 -- VIEW VALIDATION AND STATISTICS

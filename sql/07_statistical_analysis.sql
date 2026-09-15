@@ -37,26 +37,70 @@ FROM claims;
 -- ================================================================
 -- Purpose: Detailed percentile breakdown for cost distribution
 -- Use Case: Identify cost thresholds, distribution shape analysis
--- Functions: PERCENTILE_CONT for continuous percentiles
+-- Functions: Window functions for continuous percentile interpolation
 -- ================================================================
 SELECT 'Query 7.2: Percentile Distribution Analysis' AS query_name;
 
+WITH ordered_claims AS (
+    SELECT
+        claim_amount,
+        ROW_NUMBER() OVER (ORDER BY claim_amount) AS row_num,
+        COUNT(*) OVER () AS total_rows
+    FROM claims
+),
+percentile_targets AS (
+    SELECT 'p0' AS percentile_name, 0.00 AS percentile_value
+    UNION ALL SELECT 'p1', 0.01
+    UNION ALL SELECT 'p5', 0.05
+    UNION ALL SELECT 'p10', 0.10
+    UNION ALL SELECT 'q1', 0.25
+    UNION ALL SELECT 'q2', 0.50
+    UNION ALL SELECT 'q3', 0.75
+    UNION ALL SELECT 'p90', 0.90
+    UNION ALL SELECT 'p95', 0.95
+    UNION ALL SELECT 'p99', 0.99
+    UNION ALL SELECT 'p100', 1.00
+),
+percentile_positions AS (
+    SELECT
+        t.percentile_name,
+        1 + t.percentile_value * (MAX(o.total_rows) - 1) AS position
+    FROM percentile_targets t
+    CROSS JOIN ordered_claims o
+    GROUP BY t.percentile_name, t.percentile_value
+),
+interpolated_percentiles AS (
+    SELECT
+        p.percentile_name,
+        MAX(CASE WHEN o.row_num = FLOOR(p.position) THEN o.claim_amount END) +
+            (p.position - FLOOR(p.position)) * (
+                MAX(CASE WHEN o.row_num = CEIL(p.position) THEN o.claim_amount END) -
+                MAX(CASE WHEN o.row_num = FLOOR(p.position) THEN o.claim_amount END)
+            ) AS percentile_value
+    FROM percentile_positions p
+    JOIN ordered_claims o
+        ON o.row_num IN (FLOOR(p.position), CEIL(p.position))
+    GROUP BY p.percentile_name, p.position
+)
 SELECT
-    COUNT(*) AS total_claims,
-    ROUND(PERCENTILE_CONT(0.00) WITHIN GROUP (ORDER BY claim_amount), 2) AS p0_minimum,
-    ROUND(PERCENTILE_CONT(0.01) WITHIN GROUP (ORDER BY claim_amount), 2) AS p1,
-    ROUND(PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY claim_amount), 2) AS p5,
-    ROUND(PERCENTILE_CONT(0.10) WITHIN GROUP (ORDER BY claim_amount), 2) AS p10,
-    ROUND(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY claim_amount), 2) AS q1_lower_quartile,
-    ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY claim_amount), 2) AS q2_median,
-    ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY claim_amount), 2) AS q3_upper_quartile,
-    ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY claim_amount), 2) AS p90,
-    ROUND(PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY claim_amount), 2) AS p95,
-    ROUND(PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY claim_amount), 2) AS p99,
-    ROUND(PERCENTILE_CONT(1.00) WITHIN GROUP (ORDER BY claim_amount), 2) AS p100_maximum,
-    ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY claim_amount) -
-          PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY claim_amount), 2) AS iqr_interquartile_range
-FROM claims;
+    (SELECT MAX(total_rows) FROM ordered_claims) AS total_claims,
+    ROUND(MAX(CASE WHEN percentile_name = 'p0' THEN percentile_value END), 2) AS p0_minimum,
+    ROUND(MAX(CASE WHEN percentile_name = 'p1' THEN percentile_value END), 2) AS p1,
+    ROUND(MAX(CASE WHEN percentile_name = 'p5' THEN percentile_value END), 2) AS p5,
+    ROUND(MAX(CASE WHEN percentile_name = 'p10' THEN percentile_value END), 2) AS p10,
+    ROUND(MAX(CASE WHEN percentile_name = 'q1' THEN percentile_value END), 2) AS q1_lower_quartile,
+    ROUND(MAX(CASE WHEN percentile_name = 'q2' THEN percentile_value END), 2) AS q2_median,
+    ROUND(MAX(CASE WHEN percentile_name = 'q3' THEN percentile_value END), 2) AS q3_upper_quartile,
+    ROUND(MAX(CASE WHEN percentile_name = 'p90' THEN percentile_value END), 2) AS p90,
+    ROUND(MAX(CASE WHEN percentile_name = 'p95' THEN percentile_value END), 2) AS p95,
+    ROUND(MAX(CASE WHEN percentile_name = 'p99' THEN percentile_value END), 2) AS p99,
+    ROUND(MAX(CASE WHEN percentile_name = 'p100' THEN percentile_value END), 2) AS p100_maximum,
+    ROUND(
+        MAX(CASE WHEN percentile_name = 'q3' THEN percentile_value END) -
+        MAX(CASE WHEN percentile_name = 'q1' THEN percentile_value END),
+        2
+    ) AS iqr_interquartile_range
+FROM interpolated_percentiles;
 
 -- ================================================================
 -- Query 7.3: Coefficient of Variation Analysis by Hospital
@@ -155,36 +199,64 @@ ORDER BY cost_rank;
 -- ================================================================
 SELECT 'Query 7.5: Demographic Segmentation Statistics' AS query_name;
 
+WITH segmented_claims AS (
+    SELECT
+        CASE
+            WHEN p.age < 30 THEN '18-29'
+            WHEN p.age < 40 THEN '30-39'
+            WHEN p.age < 50 THEN '40-49'
+            WHEN p.age < 60 THEN '50-59'
+            ELSE '60+'
+        END AS age_group,
+        CASE
+            WHEN p.bmi < 25 THEN 'Normal'
+            WHEN p.bmi < 30 THEN 'Overweight'
+            ELSE 'Obese'
+        END AS bmi_category,
+        p.smoking_status,
+        p.sex,
+        p.age,
+        p.bmi,
+        p.patient_id,
+        c.claim_id,
+        c.claim_amount,
+        c.claim_status
+    FROM patients p
+    JOIN claims c ON p.patient_id = c.patient_id
+),
+ranked_segments AS (
+    SELECT
+        segmented_claims.*,
+        ROW_NUMBER() OVER (
+            PARTITION BY age_group, bmi_category, smoking_status, sex
+            ORDER BY claim_amount
+        ) AS segment_row,
+        COUNT(*) OVER (
+            PARTITION BY age_group, bmi_category, smoking_status, sex
+        ) AS segment_count
+    FROM segmented_claims
+)
 SELECT
-    CASE
-        WHEN p.age < 30 THEN '18-29'
-        WHEN p.age < 40 THEN '30-39'
-        WHEN p.age < 50 THEN '40-49'
-        WHEN p.age < 60 THEN '50-59'
-        ELSE '60+'
-    END AS age_group,
-    CASE
-        WHEN p.bmi < 25 THEN 'Normal'
-        WHEN p.bmi < 30 THEN 'Overweight'
-        ELSE 'Obese'
-    END AS bmi_category,
-    p.smoking_status,
-    p.sex,
-    COUNT(DISTINCT p.patient_id) AS unique_patients,
-    COUNT(c.claim_id) AS total_claims,
-    ROUND(AVG(p.age), 1) AS avg_age_in_segment,
-    ROUND(AVG(p.bmi), 1) AS avg_bmi_in_segment,
-    ROUND(AVG(c.claim_amount), 2) AS mean_claim_cost,
-    ROUND(STDDEV(c.claim_amount), 2) AS stddev_claim_cost,
-    ROUND(MIN(c.claim_amount), 2) AS min_claim_cost,
-    ROUND(MAX(c.claim_amount), 2) AS max_claim_cost,
-    ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY c.claim_amount), 2) AS median_claim_cost,
-    ROUND(100.0 * SUM(CASE WHEN c.claim_status = 'Denied' THEN 1 ELSE 0 END) / COUNT(c.claim_id), 2) AS denial_rate_pct,
-    ROUND(SUM(c.claim_amount), 2) AS segment_total_cost
-FROM patients p
-LEFT JOIN claims c ON p.patient_id = c.patient_id
-WHERE c.claim_id IS NOT NULL
-GROUP BY age_group, bmi_category, p.smoking_status, p.sex
+    age_group,
+    bmi_category,
+    smoking_status,
+    sex,
+    COUNT(DISTINCT patient_id) AS unique_patients,
+    COUNT(claim_id) AS total_claims,
+    ROUND(AVG(age), 1) AS avg_age_in_segment,
+    ROUND(AVG(bmi), 1) AS avg_bmi_in_segment,
+    ROUND(AVG(claim_amount), 2) AS mean_claim_cost,
+    ROUND(STDDEV(claim_amount), 2) AS stddev_claim_cost,
+    ROUND(MIN(claim_amount), 2) AS min_claim_cost,
+    ROUND(MAX(claim_amount), 2) AS max_claim_cost,
+    ROUND(AVG(CASE
+        WHEN segment_row IN (FLOOR((segment_count + 1) / 2), CEIL((segment_count + 1) / 2))
+        THEN claim_amount
+    END), 2) AS median_claim_cost,
+    ROUND(100.0 * SUM(CASE WHEN claim_status = 'Denied' THEN 1 ELSE 0 END) / COUNT(claim_id), 2) AS denial_rate_pct,
+    ROUND(SUM(claim_amount), 2) AS segment_total_cost
+FROM ranked_segments
+GROUP BY age_group, bmi_category, smoking_status, sex
 ORDER BY segment_total_cost DESC, age_group, bmi_category;
 
 -- ================================================================

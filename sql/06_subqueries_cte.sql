@@ -244,7 +244,7 @@ WITH RECURSIVE region_hierarchy AS (
         city,
         1 AS hierarchy_level,
         region AS top_region,
-        CONCAT(region) AS path
+        CAST(region AS CHAR(255)) AS path
     FROM (
         SELECT DISTINCT region, state, city FROM hospitals
     ) unique_locations

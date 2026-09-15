@@ -86,27 +86,86 @@ FROM staging_claims;
 -- ================================================================
 SELECT '4. PERCENTILE DISTRIBUTION - CHARGES' AS section;
 
+WITH ordered_charges AS (
+    SELECT
+        charges,
+        ROW_NUMBER() OVER (ORDER BY charges) AS row_num,
+        COUNT(*) OVER () AS total_records
+    FROM staging_claims
+    WHERE charges IS NOT NULL
+),
+percentile_positions AS (
+    SELECT 0.10 AS percentile
+    UNION ALL SELECT 0.25
+    UNION ALL SELECT 0.50
+    UNION ALL SELECT 0.75
+    UNION ALL SELECT 0.90
+),
+percentile_values AS (
+    SELECT
+        positions.percentile,
+        positions.position,
+        MAX(CASE WHEN ordered.row_num = FLOOR(positions.position) THEN ordered.charges END) AS lower_value,
+        MAX(CASE WHEN ordered.row_num = CEIL(positions.position) THEN ordered.charges END) AS upper_value
+    FROM ordered_charges AS ordered
+    CROSS JOIN (
+        SELECT
+            percentiles.percentile,
+            (MAX(ordered_charges.total_records) - 1) * percentiles.percentile + 1 AS position
+        FROM percentile_positions AS percentiles
+        CROSS JOIN ordered_charges
+        GROUP BY percentiles.percentile
+    ) AS positions
+    GROUP BY positions.percentile, positions.position
+),
+interpolated_percentiles AS (
+    SELECT
+        percentile,
+        lower_value + (upper_value - lower_value) * (position - FLOOR(position)) AS percentile_value
+    FROM percentile_values
+)
 SELECT
-    COUNT(*) AS total_records,
+    (SELECT COUNT(*) FROM staging_claims) AS total_records,
     ROUND(MIN(charges), 2) AS p0_min,
-    ROUND(PERCENTILE_CONT(0.1) WITHIN GROUP (ORDER BY charges), 2) AS p10,
-    ROUND(PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY charges), 2) AS p25,
-    ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY charges), 2) AS p50_median,
-    ROUND(PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY charges), 2) AS p75,
-    ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY charges), 2) AS p90,
+    ROUND(MAX(CASE WHEN percentile = 0.10 THEN percentile_value END), 2) AS p10,
+    ROUND(MAX(CASE WHEN percentile = 0.25 THEN percentile_value END), 2) AS p25,
+    ROUND(MAX(CASE WHEN percentile = 0.50 THEN percentile_value END), 2) AS p50_median,
+    ROUND(MAX(CASE WHEN percentile = 0.75 THEN percentile_value END), 2) AS p75,
+    ROUND(MAX(CASE WHEN percentile = 0.90 THEN percentile_value END), 2) AS p90,
     ROUND(MAX(charges), 2) AS p100_max
-FROM staging_claims;
+FROM staging_claims
+CROSS JOIN interpolated_percentiles;
 
 -- ================================================================
 -- 5. OUTLIER DETECTION (IQR Method)
 -- ================================================================
 SELECT '5. OUTLIER DETECTION - CHARGES (IQR METHOD)' AS section;
 
-WITH quartiles AS (
+WITH ordered_charges AS (
     SELECT
-        PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY charges) AS q1,
-        PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY charges) AS q3
+        charges,
+        ROW_NUMBER() OVER (ORDER BY charges) AS row_num,
+        COUNT(*) OVER () AS total_records
     FROM staging_claims
+    WHERE charges IS NOT NULL
+),
+charge_stats AS (
+    SELECT MAX(total_records) AS total_records
+    FROM ordered_charges
+),
+quartiles AS (
+    SELECT
+        MAX(CASE WHEN row_num = FLOOR((charge_stats.total_records - 1) * 0.25 + 1) THEN charges END)
+            + (MAX(CASE WHEN row_num = CEIL((charge_stats.total_records - 1) * 0.25 + 1) THEN charges END)
+            - MAX(CASE WHEN row_num = FLOOR((charge_stats.total_records - 1) * 0.25 + 1) THEN charges END))
+            * ((charge_stats.total_records - 1) * 0.25 + 1 - FLOOR((charge_stats.total_records - 1) * 0.25 + 1)) AS q1,
+        MAX(CASE WHEN row_num = FLOOR((charge_stats.total_records - 1) * 0.75 + 1) THEN charges END)
+            + (MAX(CASE WHEN row_num = CEIL((charge_stats.total_records - 1) * 0.75 + 1) THEN charges END)
+            - MAX(CASE WHEN row_num = FLOOR((charge_stats.total_records - 1) * 0.75 + 1) THEN charges END))
+            * ((charge_stats.total_records - 1) * 0.75 + 1 - FLOOR((charge_stats.total_records - 1) * 0.75 + 1)) AS q3
+    FROM ordered_charges
+    CROSS JOIN charge_stats
+    GROUP BY charge_stats.total_records
 ),
 iqr_calc AS (
     SELECT

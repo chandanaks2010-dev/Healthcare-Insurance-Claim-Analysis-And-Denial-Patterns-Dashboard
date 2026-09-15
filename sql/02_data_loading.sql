@@ -55,16 +55,22 @@ SELECT COUNT(*) AS staging_row_count FROM staging_claims;
 -- ================================================================
 -- STEP 3: Populate patients dimension (normalize demographics)
 -- ================================================================
-INSERT INTO patients (age, sex, bmi, smoking_status, region, num_dependents)
-SELECT DISTINCT
-    s.age,
-    CASE
-        WHEN LOWER(TRIM(s.sex)) = 'male' THEN 'Male'
-        WHEN LOWER(TRIM(s.sex)) = 'female' THEN 'Female'
-        ELSE 'Other'
-    END AS sex,
-    s.bmi,
-    CASE WHEN LOWER(TRIM(s.smoker)) = 'yes' THEN 'Yes' ELSE 'No' END AS smoking_status,
+-- Deterministic load: one patient record per staging row, in a stable order,
+-- so the generated patient_id can be safely mapped to the raw claim record.
+-- Use key-based deletes so the script works under MySQL safe update mode.
+DELETE FROM claim_details WHERE detail_id > 0;
+DELETE FROM claims WHERE claim_id > 0;
+DELETE FROM providers WHERE provider_id > 0;
+DELETE FROM hospitals WHERE hospital_id > 0;
+DELETE FROM patients WHERE patient_id > 0;
+
+DROP TEMPORARY TABLE IF EXISTS ordered_claims;
+CREATE TEMPORARY TABLE ordered_claims AS
+SELECT
+    s.*,
+    ROW_NUMBER() OVER (
+        ORDER BY s.age, s.bmi, s.sex, s.smoker, s.region, s.children, s.charges
+    ) AS source_row_num,
     CASE
         WHEN LOWER(TRIM(s.region)) = 'northwest' THEN 'Northwest'
         WHEN LOWER(TRIM(s.region)) = 'northeast' THEN 'Northeast'
@@ -72,76 +78,58 @@ SELECT DISTINCT
         WHEN LOWER(TRIM(s.region)) = 'southwest' THEN 'Southwest'
         WHEN LOWER(TRIM(s.region)) = 'midwest' THEN 'Midwest'
         ELSE 'West'
-    END AS region,
-    s.children
-FROM staging_claims s
-ORDER BY s.age, s.bmi, s.region;
+    END AS normalized_region
+FROM staging_claims s;
+
+INSERT INTO patients (age, sex, bmi, smoking_status, region, num_dependents)
+SELECT
+    o.age,
+    CASE
+        WHEN LOWER(TRIM(o.sex)) = 'male' THEN 'Male'
+        WHEN LOWER(TRIM(o.sex)) = 'female' THEN 'Female'
+        ELSE 'Other'
+    END AS sex,
+    o.bmi,
+    CASE WHEN LOWER(TRIM(o.smoker)) = 'yes' THEN 'Yes' ELSE 'No' END AS smoking_status,
+    o.normalized_region AS region,
+    o.children AS num_dependents
+FROM ordered_claims o
+ORDER BY o.source_row_num;
 
 SELECT 'Patients dimension populated.' AS step;
-SELECT COUNT(*) AS patient_count, 
-       COUNT(DISTINCT region) AS distinct_regions 
+SELECT COUNT(*) AS patient_count,
+       COUNT(DISTINCT region) AS distinct_regions
 FROM patients;
 
 -- ================================================================
 -- STEP 4: Populate hospitals dimension with geographical data
 -- ================================================================
--- Maps regions to US states and cities for Tableau geographical visualization
--- Includes latitude/longitude for enhanced geospatial analysis
-
+-- Maps each normalized region to a single representative hospital site.
 INSERT INTO hospitals (hospital_name, location, state, city, region, latitude, longitude, hospital_type, bed_count)
 SELECT DISTINCT
-    CONCAT('Regional Medical Center - ', p_distinct.region) AS hospital_name,
-    p_distinct.city AS location,
-    p_distinct.state,
-    p_distinct.city,
-    p_distinct.region,
-    p_distinct.lat,
-    p_distinct.lon,
+    CONCAT('Regional Medical Center - ', region_map.region) AS hospital_name,
+    region_map.city AS location,
+    region_map.state,
+    region_map.city,
+    region_map.region,
+    region_map.lat,
+    region_map.lon,
     CASE
-        WHEN MOD(SUBSTRING_INDEX(p_distinct.region, ' ', 1), 2) = 0 THEN 'Teaching'
+        WHEN region_map.region IN ('Northeast', 'Midwest') THEN 'Teaching'
         ELSE 'General'
     END AS hospital_type,
-    200 + FLOOR(RAND() * 250) AS bed_count
+    200 + (ROW_NUMBER() OVER (ORDER BY region_map.region) * 25) AS bed_count
 FROM (
-    SELECT DISTINCT
-        CASE
-            WHEN region = 'Northwest' THEN 'Washington'
-            WHEN region = 'Northeast' THEN 'Massachusetts'
-            WHEN region = 'Southeast' THEN 'Georgia'
-            WHEN region = 'Southwest' THEN 'Arizona'
-            WHEN region = 'Midwest' THEN 'Illinois'
-            ELSE 'California'
-        END AS state,
-        CASE
-            WHEN region = 'Northwest' THEN 'Seattle'
-            WHEN region = 'Northeast' THEN 'Boston'
-            WHEN region = 'Southeast' THEN 'Atlanta'
-            WHEN region = 'Southwest' THEN 'Phoenix'
-            WHEN region = 'Midwest' THEN 'Chicago'
-            ELSE 'San Francisco'
-        END AS city,
-        CASE
-            WHEN region = 'Northwest' THEN 47.6062
-            WHEN region = 'Northeast' THEN 42.3601
-            WHEN region = 'Southeast' THEN 33.7490
-            WHEN region = 'Southwest' THEN 33.4484
-            WHEN region = 'Midwest' THEN 41.8781
-            ELSE 37.7749
-        END AS lat,
-        CASE
-            WHEN region = 'Northwest' THEN -122.3321
-            WHEN region = 'Northeast' THEN -71.0589
-            WHEN region = 'Southeast' THEN -84.3880
-            WHEN region = 'Southwest' THEN -112.0742
-            WHEN region = 'Midwest' THEN -87.6298
-            ELSE -122.4194
-        END AS lon,
-        region
-    FROM patients
-) p_distinct;
+    SELECT 'Northwest' AS region, 'Washington' AS state, 'Seattle' AS city, 47.6062 AS lat, -122.3321 AS lon
+    UNION ALL SELECT 'Northeast', 'Massachusetts', 'Boston', 42.3601, -71.0589
+    UNION ALL SELECT 'Southeast', 'Georgia', 'Atlanta', 33.7490, -84.3880
+    UNION ALL SELECT 'Southwest', 'Arizona', 'Phoenix', 33.4484, -112.0742
+    UNION ALL SELECT 'Midwest', 'Illinois', 'Chicago', 41.8781, -87.6298
+    UNION ALL SELECT 'West', 'California', 'San Francisco', 37.7749, -122.4194
+) AS region_map;
 
 SELECT 'Hospitals dimension populated with geographical data.' AS step;
-SELECT COUNT(*) AS hospital_count, COUNT(DISTINCT state) AS distinct_states 
+SELECT COUNT(*) AS hospital_count, COUNT(DISTINCT state) AS distinct_states
 FROM hospitals;
 
 -- ================================================================
@@ -166,61 +154,49 @@ SELECT COUNT(*) AS diagnosis_count FROM diagnoses;
 -- ================================================================
 INSERT INTO providers (provider_name, specialty, hospital_id, years_experience)
 SELECT
-    CONCAT('Dr_', SUBSTRING_INDEX(p.region, ' ', 1), '_P', p.patient_id) AS provider_name,
-    CASE
-        WHEN MOD(p.patient_id, 4) = 0 THEN 'Cardiology'
-        WHEN MOD(p.patient_id, 4) = 1 THEN 'Orthopedics'
-        WHEN MOD(p.patient_id, 4) = 2 THEN 'Internal Medicine'
-        ELSE 'General Practice'
-    END AS specialty,
+    CONCAT('Dr. ', specialty_lookup.specialty, ' - ', h.hospital_name) AS provider_name,
+    specialty_lookup.specialty,
     h.hospital_id,
-    3 + MOD(p.patient_id, 20) AS years_experience
-FROM (
-    SELECT DISTINCT p1.patient_id, p1.region
-    FROM patients p1
-    LIMIT 50  -- Create ~50 providers for realism
-) p
-JOIN hospitals h ON h.region = p.region;
+    3 + MOD(h.hospital_id + specialty_lookup.seq, 20) AS years_experience
+FROM hospitals h
+CROSS JOIN (
+    SELECT 'Cardiology' AS specialty, 1 AS seq
+    UNION ALL SELECT 'Orthopedics', 2
+    UNION ALL SELECT 'Internal Medicine', 3
+    UNION ALL SELECT 'General Practice', 4
+) AS specialty_lookup
+ORDER BY h.hospital_id, specialty_lookup.seq;
 
 SELECT 'Providers dimension populated.' AS step;
-SELECT COUNT(*) AS provider_count, COUNT(DISTINCT specialty) AS distinct_specialties 
+SELECT COUNT(*) AS provider_count,
+       COUNT(DISTINCT specialty) AS distinct_specialties
 FROM providers;
 
 -- ================================================================
 -- STEP 7: Populate claims fact table
 -- ================================================================
--- Links patients to claims with appropriate cost tiers and status distribution
+-- One claim per patient/row, with deterministic status logic and hospital mapping.
 INSERT INTO claims (patient_id, claim_date, claim_amount, claim_status, hospital_id)
 SELECT
     p.patient_id,
-    DATE_ADD('2024-01-01', INTERVAL FLOOR(RAND() * 365) DAY) AS claim_date,
-    s.charges AS claim_amount,
+    DATE_ADD('2024-01-01', INTERVAL MOD(o.source_row_num - 1, 365) DAY) AS claim_date,
+    o.charges AS claim_amount,
     CASE
-        WHEN RAND() < 0.15 THEN 'Denied'
-        WHEN RAND() < 0.85 THEN 'Approved'
-        ELSE 'Pending'
+        WHEN MOD(o.source_row_num, 10) = 0 THEN 'Denied'
+        WHEN MOD(o.source_row_num, 10) = 1 THEN 'Pending'
+        ELSE 'Approved'
     END AS claim_status,
     h.hospital_id
-FROM staging_claims s
+FROM ordered_claims o
 JOIN patients p
-    ON p.age = s.age
-   AND ABS(p.bmi - s.bmi) < 0.5
-   AND p.region = CASE
-        WHEN LOWER(TRIM(s.region)) = 'northwest' THEN 'Northwest'
-        WHEN LOWER(TRIM(s.region)) = 'northeast' THEN 'Northeast'
-        WHEN LOWER(TRIM(s.region)) = 'southeast' THEN 'Southeast'
-        WHEN LOWER(TRIM(s.region)) = 'southwest' THEN 'Southwest'
-        WHEN LOWER(TRIM(s.region)) = 'midwest' THEN 'Midwest'
-        ELSE 'West'
-    END
-   AND p.smoking_status = CASE WHEN LOWER(TRIM(s.smoker)) = 'yes' THEN 'Yes' ELSE 'No' END
-   AND p.num_dependents = s.children
-JOIN hospitals h ON h.region = p.region;
+    ON p.patient_id = o.source_row_num
+JOIN hospitals h
+    ON h.region = o.normalized_region;
 
 SELECT 'Claims fact table populated.' AS step;
 SELECT COUNT(*) AS claim_count FROM claims;
-SELECT 
-    claim_status, 
+SELECT
+    claim_status,
     COUNT(*) AS count,
     ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM claims), 2) AS pct
 FROM claims
@@ -229,7 +205,7 @@ GROUP BY claim_status;
 -- ================================================================
 -- STEP 8: Populate claim_details bridge table
 -- ================================================================
--- Many-to-many linking claims to diagnoses and procedures
+-- Deterministic one-detail-per-claim mapping to a diagnosis and provider.
 INSERT INTO claim_details (claim_id, diagnosis_id, provider_id, procedure_cost, service_date)
 SELECT
     c.claim_id,
@@ -243,20 +219,38 @@ SELECT
     END AS procedure_cost,
     c.claim_date AS service_date
 FROM claims c
-JOIN patients p ON p.patient_id = c.patient_id
-JOIN diagnoses d ON d.diagnosis_id = (
-    CASE
-        WHEN MOD(c.claim_id, 6) = 1 THEN 1
-        WHEN MOD(c.claim_id, 6) = 2 THEN 2
-        WHEN MOD(c.claim_id, 6) = 3 THEN 3
-        WHEN MOD(c.claim_id, 6) = 4 THEN 4
-        WHEN MOD(c.claim_id, 6) = 5 THEN 5
-        ELSE 6
-    END
-)
-JOIN providers pr ON pr.hospital_id = c.hospital_id AND pr.specialty IN (
-    'Cardiology', 'Orthopedics', 'Internal Medicine', 'General Practice'
-);
+JOIN diagnoses d
+    ON d.diagnosis_id = MOD(c.claim_id, 6) + 1
+JOIN providers pr
+    ON pr.hospital_id = c.hospital_id
+   AND pr.specialty = CASE
+        WHEN MOD(c.claim_id, 4) = 0 THEN 'Cardiology'
+        WHEN MOD(c.claim_id, 4) = 1 THEN 'Orthopedics'
+        WHEN MOD(c.claim_id, 4) = 2 THEN 'Internal Medicine'
+        ELSE 'General Practice'
+    END;
+
+SELECT 'Claim details bridge populated.' AS step;
+SELECT COUNT(*) AS detail_count FROM claim_details;
+
+-- ================================================================
+-- FINAL ETL VALIDATION
+-- ================================================================
+SELECT 'ETL validation complete.' AS status;
+SELECT
+    (SELECT COUNT(*) FROM patients) AS patient_count,
+    (SELECT COUNT(*) FROM hospitals) AS hospital_count,
+    (SELECT COUNT(*) FROM diagnoses) AS diagnosis_count,
+    (SELECT COUNT(*) FROM claims) AS claim_count,
+    (SELECT COUNT(*) FROM claim_details) AS claim_detail_count;
+
+SELECT
+    'Ref integrity check' AS validation_step,
+    SUM(CASE WHEN c.patient_id IS NULL THEN 1 ELSE 0 END) AS orphan_claims,
+    SUM(CASE WHEN cd.claim_id IS NULL THEN 1 ELSE 0 END) AS orphan_detail_rows
+FROM claims c
+LEFT JOIN claim_details cd ON cd.claim_id = c.claim_id;
+
 
 SELECT 'Claim details bridge table populated.' AS step;
 SELECT COUNT(*) AS claim_detail_count FROM claim_details;
