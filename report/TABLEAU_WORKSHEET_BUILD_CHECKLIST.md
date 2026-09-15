@@ -472,22 +472,25 @@ KEY INSIGHTS:
 
 **STEP 6.1: Set Up Chart**
 - [ ] New Worksheet → Rename to `Claims Status Distribution`
-- [ ] Drag `Claim Status` to COLUMNS
-- [ ] Drag `Claim ID` to TEXT → Aggregate = COUNT
-- [ ] Change mark type: Automatic → Circle (for pie)
-- [ ] Tableau creates pie chart
+- [ ] Change mark type on the Marks card: Automatic → **Pie**
+- [ ] Drag `Claim Status` to **Color** on the Marks card
+- [ ] Drag `Claim ID` to **Angle** on the Marks card → Aggregate = COUNT
+- [ ] Drag `Claim ID` to **Label** on the Marks card → Aggregate = COUNT
+- [ ] Increase the pie size using the **Size** slider if needed
 
 **STEP 6.2: Format Pie Chart**
 - [ ] Color palette: 3 distinct colors
   - Approved: Green (#70AD47)
   - Denied: Red (#C55A11)
   - Pending: Yellow/Orange (#FFC000)
+- [ ] Turn on **Show Mark Labels** from the Label shelf
 - [ ] Slice labels: Show claim status name + count + percentage
   - Format: "Approved: 1,250 (79%)"
 
 **STEP 6.3: Add Data Labels**
-- [ ] Drag `Claim ID` to LABEL → COUNT
-- [ ] Format: Show as percentage
+- [ ] Ensure `Claim Status` and `COUNT(Claim ID)` are on Label
+- [ ] Add a quick table calculation to a second `COUNT(Claim ID)` if percentage labels are required:
+  - Right-click the second count → Quick Table Calculation → Percent of Total
 - [ ] Position: Outside pie (for readability)
 
 **STEP 6.4: Add Legend & Title**

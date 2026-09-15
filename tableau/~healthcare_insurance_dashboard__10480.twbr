@@ -931,16 +931,87 @@
     <worksheet name='Claims Status Distribution'>
       <table>
         <view>
-          <datasources />
+          <datasources>
+            <datasource caption='v_claims_tableau (healthcare_claims_db)' name='federated.1qrcapb1e5s8vu1fnjlqa12y1498' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1qrcapb1e5s8vu1fnjlqa12y1498'>
+            <column caption='Claim Id' datatype='real' name='[claim_id]' role='dimension' type='ordinal' />
+            <column caption='Claim Status' datatype='string' name='[claim_status]' role='dimension' type='nominal' />
+            <column-instance column='[claim_id]' derivation='Count' name='[cnt:claim_id:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[claim_status]' derivation='None' name='[none:claim_status:nk]' pivot='key' type='nominal' />
+          </datasource-dependencies>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='header'>
+            <format attr='background-color' value='#00000000' />
+          </style-rule>
+          <style-rule element='field-labels'>
+            <format attr='font-size' value='14' />
+            <format attr='font-weight' value='bold' />
+            <format attr='color' value='#4e79a7' />
+          </style-rule>
+          <style-rule element='field-labels-decoration'>
+            <format attr='text-align' value='center' />
+          </style-rule>
+          <style-rule element='pane'>
+            <format attr='background-color' value='#f0f7fa' />
+            <format attr='band-color' scope='cols' value='#00000000' />
+          </style-rule>
+          <style-rule element='table'>
+            <format attr='band-size' scope='cols' value='1' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='fill-above' id='refline0' value='#00000000' />
+            <format attr='fill-below' id='refline0' value='#00000000' />
+            <format attr='fill-above' id='refline2' value='#00000000' />
+            <format attr='fill-below' id='refline2' value='#00000000' />
+            <format attr='line-visibility' id='refline2' value='on' />
+            <format attr='line-pattern-only' id='refline2' value='dashed' />
+            <format attr='stroke-size' id='refline2' value='3' />
+            <format attr='stroke-color' id='refline2' value='#b07aa14b' />
+            <format attr='text-orientation' id='refline0' value='-90' />
+            <format attr='text-align' id='refline0' value='left' />
+          </style-rule>
+          <style-rule element='gridline'>
+            <format attr='stroke-size' scope='rows' value='4' />
+          </style-rule>
+          <style-rule element='title'>
+            <format attr='font-size' value='20' />
+            <format attr='color' value='#4e79a7' />
+            <format attr='font-weight' value='bold' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
-            <mark class='Automatic' />
+            <mark class='Pie' />
+            <encodings>
+              <color column='[federated.1qrcapb1e5s8vu1fnjlqa12y1498].[none:claim_status:nk]' />
+              <wedge-size column='[federated.1qrcapb1e5s8vu1fnjlqa12y1498].[cnt:claim_id:qk]' />
+              <text column='[federated.1qrcapb1e5s8vu1fnjlqa12y1498].[cnt:claim_id:qk]' />
+            </encodings>
+            <customized-label>
+              <formatted-text>
+                <run fontalignment='0' fontcolor='#800000' fontname='Consolas,Courier New,monospace' fontsize='17'>&lt;(Claim Status)&gt;+</run>
+                <run fontalignment='0'><![CDATA[<[federated.1qrcapb1e5s8vu1fnjlqa12y1498].[cnt:claim_id:qk]>]]></run>
+              </formatted-text>
+            </customized-label>
+            <style>
+              <style-rule element='datalabel'>
+                <format attr='color-mode' value='auto' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+              <style-rule element='trendline'>
+                <format attr='stroke-color' value='#e1575967' />
+                <format attr='stroke-size' value='3' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
         <rows />
@@ -1839,6 +1910,7 @@
           </style-rule>
           <style-rule element='header'>
             <format attr='background-color' value='#00000000' />
+            <format attr='height-header' value='40' />
           </style-rule>
           <style-rule element='field-labels'>
             <format attr='font-size' value='14' />
@@ -2087,7 +2159,7 @@
       </viewpoint>
       <simple-id uuid='{ED59E963-674E-4EFC-AE42-6623B7FB9A5F}' />
     </window>
-    <window class='worksheet' maximized='true' name='Regional Cost and Denial Profile'>
+    <window class='worksheet' name='Regional Cost and Denial Profile'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2118,7 +2190,7 @@
       </viewpoint>
       <simple-id uuid='{96DFCCA0-AD64-42CE-A517-D11D7224E5D6}' />
     </window>
-    <window class='worksheet' name='Claims Status Distribution'>
+    <window class='worksheet' maximized='true' name='Claims Status Distribution'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -2138,7 +2210,15 @@
             <card type='title' />
           </strip>
         </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.1qrcapb1e5s8vu1fnjlqa12y1498].[none:claim_status:nk]' type='color' />
+          </strip>
+        </edge>
       </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
       <simple-id uuid='{2D24C231-A5C4-4D79-A1DD-90823CD847E8}' />
     </window>
     <window class='worksheet' name='Patient Risk Segments'>
