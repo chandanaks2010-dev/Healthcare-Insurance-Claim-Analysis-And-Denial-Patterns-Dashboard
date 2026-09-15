@@ -1,6 +1,13 @@
 -- ================================================================
 -- Section 1: Schema Creation for MySQL 8.0
 -- Healthcare Insurance Claim Analysis
+-- Executive MTech Program | Data Science & AI
+-- Created: 2026-09-15
+-- Database: MySQL 8.0+
+-- ================================================================
+-- SCHEMA DESIGN (3NF Normalized)
+-- This section creates 6 normalized tables with referential integrity,
+-- constraints, and indexes for efficient querying and analysis.
 -- ================================================================
 
 CREATE DATABASE IF NOT EXISTS healthcare_claims_db;
@@ -35,12 +42,17 @@ CREATE INDEX idx_patients_region ON patients(region);
 CREATE INDEX idx_patients_smoking_status ON patients(smoking_status);
 
 -- ================================================================
--- hospitals
+-- hospitals (Dimension with geographical data for Tableau mapping)
 -- ================================================================
 CREATE TABLE hospitals (
     hospital_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     hospital_name VARCHAR(150) NOT NULL,
     location VARCHAR(150) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    region ENUM('Northwest', 'Northeast', 'Southeast', 'Southwest', 'Midwest', 'West') NOT NULL,
+    latitude DECIMAL(9,6),
+    longitude DECIMAL(9,6),
     hospital_type ENUM('General', 'Specialty', 'Teaching', 'Community') NOT NULL DEFAULT 'General',
     bed_count INT UNSIGNED NOT NULL,
     PRIMARY KEY (hospital_id),
@@ -49,6 +61,8 @@ CREATE TABLE hospitals (
 
 CREATE INDEX idx_hospitals_name ON hospitals(hospital_name);
 CREATE INDEX idx_hospitals_type ON hospitals(hospital_type);
+CREATE INDEX idx_hospitals_region ON hospitals(region);
+CREATE INDEX idx_hospitals_state ON hospitals(state);
 
 -- ================================================================
 -- providers

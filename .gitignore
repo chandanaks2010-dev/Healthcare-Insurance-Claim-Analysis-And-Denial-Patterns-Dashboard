@@ -1,6 +1,3 @@
-# Ignore raw dataset if not meant for git tracking
-/data/raw/*.csv
-
 # Operating system files
 .DS_Store
 Thumbs.db
