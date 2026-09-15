@@ -10,7 +10,7 @@
 
 | Attribute | Details |
 |-----------|---------|
-| **Chart Type** | KPI Cards (4 independent text cards) |
+| **Chart Type** | KPI Cards (4 side-by-side cards in one worksheet) |
 | **Data Source** | v_claims_tableau |
 | **Row Count** | ~1,591 claims (aggregated) |
 | **Dimensions** | None (aggregate only) |
@@ -39,107 +39,44 @@ Menu: Worksheet → New Worksheet
 Rename: "Executive KPI Summary"
 ```
 
-### STEP 2: Create KPI Card #1 — TOTAL CLAIMS
+### STEP 2: Create the Four KPI Calculated Fields
 
-**Build**
-- [ ] Drag `Claim ID` → Measures pane
-- [ ] Place on **TEXT** shelf
-- [ ] Right-click → Aggregate = **COUNT DISTINCT**
-- [ ] Tooltip should show: "SUM(Claim ID Count)" = 1,591
+Create these calculated fields from the Data pane. Naming the fields makes them easy to select in `Measure Names`.
 
-**Format**
-- [ ] Select TEXT mark → Format panel
-- [ ] Font size: **72pt**
-- [ ] Font weight: **Bold**
-- [ ] Font color: **Dark Blue** (#1F4E78)
-- [ ] Font family: **Arial**
-- [ ] Number format: **No decimals**, add thousands separator
-- [ ] Result displays: **1,591**
+```text
+Total Claims = COUNTD([Claim ID])
+Total Cost = SUM([Claim Amount])
+Approval Rate = SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID])
+Average Cost per Claim = SUM([Claim Amount]) / COUNTD([Claim ID])
+```
 
-**Card Container**
-- [ ] Create text box label "TOTAL CLAIMS" above or below number
-- [ ] Font: 14pt, Arial, Gray (#808080)
-- [ ] Background shape: Rectangle, light gray (#F5F5F5), no border
-- [ ] Padding: 15px internal
+### STEP 3: Put All Four Cards in One Worksheet
 
-### STEP 3: Create KPI Card #2 — TOTAL COST
+- [ ] Drag `Measure Names` to **COLUMNS**
+- [ ] Drag `Measure Values` to **TEXT** on the Marks card
+- [ ] Filter `Measure Names` to only the four calculated fields above
+- [ ] Set the mark type to **Text**
+- [ ] Tableau displays one column per measure, producing four side-by-side KPI cards
+- [ ] Use **Fit → Entire View** so all cards remain visible
 
-**Build**
-- [ ] Drag `Claim Amount` → TEXT shelf
-- [ ] Right-click → Aggregate = **SUM**
-- [ ] Auto-calculates total cost across all claims
+### STEP 4: Format the KPI Cards
 
-**Format**
-- [ ] Font size: **72pt**, Bold
-- [ ] Font color: **Dark Blue** (#1F4E78)
-- [ ] Number format: **Currency ($)**, 0 decimals, comma separator
-- [ ] Expected value: **~$4,300,000** to **$4,500,000**
-- [ ] Display format: **$4,345,000**
+- [ ] Format `Total Claims` as a whole number with thousands separator
+- [ ] Format `Total Cost` as currency with 0 decimals
+- [ ] Format `Approval Rate` as a percentage with 0 decimals
+- [ ] Format `Average Cost per Claim` as currency with 0 decimals
+- [ ] Use bold, large values and smaller `Measure Names` labels
+- [ ] Add column dividers or light backgrounds to distinguish the four cards
+- [ ] Use dark blue for cost/count values and green for approval rate
 
-**Card Container**
-- [ ] Label: "TOTAL COST"
-- [ ] Same styling as KPI #1
+### STEP 5: Add the Worksheet to the Main Dashboard
 
-### STEP 4: Create KPI Card #3 — APPROVAL RATE
+- [ ] Create or open the dashboard `Healthcare Claims and Denial Dashboard`
+- [ ] Drag the single `Executive KPI Summary` worksheet into the top row
+- [ ] Set its height to approximately **90-100px**
+- [ ] Do not create or add four separate KPI worksheets
 
-**Build**
-- [ ] Create calculated field (Data pane → + icon → Calculated Field):
-  ```
-  Name: Approval Rate
-  Formula: COUNTIF([Claim Status]="Approved") / COUNT([Claim ID])
-  ```
-- [ ] Drag new `Approval Rate` field → TEXT shelf
-- [ ] Right-click → Aggregate = **AVERAGE** (or SUM if already aggregated)
-
-**Format**
-- [ ] Font size: **72pt**, Bold
-- [ ] Font color: **Green** (#70AD47)
-- [ ] Number format: **Percentage**, 0 decimals
-- [ ] Expected value: **~80-85%** (e.g., 82%)
-- [ ] Display format: **82%**
-
-**Card Container**
-- [ ] Label: "APPROVAL RATE"
-- [ ] Background color: Light green (#E2EFDA)
-
-### STEP 5: Create KPI Card #4 — AVERAGE COST PER CLAIM
-
-**Build**
-- [ ] Create calculated field:
-  ```
-  Name: Avg Cost per Claim
-  Formula: SUM([Claim Amount]) / COUNT([Claim ID])
-  ```
-- [ ] Drag `Avg Cost per Claim` → TEXT shelf
-
-**Format**
-- [ ] Font size: **72pt**, Bold
-- [ ] Font color: **Dark Blue** (#1F4E78)
-- [ ] Number format: **Currency ($)**, 0 decimals
-- [ ] Expected value: **~$2,689**
-- [ ] Display format: **$2,689**
-
-**Card Container**
-- [ ] Label: "AVG COST/CLAIM"
-
-### STEP 6: Arrange Cards Horizontally
-
-**Layout Method Option A: Floating Containers**
-- [ ] Create 4 text box containers
-- [ ] Place KPI #1 at X=10, Y=60 (top-left)
-- [ ] Place KPI #2 at X=310, Y=60 (top-center-left)
-- [ ] Place KPI #3 at X=610, Y=60 (top-center-right)
-- [ ] Place KPI #4 at X=910, Y=60 (top-right)
-- [ ] All cards same height: **90px**
-- [ ] Card width: **250px** each
-- [ ] Spacing between: **30px**
-
-**Layout Method Option B: Tiled Container**
-- [ ] Dashboard → Right-click → Tiled
-- [ ] Drag all 4 KPI sheets into single row
-- [ ] Adjust widths manually to 250px each
-
-### STEP 7: Format Overall Sheet
+### STEP 6: Format Overall Sheet
 
 - [ ] Title: "EXECUTIVE KPI SUMMARY"
   - [ ] Font: 20pt, Bold, Arial

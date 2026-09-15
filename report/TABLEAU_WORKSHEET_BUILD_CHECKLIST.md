@@ -12,7 +12,7 @@
 
 | # | Name | Status | Time | Start | End | Notes |
 |---|------|--------|------|-------|-----|-------|
-| 1 | Executive KPI Summary | ☐ | 25 min | | | 4 KPI cards on ONE sheet |
+| 1 | Executive KPI Summary | ☐ | 25 min | | | 4 KPI cards in ONE worksheet |
 | 2 | Monthly Spend Trend | ☐ | 20 min | | | Line chart + trend line |
 | 3 | Cost Concentration by Hospital | ☐ | 20 min | | | Pareto bar chart (80/20) |
 | 4 | Denial vs Cost by Hospital | ☐ | 20 min | | | Scatter/bubble chart |
@@ -27,7 +27,7 @@
 ## ✅ WORKSHEET 1: EXECUTIVE KPI SUMMARY
 
 **Purpose:** 4 KPI cards showing key metrics at dashboard top  
-**Chart Type:** KPI Cards (4 independent cards on 1 sheet)  
+**Chart Type:** KPI Cards (4 side-by-side cards in 1 worksheet)
 **Data Source:** v_claims_tableau  
 **Estimated Time:** 25 minutes  
 **Complexity:** ⭐ Easy
@@ -40,53 +40,43 @@
 
 ### 🔨 Build Steps
 
-**STEP 1.1: Create First KPI Card - Total Claims**
+**STEP 1.1: Create the Worksheet and Four KPI Fields**
 - [ ] New Worksheet → Rename to `Executive KPI Summary`
-- [ ] Drag `Claim ID` to Text (Measures pane)
-- [ ] Right-click → Aggregate = COUNT DISTINCT
-- [ ] Format: Remove decimals, Show as large number (72pt font)
-- [ ] Text color: Dark blue
-- [ ] Background: Light gray (#F5F5F5)
-- [ ] Label: "TOTAL CLAIMS" (above or below card)
+- [ ] Create calculated field `Total Claims`: `COUNTD([Claim ID])`
+- [ ] Create calculated field `Total Cost`: `SUM([Claim Amount])`
+- [ ] Create calculated field `Approval Rate`:
+  `SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID])`
+- [ ] Create calculated field `Average Cost per Claim`:
+  `SUM([Claim Amount]) / COUNTD([Claim ID])`
 
-**STEP 1.2: Create Second KPI Card - Total Cost**
-- [ ] Drag `Claim Amount` to Text 
-- [ ] Right-click → Aggregate = SUM
-- [ ] Format: Currency, 0 decimals, bold
-- [ ] Expected value: ~$4,300,000+
-- [ ] Duplicate card 1 placement methodology
+**STEP 1.2: Build All Four Cards in the Same Worksheet**
+- [ ] Drag `Measure Names` to **COLUMNS**
+- [ ] Drag `Measure Values` to **TEXT** on the Marks card
+- [ ] Filter `Measure Names` to only `Total Claims`, `Total Cost`, `Approval Rate`, and `Average Cost per Claim`
+- [ ] Set the mark type to **Text**
+- [ ] The four measure columns are the four KPI cards; do not create four additional worksheets
 
-**STEP 1.3: Create Third KPI Card - Approval Rate**
-- [ ] Create calculated field: `Approval Rate` = `COUNTIF([Claim Status]="Approved") / COUNT([Claim ID])`
-- [ ] Drag to Text
-- [ ] Format: Percentage, 0 decimals (should show ~82%)
-- [ ] Color: Green for positive metric
+**STEP 1.3: Format the Four KPI Values**
+- [ ] `Total Claims`: whole number with thousands separator; dark blue
+- [ ] `Total Cost`: currency, 0 decimals; dark blue
+- [ ] `Approval Rate`: percentage, 0 decimals; green
+- [ ] `Average Cost per Claim`: currency, 0 decimals; dark blue
+- [ ] Increase value font size and use bold text
+- [ ] Format `Measure Names` as the card labels
+- [ ] Use column dividers or light backgrounds to visually separate the cards
 
-**STEP 1.4: Create Fourth KPI Card - Average Cost per Claim**
-- [ ] Create calculated field: `Avg Cost per Claim` = `SUM([Claim Amount]) / COUNT([Claim ID])`
-- [ ] Drag to Text
-- [ ] Format: Currency, 0 decimals
-- [ ] Expected: ~$2,689
-
-**STEP 1.5: Arrange 4 Cards Horizontally**
-- [ ] In sheet: Dashboard → Place all 4 card sheets side-by-side
-- [ ] OR: Use floating/tiled containers to align
-- [ ] Spacing: 20-30px between cards
-- [ ] All cards same height (~90px total)
-- [ ] Background: White or light gray, no borders
-
-**STEP 1.6: Format Overall Sheet**
+**STEP 1.4: Format Overall Sheet**
 - [ ] Title: "EXECUTIVE KPI SUMMARY" (20pt, dark blue, bold)
 - [ ] No filters needed (displays all data)
 - [ ] Sheet background: Clean white
-- [ ] Font: Arial, consistent sizing
+- [ ] Font: Arial or Tableau-standard, consistent sizing
 
 ### ✔️ Validation Checklist
 - [ ] KPI 1 (Total Claims): Should show 1,591
 - [ ] KPI 2 (Total Cost): Should show ~$4,300,000
 - [ ] KPI 3 (Approval Rate): Should show ~82% (or actual rate from SQL)
 - [ ] KPI 4 (Avg Cost): Should show ~$2,689
-- [ ] All 4 cards visible on screen without scrolling
+- [ ] All 4 cards visible side-by-side without scrolling
 - [ ] No errors in formula bar
 - [ ] Sheet loads within 1 second
 
@@ -99,9 +89,10 @@
 ```
 
 ### 📝 Notes
-- This sheet should refresh instantly (no complex joins)
+- This worksheet should refresh instantly (no complex joins)
 - Use as the "above the fold" executive view
 - No drill-down needed (static summary)
+- Add this single worksheet to the top row of the main dashboard
 
 ---
 
