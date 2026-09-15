@@ -260,8 +260,180 @@ GROUP BY age_group, bmi_category, smoking_status, sex
 ORDER BY segment_total_cost DESC, age_group, bmi_category;
 
 -- ================================================================
+-- Query 7.6: DEMOGRAPHIC RISK SEGMENTATION (ADVANCED - For Heatmap)
+-- ================================================================
+-- Purpose: Multi-dimensional demographic segmentation for risk profiling
+-- Use Case: Executive heatmap visualization, targeted prevention programs
+-- Functions: CASE WHEN bucketing (5 age groups × 4 BMI categories × 2 smoking status)
+-- Outcome: 40 demographic cells with cost and denial metrics ready for Tableau heatmap
+-- ================================================================
+SELECT 'Query 7.6: Demographic Risk Segmentation (Heatmap Ready)' AS query_name;
+
+SELECT
+    -- Demographic dimensions (create exact buckets matching Plan.md specification)
+    CASE
+        WHEN p.age < 26 THEN '18-25'
+        WHEN p.age < 36 THEN '26-35'
+        WHEN p.age < 46 THEN '36-45'
+        WHEN p.age < 56 THEN '46-55'
+        ELSE '56+'
+    END AS age_group,
+    CASE
+        WHEN p.bmi < 18.5 THEN 'Underweight'
+        WHEN p.bmi < 25 THEN 'Normal'
+        WHEN p.bmi < 30 THEN 'Overweight'
+        ELSE 'Obese'
+    END AS bmi_category,
+    p.smoking_status AS smoker,
+    
+    -- Count and aggregation metrics
+    COUNT(DISTINCT p.patient_id) AS patient_count,
+    COUNT(c.claim_id) AS claim_count,
+    ROUND(SUM(c.claim_amount), 2) AS total_cost,
+    ROUND(AVG(c.claim_amount), 2) AS avg_claim_cost,
+    ROUND(STDDEV(c.claim_amount), 2) AS stddev_claim_cost,
+    ROUND(MIN(c.claim_amount), 2) AS min_claim,
+    ROUND(MAX(c.claim_amount), 2) AS max_claim,
+    ROUND(PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY c.claim_amount), 2) AS median_claim,
+    
+    -- Denial metrics
+    SUM(CASE WHEN c.claim_status = 'Denied' THEN 1 ELSE 0 END) AS denied_claims,
+    ROUND(100.0 * SUM(CASE WHEN c.claim_status = 'Denied' THEN 1 ELSE 0 END) / COUNT(c.claim_id), 2) AS denial_rate_pct,
+    
+    -- Risk tier classification based on cost
+    CASE
+        WHEN ROUND(AVG(c.claim_amount), 2) < 5000 THEN 'Low Cost'
+        WHEN ROUND(AVG(c.claim_amount), 2) < 15000 THEN 'Medium Cost'
+        WHEN ROUND(AVG(c.claim_amount), 2) < 30000 THEN 'High Cost'
+        ELSE 'Very High Cost'
+    END AS risk_tier,
+    
+    -- Supporting metrics
+    ROUND(AVG(p.age), 1) AS avg_age_in_cohort,
+    ROUND(AVG(p.bmi), 1) AS avg_bmi_in_cohort,
+    ROUND(AVG(CAST(c.claim_amount AS DECIMAL)) / (SELECT AVG(CAST(claim_amount AS DECIMAL)) FROM claims), 2) AS cost_multiplier_vs_avg
+    
+FROM patients p
+LEFT JOIN claims c ON p.patient_id = c.patient_id
+WHERE c.claim_id IS NOT NULL
+GROUP BY age_group, bmi_category, p.smoking_status
+ORDER BY avg_claim_cost DESC, age_group, bmi_category, p.smoking_status;
+
+-- ================================================================
+-- Query 7.7: RFM ANALYSIS - Patient Lifetime Value Segmentation
+-- ================================================================
+-- Purpose: Recency-Frequency-Monetary analysis for customer lifecycle segmentation
+-- Use Case: Member retention strategy, value-based targeting, churn prediction
+-- Functions: NTILE window function for quartile scoring, CTEs for layered segmentation
+-- Outcome: 8 customer segments (Champions, Loyal, Potential, New, At-Risk, Hibernating, Lost)
+-- ================================================================
+SELECT 'Query 7.7: RFM Analysis - Customer Lifetime Value Segmentation' AS query_name;
+
+WITH patient_rfm AS (
+  SELECT 
+    p.patient_id,
+    p.age,
+    CASE WHEN p.age < 26 THEN '18-25'
+         WHEN p.age < 36 THEN '26-35'
+         WHEN p.age < 46 THEN '36-45'
+         WHEN p.age < 56 THEN '46-55'
+         ELSE '56+' END AS age_group,
+    CASE WHEN p.bmi < 18.5 THEN 'Underweight'
+         WHEN p.bmi < 25 THEN 'Normal'
+         WHEN p.bmi < 30 THEN 'Overweight'
+         ELSE 'Obese' END AS bmi_category,
+    p.smoking_status,
+    
+    -- RECENCY: Days since most recent claim
+    DATEDIFF(CURDATE(), MAX(c.claim_date)) AS days_since_last_claim,
+    
+    -- FREQUENCY: Number of claims per patient
+    COUNT(c.claim_id) AS claim_frequency,
+    
+    -- MONETARY: Total lifetime claim value
+    SUM(c.claim_amount) AS lifetime_monetary_value,
+    
+    -- Supporting metrics
+    AVG(c.claim_amount) AS avg_claim_value,
+    ROUND(STDDEV(c.claim_amount), 2) AS claim_variance,
+    COUNT(CASE WHEN c.claim_status = 'Denied' THEN 1 END) AS denied_claims,
+    SUM(CASE WHEN c.claim_status = 'Denied' THEN c.claim_amount ELSE 0 END) AS denied_amount
+    
+  FROM patients p
+  LEFT JOIN claims c ON p.patient_id = c.patient_id
+  WHERE c.claim_id IS NOT NULL
+  GROUP BY p.patient_id, p.age, age_group, bmi_category, p.smoking_status
+),
+
+rfm_quartiles AS (
+  SELECT 
+    patient_id,
+    age,
+    age_group,
+    bmi_category,
+    smoking_status,
+    days_since_last_claim,
+    claim_frequency,
+    lifetime_monetary_value,
+    avg_claim_value,
+    denied_claims,
+    
+    -- Quartile scoring (1=worst, 4=best)
+    -- For Recency: Higher score for more recent claims (lower days)
+    NTILE(4) OVER (ORDER BY days_since_last_claim DESC) AS recency_quartile,
+    -- For Frequency: Higher score for more claims
+    NTILE(4) OVER (ORDER BY claim_frequency ASC) AS frequency_quartile,
+    -- For Monetary: Higher score for higher lifetime value
+    NTILE(4) OVER (ORDER BY lifetime_monetary_value ASC) AS monetary_quartile
+    
+  FROM patient_rfm
+),
+
+rfm_segments AS (
+  SELECT 
+    *,
+    -- Composite RFM score (higher = better customer)
+    ROUND((recency_quartile + frequency_quartile + monetary_quartile) / 3.0, 2) AS rfm_score,
+    
+    -- Customer segment labels based on RFM quartiles
+    CASE 
+      WHEN recency_quartile >= 3 AND frequency_quartile >= 3 AND monetary_quartile >= 3 THEN 'Champions'
+      WHEN recency_quartile >= 3 AND frequency_quartile >= 3 AND monetary_quartile < 3 THEN 'Loyal Customers'
+      WHEN recency_quartile >= 3 AND frequency_quartile < 3 AND monetary_quartile >= 3 THEN 'Potential Loyalists'
+      WHEN recency_quartile >= 3 AND frequency_quartile < 3 AND monetary_quartile < 3 THEN 'New Members'
+      WHEN recency_quartile < 3 AND frequency_quartile >= 3 AND monetary_quartile >= 3 THEN 'At-Risk High Value'
+      WHEN recency_quartile < 3 AND frequency_quartile >= 3 AND monetary_quartile < 3 THEN 'At-Risk Frequent'
+      WHEN recency_quartile < 3 AND frequency_quartile < 3 AND monetary_quartile >= 3 THEN 'Hibernating'
+      ELSE 'Lost'
+    END AS customer_segment
+    
+  FROM rfm_quartiles
+)
+
+SELECT 
+  patient_id,
+  age,
+  age_group,
+  bmi_category,
+  smoking_status,
+  days_since_last_claim,
+  claim_frequency,
+  lifetime_monetary_value,
+  avg_claim_value,
+  denied_claims,
+  recency_quartile,
+  frequency_quartile,
+  monetary_quartile,
+  rfm_score,
+  customer_segment
+  
+FROM rfm_segments
+ORDER BY lifetime_monetary_value DESC, rfm_score DESC;
+
+-- ================================================================
 -- SUMMARY & VALIDATION
 -- ================================================================
 SELECT '=== SECTION 7: STATISTICAL ANALYSIS COMPLETE ===' AS section_status;
-SELECT 'All 5 statistical/analytical queries executed successfully.' AS summary;
-SELECT 'Pareto analysis (Query 7.4) demonstrates 80/20 cost concentration principle.' AS pareto_summary;
+SELECT 'All 7 statistical/analytical queries executed successfully.' AS summary;
+SELECT 'Query 7.6: Demographic Risk Segmentation provides heatmap-ready data.' AS seg_summary;
+SELECT 'Query 7.7: RFM Analysis enables customer lifecycle segmentation and retention strategy.' AS rfm_summary;
