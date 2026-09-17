@@ -188,6 +188,88 @@ INSIGHT: Cumulative line reaches 80% at hospital H5
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ❌ **No LOD Expressions**
+
+WS3 (Pareto) does not use LOD expressions. The cumulative % line is calculated using Tableau's RUNNING_SUM() window function:
+```
+Running Total % = RUNNING_SUM(SUM([Claim Amount])) / TOTAL(SUM([Claim Amount]))
+```
+This is a table calculation, not an LOD expression.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - Window Functions Section](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global)
+- Status: ✅ **Affects WS3**
+- Behavior: Select "Midwest" → WS3 recalculates to show top 20 hospitals in Midwest only
+- Configuration: Dashboard filter → "Apply to All Sheets" (includes WS3)
+
+**Date Range Filter** (Local)
+- Status: ✅ **Affects WS3**
+- Behavior: Adjust date range → Hospital rankings update based on filtered period
+- Configuration: Dashboard filter → "Apply to Sheets" → WS3 + WS2 + WS1
+
+**Smoking Status Filter** (Local)
+- Status: ❌ **Does NOT Affect WS3**
+- Reason: Pareto chart ranks all hospitals regardless of smoking status
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter** ⭐ **Primary Action for WS3**
+- Status: ✅ **Originates from WS3** (source worksheet)
+- Behavior: Click any hospital bar on WS3 → ALL sheets filter to show only that hospital's data
+- Impact: Most important drill-down action on dashboard; drives all cross-sheet filtering
+- Configuration: Dashboard → Actions → "Hospital Drill" (source: WS3, target: All sheets)
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS3** as target
+- Behavior: Click region on WS5 → WS3 updates with regional hospital rankings
+
+**Action 3: Highlight Action**
+- Status: ❌ **Does NOT Affect WS3**
+
+**Action 4: URL Action**
+- Status: ⚠️ **Optional** - Could link to hospital detail pages
+- Config: Click hospital bar → Open URL like `https://hospital-db.com/hospitals/[Hospital Name]`
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section - Action 1: Hospital Drill](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Story Point 3: CONCENTRATION — Pareto 80-20**
+- Status: ✅ **Featured in Story Point 3**
+- Role: Reveal cost concentration (60% in 3 hospitals) and negotiate leverage
+- Caption: "80-20 Rule: 60% of Spend in 3 Hospitals"
+- Interaction: Show all 20 hospitals (no filters); highlight top 3
+- Annotations: Red boxes around top 3 bars, cumulative % line marked at 60%, callout showing $2.6M dollar amount
+- Presenter Talking Points: Negotiation leverage, $260K-$390K savings potential from 10-15% reduction
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 3: CONCENTRATION](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Row 2 Layout](#) for WS3 placement (50/50 split right side with WS2)
+- **Storyboard:** See [TABLEAU_STORYBOARD_GUIDE.md - Story Point 3](#) for WS3's role in cost concentration narrative
+- **Dashboard Actions:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 6: Actions](#) for how WS3 triggers hospital drill-down
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

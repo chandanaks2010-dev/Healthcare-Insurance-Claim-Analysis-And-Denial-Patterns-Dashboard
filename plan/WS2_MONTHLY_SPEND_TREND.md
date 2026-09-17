@@ -204,6 +204,90 @@ KEY INSIGHT: Upward slope = cost growth; Downward = cost decline
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ❌ **No LOD Expressions**
+
+WS2 (Monthly Trend) does not use LOD expressions. Trend lines are calculated natively by Tableau using ANALYTIC functions (Trend Line feature).
+
+**Note:** For advanced trend forecasting (e.g., moving averages), you could add calculated fields:
+```
+12-Month Moving Avg = {FIXED [Month] : AVG([Spend])}
+```
+But standard trend line feature is sufficient for this worksheet.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Expressions Section](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global - Affects All Sheets)
+- Status: ✅ **Affects WS2**
+- Behavior: Select "Northeast" → WS2 shows only Northeast monthly trend
+- Configuration: Dashboard filter → "Apply to All Sheets" (includes WS2)
+
+**Date Range Filter** (Local - Specific Sheets)
+- Status: ✅ **Affects WS2** (Primary)
+- Behavior: Adjust date slider → WS2 recalculates trend line to fit date range
+- Configuration: Dashboard filter → "Apply to Sheets" → WS2 + WS1
+- Use Case: Zoom in on Q4 to see seasonal spike more clearly
+
+**Smoking Status Filter** (Local)
+- Status: ❌ **Does NOT Affect WS2**
+- Reason: WS2 shows portfolio-wide trend (aggregate of all smoking statuses)
+- Configuration: Filtered out from WS2; only applies to WS7 + WS9
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS2** as target
+- Behavior: Click hospital on WS3 → WS2 updates to show trend for that hospital only
+- Impact: Drill from portfolio trend → hospital-specific trend
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS2** as target
+- Behavior: Click region on WS5 → WS2 updates with region trend
+
+**Action 3: Highlight Action**
+- Status: ❌ **Does NOT Affect WS2**
+
+**Action 4: URL Action**
+- Status: ❌ **Does NOT Affect WS2**
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Story Point 2: TREND — Cost Trajectory**
+- Status: ✅ **Featured in Story Point 2**
+- Role: Demonstrates +12% YoY cost growth and forecasting
+- Caption: "Costs Trending Upward: +12% Year-over-Year"
+- Interaction: Date filter removed (show full 12-month history)
+- Annotations: Trend line highlighted with +12% growth label, Jan ($350K) and Dec ($390K) endpoints marked
+- Presenter Talking Points: Linear growth, seasonal spikes (Nov-Dec), forecasted impact
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 2: TREND](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Row 2 Layout](#) for WS2 placement (50/50 split left side)
+- **Storyboard:** See [TABLEAU_STORYBOARD_GUIDE.md - Story Point 2](#) for WS2's role in executive storytelling (cost escalation narrative)
+- **Advanced Techniques:** See [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - Window Functions & Trend Lines](#) for trend line configuration
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

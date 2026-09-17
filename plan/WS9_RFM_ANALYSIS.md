@@ -318,6 +318,112 @@ Additionally, notice smokers are overrepresented in the At-Risk segments. This v
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ✅ **Yes - EXCLUDE Formula**
+
+WS9 (RFM Bubble Chart) uses EXCLUDE LOD to calculate segment-level aggregations while removing individual customer dimension:
+
+**Formula:**
+```
+Avg Segment Value = {EXCLUDE [Customer ID] : AVG([Lifetime Value])}
+Segment Frequency = {EXCLUDE [Customer ID] : COUNT([Transaction ID])}
+```
+
+**Purpose:** Aggregate individual transactions up to RFM segment level (8 bubbles). EXCLUDE ensures each segment bubble shows the average across all customers in that segment, regardless of individual customer selection.
+
+**When Used:** Each bubble's size and color represent segment-level statistics.
+
+**Smoking Filter Interaction:** When Smoker filter applied, segment compositions change (e.g., At-Risk High Value segment size shrinks if smokers filtered out), recalculating average values.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Expressions - EXCLUDE Example](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global)
+- Status: ✅ **Affects WS9**
+- Behavior: Select region → RFM segments recalculate for that region only (bubble sizes change)
+- Configuration: Dashboard filter → "Apply to All Sheets" (includes WS9)
+
+**Smoking Status Filter** (Local - Primary for WS9) ⭐ **Featured**
+- Status: ✅ **Affects WS9** (shared with WS7 only)
+- Behavior: Toggle "Smoker" and "Non-Smoker" → At-Risk High Value bubble dramatically shrinks/changes
+- Configuration: Dashboard filter → "Apply to Sheets" → Select WS9 + WS7 ONLY (not global)
+- Use Case: Shows smoking's impact on customer lifetime value; demonstrates opportunity to reduce smoking in portfolio
+- Key Insight: At-Risk segment heavily weighted toward smokers; reducing smoking improves segment value
+
+**Date Range Filter** (Local)
+- Status: ✅ **Affects WS9**
+- Behavior: Adjust dates → Segment calculations recalculate (Frequency, Monetary, Recency change)
+- Configuration: Dashboard filter → "Apply to Sheets" → WS9 + WS2 + WS1
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 3: Smoking Status Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS9** as target
+- Behavior: Click hospital on WS3 → WS9 updates to show RFM segments for that hospital
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS9** as target
+- Behavior: Click region on WS5 → WS9 updates with region-specific RFM segments
+
+**Action 3: Highlight Action**
+- Status: ⚠️ **Optional** - Could highlight at-risk segment when state is hovered on WS8
+
+**Action 4: URL Action**
+- Status: ❌ **Does NOT Affect WS9**
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Story Point 5: OPPORTUNITY — RFM Win-Back** ⭐ **FEATURED**
+- Status: ✅ **Prominently Featured in Story Point 5**
+- Role: Present quantified revenue recovery opportunity (At-Risk High-Value segment)
+- Caption: "$4.35M Opportunity: Win Back At-Risk Patients"
+- Interaction: Show all 8 segments; highlight the large red/orange bubble (At-Risk High Value)
+- Annotations:
+  - Red circle around At-Risk High-Value bubble
+  - Label: "145 Patients | $4.35M | 20-30% Recovery = $870K-$1.3M"
+  - Green arrow showing pathway to Champions segment (migration path)
+  - ROI box: "9-18× Return on $100K Investment"
+- Presenter Talking Points:
+  - "8 RFM segments - each bubble is a customer group"
+  - "This red bubble: At-Risk High-Value (145 customers, $4.35M total value)"
+  - "These were active customers 12+ months ago, now dormant"
+  - "Win-back campaign targeting these 145 can recover $870K-$1.3M"
+  - "Our most strategic segment: high historical value + high recovery potential"
+
+**Storyboard Notes:**
+- At-Risk High-Value bubble must be easily identifiable (color, size, position)
+- Bubbles must be large enough to read segment labels and values
+- Champions bubble shown for comparison (where we want At-Risk to migrate)
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Step 6: Story Point 5 - OPPORTUNITY](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 4 - Row 6 RFM Position](#) for WS9's full-width placement at dashboard bottom
+- **Storyboard:** See [TABLEAU_STORYBOARD_GUIDE.md - Step 6: Story Point 5 - OPPORTUNITY - RFM](#) for detailed annotations and narrative flow
+- **Cascading Filters:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 5: Smoking Status Filter](#) for how WS9 responds to smoking filter
+- **LOD Expressions:** See [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Section - EXCLUDE Example](#) for detailed EXCLUDE formula walkthrough
+- **RFM Analysis:** See [TABLEAU_ANALYSIS_GUIDE.md - RFM Segmentation Section](#) for business logic and opportunity calculation
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

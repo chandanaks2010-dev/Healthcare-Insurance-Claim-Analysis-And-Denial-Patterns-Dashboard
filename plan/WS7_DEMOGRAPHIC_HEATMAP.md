@@ -296,6 +296,108 @@ Smoker Filter = YES (Activated):
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ✅ **Yes - INCLUDE Formula** ⭐ **HERO Worksheet**
+
+WS7 (Demographic Heatmap) uses INCLUDE LOD to calculate average cost by demographic segment, regardless of filters:
+
+**Formula:**
+```
+Avg Cost by Demographics = {INCLUDE [Age Group], [BMI Category], [Smoker] : AVG([Claim Amount])}
+```
+
+**Purpose:** Compute demographic-level average costs, then color-code heatmap cells accordingly. INCLUDE ensures each cell shows the average for that demographic combination.
+
+**When Used:** Every cell in the heatmap displays this calculated value with color intensity proportional to cost.
+
+**Smoking Filter Interaction:** When Smoker filter is applied, cells filter in/out but the calculation remains consistent (INCLUDE preserves the demographic grouping).
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Expressions - INCLUDE Example](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global)
+- Status: ✅ **Affects WS7**
+- Behavior: Select "West" → Heatmap recalculates to show average costs for West region only
+- Configuration: Dashboard filter → "Apply to All Sheets" (includes WS7)
+
+**Smoking Status Filter** (Local - Primary Filter for WS7) ⭐ **Featured**
+- Status: ✅ **Affects WS7** (and WS9 only)
+- Behavior: Toggle "Smoker" and "Non-Smoker" → Heatmap shows/hides corresponding rows, revealing 5-10× cost multiplier
+- Configuration: Dashboard filter → "Apply to Sheets" → Select WS7 + WS9 ONLY (not global)
+- Use Case: Click filter to toggle smokers OFF → See dramatic cost reduction; toggle ON → See spike
+- Key Insight: Smoker=Yes rows (dark colors) vs Smoker=No rows (light colors) clearly show multiplier effect
+
+**Date Range Filter** (Local)
+- Status: ✅ **Affects WS7**
+- Behavior: Adjust dates → Average cost values recalculate
+- Configuration: Dashboard filter → "Apply to Sheets" → WS7 + WS2 + WS1
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 3: Smoking Status Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS7** as target
+- Behavior: Click hospital on WS3 → WS7 updates to show demographics breakdown for that hospital only
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS7** as target
+- Behavior: Click region on WS5 → WS7 updates with region-specific demographic costs
+
+**Action 3: Highlight Action** ⭐ **Primary Interaction for WS7**
+- Status: ✅ **Affects WS7** and **Originates from WS8** (optional)
+- Behavior: Hover state on geographic map (WS8) → Matching rows in WS7 heatmap highlight in orange
+- Impact: Links geographic location to demographic profile
+- Configuration: Dashboard → Actions → Create Highlight Action from WS8 to WS7 on [State]
+
+**Action 4: URL Action**
+- Status: ❌ **Does NOT Affect WS7**
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 6: Actions & Action 3 Highlight](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Story Point 4: ROOT CAUSE — Smoking Multiplier** ⭐ **FEATURED**
+- Status: ✅ **Prominently Featured in Story Point 4**
+- Role: Visually demonstrate 5-10× cost multiplier for smokers vs non-smokers
+- Caption: "Smoking Drives 5-10× Higher Costs"
+- Interaction: Heatmap shows both Smoker=Yes (dark) and Smoker=No (light) for comparison
+- Annotations: Red boxes around darkest cells (smokers age 46-55 = $32K), green boxes around lightest (non-smokers = $3K)
+- Presenter Talking Points:
+  - "Darker color = higher cost"
+  - "Notice smoking rows (top) are dramatically darker"
+  - "Age 46-55 smokers: $32K average | Age 46-55 non-smokers: $7K average"
+  - "This 5-10× multiplier is the PRIMARY cost driver in our portfolio"
+
+**Storyboard Notes:**
+- WS7 positioned as "HERO" worksheet in dashboard (larger, prominent placement)
+- Large enough to read individual cell values
+- Color contrast must be clear (darkest ≥ $30K cost, lightest ≤ $5K cost)
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 4: ROOT CAUSE - Smoking](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 4 - Row 4 HERO Position](#) for WS7's prominent placement in dashboard
+- **Storyboard:** See [TABLEAU_STORYBOARD_GUIDE.md - Step 5: Story Point 4 - ROOT CAUSE](#) for detailed annotations and narrative
+- **Cascading Filters:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 5: Smoking Status Filter](#) for how WS7 filter works
+- **LOD Expressions:** See [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Section - INCLUDE Example](#) for detailed INCLUDE formula walkthrough
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

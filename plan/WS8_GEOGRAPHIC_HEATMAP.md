@@ -180,6 +180,83 @@ KEY INSIGHT: Southeast states (TX, FL, GA, SC, NC) show highest cost
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ❌ **No LOD Expressions**
+
+WS8 (Geographic Heatmap) uses Tableau's built-in geographic capabilities. State-level aggregations are handled natively.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - Geographic Maps](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global)
+- Status: ✅ **Affects WS8**
+- Behavior: Select "Northeast" → Map highlights only Northeast states
+- Configuration: Dashboard filter → "Apply to All Sheets"
+
+**Date Range Filter** (Local)
+- Status: ✅ **Affects WS8**
+- Behavior: Adjust dates → State-level costs recalculate
+- Configuration: Dashboard filter → "Apply to Sheets" → WS8 + WS2 + WS1
+
+**Smoking Status Filter** (Local)
+- Status: ❌ **Does NOT Affect WS8**
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS8** as target
+- Behavior: Click hospital on WS3 → Map updates to show only states where that hospital operates
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS8** as target
+- Behavior: Click region on WS5 → Map highlights only that region's states
+
+**Action 3: Highlight Action** ⭐ **Originates from WS8**
+- Status: ✅ **Originates from WS8** (source for heatmap highlight)
+- Behavior: Hover over state on map → Matching rows in WS7 (demographic heatmap) highlight in orange
+- Impact: Links geographic location to demographic profiles
+- Configuration: Dashboard → Actions → Highlight Action from WS8 to WS7 on [State]
+
+**Action 4: URL Action**
+- Status: ⚠️ **Optional** - Could link state names to health department pages
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section - Action 3 Highlight](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Storyboard Status:** ❌ **Not Featured in Main Story**
+
+WS8 provides geographic context but is not part of the main 5-point narrative arc.
+
+**Optional Use:** In extended Q&A, could show map to answer "Which states drive most spend?" or "Is there regional variation in costs?"
+
+**Supporting Insight:** Geographic variation is minimal; smoking status is the dominant factor across all states.
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 4: ROOT CAUSE](#) (mentions geographic consistency)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Row 5 Layout](#) for WS8 placement (right side, 50/50 split with WS6)
+- **Storyboard:** While not featured, WS8 supports Story Point 4 narrative (smoking effect is geographically consistent)
+- **Highlight Action:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Step 6: Action 3 - Highlight](#) for WS8-to-WS7 interaction
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

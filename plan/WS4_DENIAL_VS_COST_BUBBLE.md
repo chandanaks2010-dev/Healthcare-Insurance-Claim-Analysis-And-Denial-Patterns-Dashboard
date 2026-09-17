@@ -198,6 +198,80 @@ QUADRANT INSIGHTS:
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ❌ **No LOD Expressions**
+
+WS4 (Denial vs Cost Bubble) uses aggregate functions (SUM, AVG, COUNT) but no LOD expressions. Hospital-level aggregations are sufficient.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - Aggregation Functions](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global)
+- Status: ✅ **Affects WS4**
+- Behavior: Select region → WS4 shows only hospitals in that region
+- Configuration: Dashboard filter → "Apply to All Sheets"
+
+**Date Range Filter** (Local)
+- Status: ✅ **Affects WS4**
+- Behavior: Adjust dates → Denial rate and average cost recalculate
+- Configuration: Dashboard filter → "Apply to Sheets" → WS4 + WS2 + WS1
+
+**Smoking Status Filter** (Local)
+- Status: ❌ **Does NOT Affect WS4**
+- Reason: Bubble chart shows hospital-level, not demographic-level analysis
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS4** as target
+- Behavior: Click hospital on WS3 (Pareto) → WS4 highlights or filters to that hospital
+- Impact: Shows detailed cost/denial breakdown for selected hospital
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS4** as target
+- Behavior: Click region on WS5 → WS4 shows only hospitals in that region
+
+**Action 3: Highlight Action**
+- Status: ⚠️ **Optional** - Could highlight high-denial hospitals
+- Config: Hover on demographic heatmap → Highlight matching hospitals on WS4
+
+**Action 4: URL Action**
+- Status: ⚠️ **Optional** - Hospital detail links
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Storyboard Status:** ❌ **Not Featured in Main Story**
+
+WS4 provides supporting detail for Story Point 3 (Concentration) but is NOT part of the main 5-point narrative arc.
+
+**Optional Usage:** In extended Q&A, could show WS4 to answer "Which hospitals have highest denial rates?" or "How does cost vs. denial correlate?"
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 3](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Row 3 Layout](#) for WS4 placement (left side, 50/50 split with WS5)
+- **Storyboard:** While not in main story, WS4 supports the concentration narrative (Story Point 3)
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Element | Specification |

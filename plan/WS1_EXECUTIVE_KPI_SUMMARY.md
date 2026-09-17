@@ -146,6 +146,93 @@ Average Cost per Claim = SUM([Claim Amount]) / COUNTD([Claim ID])
 
 ---
 
+---
+
+## 🔧 ADVANCED FEATURES
+
+### 📌 LOD Expressions Applied
+**Status:** ✅ **Yes - FIXED Formula**
+
+WS1 applies a FIXED LOD expression to calculate unfiltered totals for context:
+
+**Formula Location:** Create calculated field in Data pane
+```
+Total Cost (Unfiltered) = {FIXED : SUM([Claim Amount])}
+```
+
+**Purpose:** Show total portfolio cost ($4.3M) even when other sheets are filtered by region, date, or smoking status. This provides **executive context** showing the baseline before drill-downs.
+
+**When Used:** WS1 displays both filtered and unfiltered totals for comparison.
+
+**See Also:** [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Expressions Section](#)
+
+---
+
+### 🎚️ Cascading Filters Affecting This Sheet
+
+**Region Filter** (Global - Affects All Sheets)
+- Status: ✅ **Affects WS1** via Region dimension in source data
+- Behavior: When Region filter is set to "Northeast", WS1 recalculates to show only Northeast claims
+- Configuration: Dashboard filter → "Apply to All Sheets" (includes WS1)
+
+**Date Range Filter** (Local - Specific Sheets)
+- Status: ✅ **Affects WS1** along with WS2
+- Behavior: When Date Range is filtered (e.g., Q4 2024), WS1 updates to show claims in that date range only
+- Configuration: Dashboard filter → "Apply to Sheets" → Select WS1 + WS2
+
+**Smoking Status Filter** (Local)
+- Status: ❌ **Does NOT Affect WS1**
+- Reason: WS1 shows aggregate portfolio KPIs (all smoking statuses combined)
+- Configuration: Filtered out from WS1; only applies to WS7 + WS9
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Filter Configuration](#)
+
+---
+
+### 🎬 Custom Dashboard Actions Enabled
+
+**Action 1: Hospital Drill Filter**
+- Status: ✅ **Affects WS1** as target
+- Behavior: Click hospital bar on WS3 (Pareto) → WS1 updates to show only that hospital's KPIs
+- Impact: KPI cards update (e.g., "Total Claims: 48 | Total Cost: $142K") for selected hospital
+
+**Action 2: Region Filter Action**
+- Status: ✅ **Affects WS1** as target
+- Behavior: Click region bar on WS5 → WS1 updates with region-specific KPIs
+- Impact: Drill from portfolio level → regional level
+
+**Action 3: Highlight Action (State Hover)**
+- Status: ❌ **Does NOT Affect WS1**
+- Reason: Hover actions are for heatmap/detail sheets; WS1 is summary-level
+
+**Action 4: URL Action**
+- Status: ❌ **Does NOT Affect WS1**
+
+**See Also:** [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Custom Actions Section](#)
+
+---
+
+### 📖 Storyboard Involvement
+
+**Story Point 1: SCALE — Portfolio Baseline**
+- Status: ✅ **Featured in Story Point 1**
+- Role: Establishes portfolio context ($4.3M, 1,591 claims, 82% approval)
+- Caption: "Our Portfolio: 1,591 Claims Worth $4.3M"
+- Interaction: No filters applied (show full portfolio as baseline)
+- Annotations: 4 KPI cards with $4.3M and 18% denial rate highlighted
+
+**See Also:** [TABLEAU_STORYBOARD_GUIDE.md - Story Point 1 Details](#)
+
+---
+
+### 📚 Cross-References
+
+- **Dashboard Assembly:** See [TABLEAU_DASHBOARD_ASSEMBLY_GUIDE.md - Row 1 Placement](#) for WS1's position in dashboard layout (above the fold, full width)
+- **Storyboard:** See [TABLEAU_STORYBOARD_GUIDE.md - Story Point 1: SCALE](#) for WS1's role in executive storytelling
+- **Advanced Techniques:** See [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md - LOD Expressions & Dashboard Actions](#) for detailed integration steps
+
+---
+
 ## 🎯 QUICK REFERENCE
 
 | Metric | Expected Value | Formula | Color |

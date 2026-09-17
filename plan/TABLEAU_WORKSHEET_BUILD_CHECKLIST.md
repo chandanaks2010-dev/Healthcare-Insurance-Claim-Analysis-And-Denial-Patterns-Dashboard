@@ -998,9 +998,361 @@ KEY INSIGHTS:
 | **WS 7** | 45 min | Demographic Heatmap (complex) |
 | **WS 8** | 15 min | Geographic Map |
 | **WS 9** | 40 min | RFM Analysis (complex) |
+| **LOD EXPRESSIONS** | 20 min | Advanced calculations |
+| **CASCADING FILTERS** | 25 min | Global filter architecture |
+| **DASHBOARD ACTIONS** | 20 min | Filter, drill, URL interactions |
+| **STORYBOARD** | 30 min | Interactive story points |
 | **DASHBOARD** | 30 min | Assembly + interactivity |
 | **POLISH** | 15 min | Styling + save |
-| **TOTAL** | **3.5-4 hours** | All 9 worksheets + dashboard |
+| **TOTAL** | **4.5-5 hours** | Complete dashboard + interactions |
+
+---
+
+# 🔧 LEVEL OF DETAIL (LOD) EXPRESSIONS
+## Advanced Calculations for WS1, WS7, WS9
+
+Per PDF Section 2.3: "Use Level of Detail (LOD) expressions"
+
+### LOD Concepts (2 min read)
+- **FIXED:** Aggregates at specified dimension level, ignoring current filters
+- **INCLUDE:** Adds dimensions to current aggregation
+- **EXCLUDE:** Removes dimensions from current aggregation
+
+### LOD 1: Worksheet 1 (KPI Cards) - FIXED LOD
+
+**Purpose:** Show total cost across ALL data even when dashboard is filtered by region
+
+**Formula for `Total Cost - No Filtering`:**
+```
+{FIXED : SUM([Claim Amount])}
+```
+
+**Build Steps:**
+1. WS1 (Executive KPI Summary) → Create calculated field
+2. Name: `Total Cost (Unfiltered)`
+3. Formula: `{FIXED : SUM([Claim Amount])}`
+4. Use in additional text field to show "Total available cost"
+5. Display both: `Total Cost` (filtered) vs. `Total Cost (Unfiltered)` for comparison
+
+**Why:** Shows baseline; when region filter applied, card shows filtered cost while unfiltered version stays constant.
+
+---
+
+### LOD 2: Worksheet 7 (Demographic Heatmap) - INCLUDE LOD
+
+**Purpose:** Calculate average cost per demographic cell, but include smoking status detail
+
+**Formula for `Avg Cost by Risk Group`:**
+```
+{INCLUDE [Smoker] : AVG([Claim Amount])}
+```
+
+**Build Steps:**
+1. WS7 (Demographic Heatmap) → Create calculated field
+2. Name: `Average Cost by Smoker`
+3. Formula: `{INCLUDE [Smoker] : AVG([Claim Amount])}`
+4. Drag to Color encoding
+5. This forces calculation to include Smoker in the aggregation even if not on axis
+
+**Why:** Ensures heatmap cells show cost differentials by smoking status at finest granularity.
+
+**Validation:** Smoker=Yes cells should be ~5-10× darker than Smoker=No cells.
+
+---
+
+### LOD 3: Worksheet 9 (RFM Analysis) - EXCLUDE LOD
+
+**Purpose:** Calculate segment-level averages without including individual patient IDs
+
+**Formula for `Segment Average Spend`:**
+```
+{EXCLUDE [Customer ID] : AVG([Claim Amount])}
+```
+
+**Build Steps:**
+1. WS9 (RFM Bubble Chart) → Create calculated field
+2. Name: `Segment Level Cost`
+3. Formula: `{EXCLUDE [Customer ID] : AVG([Claim Amount])}`
+4. Drag to Size encoding
+5. This aggregates at RFM segment level, ignoring patient variation
+
+**Why:** Bubble sizes show cohort averages, not patient-level noise.
+
+**Validation:** Larger bubbles = higher-value segments; sizes should vary smoothly across 8 RFM segments.
+
+---
+
+### LOD Validation Checklist
+- [ ] LOD 1: Total Cost (Unfiltered) shows same value regardless of region filter
+- [ ] LOD 2: Heatmap cells show smoking-status-specific averages
+- [ ] LOD 3: RFM bubble sizes vary by segment, not patient count
+- [ ] All LOD formulas error-free (check formula bar)
+- [ ] Dashboard performs smoothly with LOD calculations
+
+---
+
+# 🎚️ CASCADING FILTERS (Global Filter Architecture)
+## Multi-level filtering: Region → State → Demographics
+
+Per PDF Section 2.3: "Implement cascading filters"
+
+### Filter Hierarchy
+```
+Dashboard-Level Filters:
+├── Region (6 values: Northeast, Southeast, Midwest, Southwest, West, Mid-Atlantic)
+│   └── Cascades to: ALL worksheets
+├── Smoking Status (Yes/No/All)
+│   └── Cascades to: Demographic Heatmap + RFM (WS7, WS9)
+└── Date Range (Month/Year)
+    └── Cascades to: Trend + KPI (WS2, WS1)
+```
+
+### Step 1: Create Dashboard-Level Region Filter
+
+**On Dashboard:**
+1. Drag WS5 (Regional Profile) to dashboard
+2. Right-click on Region filter → "Apply to All Sheets"
+3. This makes Region filter affect ALL worksheets that contain Region data
+4. Filter style: Dropdown (compact)
+5. Label: "📍 Filter by Region:"
+
+**Effect:** Select "Northeast" → All other sheets update to show only Northeast data
+
+### Step 2: Create Smoking Status Filter (Local to WS7 + WS9)
+
+**On Dashboard:**
+1. Drag WS7 (Demographic Heatmap) to dashboard
+2. The Smoker filter you added in WS7 becomes a dashboard control
+3. Right-click filter → "Apply to Sheets: Patient Risk Segments, Patient Lifetime Value - RFM Analysis"
+4. Style: Checkbox (allows Yes/No/Both)
+5. Label: "🚬 Smoking Status:"
+
+**Effect:** Toggle smoking status → Heatmap and RFM bubble chart update instantly
+
+### Step 3: Create Date Range Filter (Local to WS2 + WS1)
+
+**On Dashboard:**
+1. Drag WS2 (Monthly Spend Trend) to dashboard
+2. Right-click Claim Date filter → "Apply to Sheets: Monthly Spend Trend, Executive KPI Summary"
+3. Style: Date Range Slider
+4. Label: "📅 Date Range:"
+
+**Effect:** Adjust date range → Trend line recalculates, KPI cards update to filtered period
+
+### Step 4: Dashboard Filter Layout
+
+**Recommended positioning:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 📊 HEALTHCARE CLAIMS ANALYSIS DASHBOARD                         │
+├─────────────────────────────────────────────────────────────────┤
+│ 📍 Region: [All ▼] | 🚬 Smoking: [Both ☑] | 📅 Date: [Jan-Dec] │
+├─────────────────────────────────────────────────────────────────┤
+│                   [Main Dashboard Content]                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Cascading Filter Validation Checklist
+- [ ] Region filter affects all region-based worksheets
+- [ ] Smoker filter affects only WS7 + WS9
+- [ ] Date filter affects only WS2 + WS1
+- [ ] Selecting Region = Northeast updates all filtered worksheets
+- [ ] Deselecting all Regions shows "No Data"
+- [ ] Each filter has descriptive label with icon
+- [ ] Filters visually distinct (different colors or styles)
+
+---
+
+# 🎬 CUSTOM DASHBOARD ACTIONS
+## Filter, Drill, URL, Parameter Actions
+
+Per PDF Section 2.3: "Implement cascading filters and custom actions"
+
+### Action 1: Filter Action (Click Hospital → Filter All)
+
+**Purpose:** Click a hospital on Pareto chart (WS3) → Filter all other sheets to that hospital
+
+**Build Steps:**
+1. Dashboard → Dashboard → Edit Dashboard Actions
+2. Create new → **Filter Action**
+3. Name: "Hospital Drill"
+4. Source Sheet: `Cost Concentration by Hospital`
+5. Run On: **Click**
+6. Target Sheets: **All** (or select specific worksheets)
+7. Source Filters → Hospital: `Hospital Name`
+8. Apply to: All relevant target sheets
+
+**Result:** Click "Hospital ABC" on Pareto → All other sheets show only Hospital ABC claims
+
+**Validation:** Click on bar in WS3 Pareto chart → Verify all other sheets filter to that hospital
+
+---
+
+### Action 2: Filter Action (Regional Profile → All)
+
+**Purpose:** Click a region on dual-axis chart (WS5) → Filter all dashboard worksheets
+
+**Build Steps:**
+1. Dashboard → Dashboard → Edit Dashboard Actions
+2. Create new → **Filter Action**
+3. Name: "Region Filter"
+4. Source Sheet: `Regional Cost and Denial Profile`
+5. Run On: **Click**
+6. Target Sheets: **All**
+7. Source Filters → Region: `Region`
+8. Apply to: All
+
+**Result:** Click "Northeast" bar on WS5 → All sheets update to Northeast only
+
+**Validation:** Click region bar → All worksheets instantly filter
+
+---
+
+### Action 3: Highlight Action (Hover State → Highlight)
+
+**Purpose:** Hover over state on geographic map (WS8) → Highlight that state across visualizations
+
+**Build Steps:**
+1. Dashboard → Edit Dashboard Actions
+2. Create new → **Highlight Action**
+3. Name: "State Highlight"
+4. Source Sheet: `Geographic Heatmap: Cost by State`
+5. Run On: **Hover**
+6. Target Sheets: **Selected** (choose WS7 for demographic matching)
+7. Source Filters → State: `State`
+8. Highlighting: Select color (e.g., orange)
+
+**Result:** Hover over state on map → That state highlights in demographic heatmap
+
+**Validation:** Hover over a state → Matching state highlighted in WS7
+
+---
+
+### Action 4: URL Action (Click to External Link)
+
+**Purpose:** Click hospital name on Pareto → Open hospital website or detail page
+
+**Build Steps:**
+1. Dashboard → Edit Dashboard Actions
+2. Create new → **URL Action**
+3. Name: "Hospital Detail Link"
+4. Source Sheet: `Cost Concentration by Hospital`
+5. Run On: **Click**
+6. URL: `https://example.com/hospitals/<Hospital Name>`
+7. Apply to: All (or selected sheets)
+
+**Example URL:**
+```
+https://hospital-database.com/search?name=[Hospital Name]&region=[Region]
+```
+
+**Result:** Click hospital name → Browser opens hospital information page
+
+**Note:** Replace example URL with actual hospital database URL if available
+
+---
+
+### Custom Actions Validation Checklist
+- [ ] Filter Action 1: Click hospital → All sheets filter ✓
+- [ ] Filter Action 2: Click region → All sheets filter ✓
+- [ ] Highlight Action: Hover state → Demographic heatmap highlights ✓
+- [ ] URL Action: Click hospital → Browser opens (if URL configured) ✓
+- [ ] Clearing filter (clicking background) removes all filters
+- [ ] Multiple filters can be active simultaneously
+- [ ] Performance: Dashboard responds within 1 second
+
+---
+
+# 📖 INTERACTIVE STORYBOARD (Business Storytelling)
+## 5 Story Points with Narrative Arc
+
+Per PDF Section 2.3: "Develop interactive storyboards for business storytelling"
+
+### Storyboard Purpose
+Guide executive audience through 5-step narrative:
+1. **Scale** — Portfolio overview (1,591 claims, $4.3M)
+2. **Trend** — Cost trajectory (12-month pattern)
+3. **Concentration** — Pareto 80/20 rule (60% in 3 hospitals)
+4. **Root Cause** — Smoking cost multiplier (5-10×)
+5. **Opportunity** — RFM win-back strategy ($4.35M potential)
+
+### Build Steps: Create Storyboard
+
+**STEP 1: Create Story Point 1 - SCALE**
+1. Workbook → New Story
+2. Name: `Healthcare Claims Story`
+3. Drag WS1 (KPI Summary) to first story point
+4. Caption: "**Our Portfolio: 1,591 Claims Worth $4.3M**"
+5. Body text: "Our healthcare organization processes 1,591 insurance claims annually, totaling $4.3 million in claim spend across 6 US regions. With an 82% approval rate, we identify significant opportunity in the 18% that face issues."
+
+**STEP 2: Create Story Point 2 - TREND**
+1. Click "Add Story Point" (+ button)
+2. Drag WS2 (Monthly Spend Trend) to story point 2
+3. Filter: Show all 12 months
+4. Caption: "**Costs Trending Upward: +12% Year-over-Year**"
+5. Body text: "Monthly spending shows a clear upward trend. Starting at $350K/month in January, we're now at $390K/month. At this trajectory, annual costs will exceed $4.6M next year without intervention."
+6. Annotation: Circle the trend line area
+
+**STEP 3: Create Story Point 3 - CONCENTRATION (Pareto)**
+1. Click "Add Story Point"
+2. Drag WS3 (Pareto: Cost Concentration by Hospital) to story point 3
+3. Highlight top 3 hospitals with annotation boxes
+4. Caption: "**80-20 Rule: 60% of Spend in 3 Hospitals**"
+5. Body text: "Pareto analysis reveals that just 3 of our 20 contracted hospitals generate 60% of total costs ($2.6M). This concentration suggests opportunity for targeted negotiations. If we can reduce costs in these 3 hospitals by 10-15%, we save $260K-$390K annually."
+
+**STEP 4: Create Story Point 4 - ROOT CAUSE (Smoking)**
+1. Click "Add Story Point"
+2. Drag WS7 (Demographic Heatmap) to story point 4
+3. Pre-filter: Show Smoker = "Yes" ONLY
+4. Caption: "**Smoking Drives 5-10× Higher Costs**"
+5. Body text: "Our analysis reveals smoking status is the single strongest cost driver. Smokers average $17K-$39K per claim. Non-smokers? $2K-$8K. This 5-10× multiplier is consistent across all age groups and BMI categories. Age 46-55 smokers represent our highest-cost cohort."
+6. Annotation: Highlight the darkest (most expensive) cells
+
+**STEP 5: Create Story Point 5 - OPPORTUNITY (RFM)**
+1. Click "Add Story Point"
+2. Drag WS9 (RFM Bubble Chart) to story point 5
+3. Highlight: At-Risk High Value segment (left side, large bubbles)
+4. Caption: "**$4.35M Opportunity: Win Back At-Risk Patients**"
+5. Body text: "Our RFM analysis identifies 145 at-risk high-value patients representing $4.35M in dormant lifetime value. These were active, high-spending customers who've been inactive for 12+ months. A targeted win-back campaign with 20-30% recovery yields $870K-$1.3M in annual value—a 9-18× ROI."
+
+### Storyboard Formatting
+- [ ] Title: "Healthcare Claims Analysis: Executive Story"
+- [ ] Story Points ordered logically (Scale → Trend → Concentration → Root Cause → Opportunity)
+- [ ] Each story point has clear caption (bold heading)
+- [ ] Each story point has supporting narrative text
+- [ ] Use annotations to highlight key data points
+- [ ] Color annotations consistently (highlight important findings)
+- [ ] Font: 14pt for captions, 12pt for body text
+- [ ] Background: Professional (light gray or white)
+
+### Storyboard Validation Checklist
+- [ ] 5 story points created in correct order
+- [ ] Each story point displays relevant worksheet
+- [ ] Captions are compelling and data-driven
+- [ ] Body text supports key findings with numbers
+- [ ] Annotations highlight critical insights
+- [ ] Story flows logically: Portfolio → Trend → Pattern → Cause → Action
+- [ ] Storyboard can be presented in 5-7 minutes
+- [ ] Story is discoverable: Clear buttons to navigate between points
+
+---
+
+# ✅ FINAL DASHBOARD + STORYBOARD CHECKLIST
+
+**Dashboard Complete When:**
+✅ All 9 worksheets + LOD calculations + filters + actions + storyboard complete  
+✅ Cascading filters functional (Region, Smoking, Date)  
+✅ 4+ custom dashboard actions working (Filter, Highlight, URL)  
+✅ Storyboard tells complete 5-point narrative  
+✅ All tooltips and annotations present  
+✅ Professional styling and branding consistent  
+✅ Performance: Dashboard loads in <5 seconds  
+✅ Workbook saved as .twb and exported as .twbx
+
+**Next Steps:**
+1. ✅ Review Plan/TABLEAU_ANALYSIS_GUIDE.md for insights
+2. ✅ Study Plan/VIVA_PREP.md for presentation
+3. ✅ Use Plan/REFERENCE_ONE_PAGE.md for quick lookup
 
 ---
 

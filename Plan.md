@@ -1088,15 +1088,20 @@ Before submission, verify:
 
 ---
 
-## 📊 Implementation: Detailed Worksheet Guides
+## 📊 Implementation: Tableau Worksheet Guides
 
-**Comprehensive step-by-step instructions for building all 9 worksheets are now in individual checklist files in the `/report/` folder.**
+**Comprehensive step-by-step instructions for all 9 worksheets are in the master checklist.**
 
-Refer to these individual files while building each worksheet:
-- [TABLEAU_WORKSHEET_BUILD_CHECKLIST.md](report/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md) — Master reference for all worksheets + dashboard
-- [WS1_EXECUTIVE_KPI_SUMMARY.md](report/WS1_EXECUTIVE_KPI_SUMMARY.md) through [WS9_RFM_ANALYSIS.md](report/WS9_RFM_ANALYSIS.md) — Individual worksheet guides
-- [TABLEAU_QUICK_START_GUIDE.md](report/TABLEAU_QUICK_START_GUIDE.md) — Build workflow & sequence
-- [REFERENCE_ONE_PAGE.md](report/REFERENCE_ONE_PAGE.md) — Quick lookup desk reference
+**Primary Guide (Start Here):**
+- **[plan/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md](plan/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md)** — All 9 worksheets + storyboard + LOD + filters + dashboard assembly (complete reference)
+
+**Quick Reference (Desk Lookup):**
+- **[plan/REFERENCE_ONE_PAGE.md](plan/REFERENCE_ONE_PAGE.md)** — One-page card with build sequence, key metrics, quick fixes
+
+**Optional: Individual Worksheet Deep-Dive:**
+- [plan/WS1_EXECUTIVE_KPI_SUMMARY.md](plan/WS1_EXECUTIVE_KPI_SUMMARY.md) through [plan/WS9_RFM_ANALYSIS.md](plan/WS9_RFM_ANALYSIS.md) — Kept for additional reference only
+
+See **[plan/README.md](plan/README.md)** for complete folder navigation.
 
 ### **Quick Reference - Calculated Fields to Create**
 
@@ -1169,14 +1174,25 @@ When your dashboard is complete, verify these 30 success criteria across all 9 w
 
 ---
 
-## 📚 Next Steps
+## 📚 TABLEAU IMPLEMENTATION - 4 CORE GUIDES (PDF-Aligned)
 
-All detailed step-by-step instructions for building this dashboard are available in individual checklist files in the `/report/` directory. Start with:
+Per **SQL_Tableau_Project_Guidelines.pdf**, Tableau implementation requires:
+- **Section 2.3:** Visualization & Dashboard Development (6 marks)
+- **Section 2.4-2.5:** Statistical Analysis & Insight Generation (8 marks)
+- **Section 5:** Presentation & Viva (4 marks)
 
-1. **[TABLEAU_QUICK_START_GUIDE.md](report/TABLEAU_QUICK_START_GUIDE.md)** — Recommended build sequence and pre-flight checklist
-2. **[TABLEAU_WORKSHEET_BUILD_CHECKLIST.md](report/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md)** — Master reference for all 9 worksheets
-3. Individual worksheet guides: [WS1](report/WS1_EXECUTIVE_KPI_SUMMARY.md) through [WS9](report/WS9_RFM_ANALYSIS_HERO.md)
-4. **[REFERENCE_ONE_PAGE.md](report/REFERENCE_ONE_PAGE.md)** — Quick desk reference
+**All guides are now organized in the `/plan/` folder:**
+
+| Guide | Purpose | Coverage |
+|-------|---------|----------|
+| **[plan/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md](plan/TABLEAU_WORKSHEET_BUILD_CHECKLIST.md)** ← START HERE | Build all 9 worksheets, storyboard, LOD, filters, custom actions, dashboard assembly | PDF Section 2.3 |
+| **[plan/TABLEAU_ANALYSIS_GUIDE.md](plan/TABLEAU_ANALYSIS_GUIDE.md)** | Pareto analysis, RFM segmentation, KPI interpretation, business insights | PDF Sections 2.4-2.5, Rubrics 4-5 |
+| **[plan/VIVA_PREP.md](plan/VIVA_PREP.md)** | Opening statement, live demo script, Q&A answers, viva tips, 7-slide structure | PDF Section 5, Rubric 7 |
+| **[plan/REFERENCE_ONE_PAGE.md](plan/REFERENCE_ONE_PAGE.md)** | Quick lookup card: build sequence, key metrics, quick fixes (print this!) | Quick reference only |
+
+**Optional reference guides:** [plan/WS1-WS9](plan/) worksheet specifications
+
+**Report outputs:** [report/](report/) folder contains presentation.pptx and generate_presentation.py
 
 ---
 
@@ -2622,7 +2638,52 @@ The **Patient Lifetime Value - RFM Analysis** worksheet (WORKSHEET 9) elevates y
 
  
 
-## 🔗 References & Resources
+## �️ ARCHIVED DOCUMENTATION (PDF Consolidation - Sept 17, 2026)
+
+**Status:** Documentation refactored for clarity. Implementation guides moved to dedicated `/plan/` folder.
+
+### New Folder Structure
+
+| Folder | Purpose | Contents |
+|--------|---------|----------|
+| **`/plan/`** | Implementation & planning guides | 4 core guides + 9 worksheet references |
+| **`/report/`** | Final outputs only | generate_presentation.py, presentation.pptx |
+| **`/sql/`** | SQL scripts | 7 query patterns + master script |
+| **`/data/`** | Raw & processed data | CSV files + processed outputs |
+| **`/tableau/`** | Tableau workbook | healthcare_insurance_dashboard.twbx |
+
+### Migration Summary ✅
+
+**Moved to `/plan/`:**
+- TABLEAU_WORKSHEET_BUILD_CHECKLIST.md (core guide)
+- TABLEAU_ANALYSIS_GUIDE.md (core guide)
+- VIVA_PREP.md (core guide)
+- REFERENCE_ONE_PAGE.md (quick ref)
+- WS1-WS9 worksheet guides (optional reference)
+
+**Deleted:** 11 archived/deprecated files (see below)
+
+| Deleted File | Reason |
+|--------------|--------|
+| CONSOLIDATION_SUMMARY.md | Temporary summary doc |
+| DOCUMENTATION_DEDUPLICATION_SUMMARY.md | Meta-documentation |
+| PRESENTATION_GUIDE.md | Content in VIVA_PREP.md |
+| RFM_IMPLEMENTATION_CHECKLIST.md | Content in core guides |
+| TABLEAU_CUSTOM_ACTIONS_QUICK_REFERENCE.md | Merged into master |
+| TABLEAU_CUSTOM_INTERACTIVE_DASHBOARD.md | Merged into master |
+| TABLEAU_DOCUMENTATION_MAP.md | Navigation fluff |
+| TABLEAU_LOD_EXPRESSIONS_IMPLEMENTATION.md | Content in master |
+| TABLEAU_QUICK_START_GUIDE.md | Redundant |
+| TABLEAU_STORYBOARD_IMPLEMENTATION.md | Merged into master |
+| VIVA_PREPARATION_GUIDE.md | Superseded by VIVA_PREP.md |
+
+**Result:** Zero redundancy. Clean folder structure. All content preserved in `/plan/`.
+
+---
+
+ 
+
+## �🔗 References & Resources
 
  
 
