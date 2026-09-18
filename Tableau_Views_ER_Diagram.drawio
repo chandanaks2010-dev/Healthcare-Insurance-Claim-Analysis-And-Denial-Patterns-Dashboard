@@ -1,0 +1,349 @@
+<mxfile host="draw.io" modified="2026-09-18T00:00:00.000Z" agent="5.0" version="21.0" type="device">
+  <diagram id="views_architecture" name="Tableau Views Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" background="ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- TITLE -->
+        <mxCell id="title" value="Tableau Views Data Architecture - Healthcare Insurance Claims" style="text;html=1;fontSize=16;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="350" y="10" width="700" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- LAYER 1: BASE TABLES (Source Data Layer) -->
+        <mxCell id="layer1_label" value="Layer 1: BASE TABLES (Normalized)" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=#f0f0f0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="300" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- PATIENTS Table -->
+        <mxCell id="base_patients" value="patients" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bp1" value="PK patient_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_patients" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bp_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_patients" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bp2" value="age, bmi, sex" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_patients" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bp3" value="smoking_status" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_patients" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bp4" value="region, dependents" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_patients" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- HOSPITALS Table -->
+        <mxCell id="base_hospitals" value="hospitals" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="220" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bh1" value="PK hospital_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_hospitals" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bh_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_hospitals" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bh2" value="hospital_name" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_hospitals" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bh3" value="state, city, region" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_hospitals" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bh4" value="latitude, longitude" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_hospitals" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- CLAIMS Table -->
+        <mxCell id="base_claims" value="claims" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#fce5cd;strokeColor=#f79646;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="390" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bc1" value="PK claim_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claims" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bc_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_claims" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bc2" value="FK patient_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claims" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bc3" value="FK hospital_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claims" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bc4" value="claim_date, amount" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claims" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- PROVIDERS Table -->
+        <mxCell id="base_providers" value="providers" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#d4e6f1;strokeColor=#4472c4;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="560" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bpr1" value="PK provider_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_providers" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bpr_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_providers" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bpr2" value="provider_name" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_providers" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bpr3" value="specialty" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_providers" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bpr4" value="FK hospital_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_providers" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- DIAGNOSES Table -->
+        <mxCell id="base_diagnoses" value="diagnoses" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#e2efda;strokeColor=#70ad47;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="730" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bd1" value="PK diagnosis_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_diagnoses" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bd_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_diagnoses" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bd2" value="diagnosis_name" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_diagnoses" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bd3" value="severity_level" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_diagnoses" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bd4" value="avg_treatment_cost" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_diagnoses" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- CLAIM_DETAILS Table -->
+        <mxCell id="base_claim_details" value="claim_details" style="shape=table;startSize=25;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#f3e5f5;strokeColor=#c2185b;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="90" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bcd1" value="PK detail_id" style="align=left;fillColor=none;spacingLeft=4;fontSize=10;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claim_details" vertex="1">
+          <mxGeometry y="25" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="bcd_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="base_claim_details" vertex="1">
+          <mxGeometry y="45" width="140" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bcd2" value="FK claim_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claim_details" vertex="1">
+          <mxGeometry y="46" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bcd3" value="FK diagnosis_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claim_details" vertex="1">
+          <mxGeometry y="64" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="bcd4" value="FK provider_id" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=10;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="base_claim_details" vertex="1">
+          <mxGeometry y="82" width="140" height="18" as="geometry" />
+        </mxCell>
+        
+        <!-- LAYER 2: TABLEAU VIEWS (Denormalized Layer) -->
+        <mxCell id="layer2_label" value="Layer 2: TABLEAU VIEWS (Denormalized - Live Connection)" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=#f0f0f0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="400" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- VIEW 1: v_claims_tableau -->
+        <mxCell id="view1" value="v_claims_tableau (Primary Detail View)" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=3;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="290" width="280" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_sep1" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view1" vertex="1">
+          <mxGeometry y="30" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_1" value="DIMENSIONS:" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="31" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_2" value="claim_id, claim_date, claim_month" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="47" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_3" value="patient_id, age, sex, smoking_status" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="61" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_4" value="hospital_name, state, city, latitude/longitude" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="75" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_5" value="provider_name, specialty, diagnosis_name" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="89" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_sep2" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view1" vertex="1">
+          <mxGeometry y="103" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_6" value="METRICS:" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="104" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_7" value="claim_amount, procedure_cost, claim_status" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="120" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_8" value="cost_tier, denial_flag, age_group, bmi_category" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="134" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_sep3" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view1" vertex="1">
+          <mxGeometry y="148" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_9" value="USE: Worksheets 1-5 (Maps, Regional, etc)" style="align=left;fillColor=none;spacingLeft=4;fontSize=9;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="149" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_10" value="All 6 tables: Claim-level detail view" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="163" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_11" value="Includes geo fields for Tableau mapping" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="175" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_12" value="Live SQL connection, real-time updates" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="187" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_13" value="Join source: claims + patients + hospitals" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="199" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v1_14" value="+ providers + diagnoses + claim_details" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view1" vertex="1">
+          <mxGeometry y="211" width="280" height="12" as="geometry" />
+        </mxCell>
+        
+        <!-- VIEW 2: v_demographic_segmentation -->
+        <mxCell id="view2" value="v_demographic_segmentation (40-Cell Heatmap)" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#e2efda;strokeColor=#70ad47;strokeWidth=3;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="290" width="280" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_sep1" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view2" vertex="1">
+          <mxGeometry y="30" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_1" value="DEMOGRAPHICS (40 cells):" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="31" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_2" value="Age groups: 5 categories (18-25, 26-35...)" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="47" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_3" value="BMI categories: 4 types (Normal, Overweight, etc)" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="61" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_4" value="Smoking status: 2 types (Yes, No)" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="75" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_5" value="Region for geographic filtering" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="89" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_sep2" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view2" vertex="1">
+          <mxGeometry y="103" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_6" value="METRICS:" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="104" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_7" value="patient_count, claim_count, total_cost" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="120" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_8" value="avg_claim_cost, denial_rate_pct, risk_tier" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="134" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_sep3" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view2" vertex="1">
+          <mxGeometry y="148" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_9" value="USE: Worksheet 7 (Demographic Heatmap)" style="align=left;fillColor=none;spacingLeft=4;fontSize=9;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="149" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_10" value="Source: patients + claims + hospitals" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="163" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_11" value="Pre-aggregated for performance" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="175" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_12" value="Risk segmentation and identification" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="187" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_13" value="Dimensions: 5 age * 4 BMI * 2 smoker = 40" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="199" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v2_14" value="GROUP BY aggregation for heatmap cells" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view2" vertex="1">
+          <mxGeometry y="211" width="280" height="12" as="geometry" />
+        </mxCell>
+        
+        <!-- VIEW 3: v_rfm_analysis -->
+        <mxCell id="view3" value="v_rfm_analysis (RFM Analysis 8 Segments)" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=11;fillColor=#f8e5e5;strokeColor=#d84444;strokeWidth=3;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="290" width="280" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_sep1" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view3" vertex="1">
+          <mxGeometry y="30" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_1" value="RFM DIMENSIONS:" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="31" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_2" value="Recency: days_since_last_claim" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="47" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_3" value="Frequency: claim_frequency per patient" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="61" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_4" value="Monetary: lifetime_monetary_value" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="75" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_5" value="Patient demographics (age, BMI, smoking)" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="89" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_sep2" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view3" vertex="1">
+          <mxGeometry y="103" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_6" value="8 CUSTOMER SEGMENTS:" style="align=left;fillColor=#e8f4f8;spacingLeft=4;fontSize=10;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="104" width="280" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_7" value="Champions, Loyal Customers, Potential" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="120" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_8" value="New Members, At-Risk, Hibernating, Lost" style="align=left;fillColor=none;spacingLeft=8;fontSize=9;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="134" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_sep3" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=10;" parent="view3" vertex="1">
+          <mxGeometry y="148" width="280" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_9" value="USE: Worksheet 8 (RFM Bubble Chart)" style="align=left;fillColor=none;spacingLeft=4;fontSize=9;fontStyle=1;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="149" width="280" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_10" value="Source: patients + claims (CTEs with NTILE)" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="163" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_11" value="Customer lifetime value optimization" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="175" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_12" value="Retention and member lifecycle planning" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="187" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_13" value="RFM Score: avg(recency+frequency+monetary)" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="199" width="280" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="v3_14" value="Quartile-based ranking per RFM dimension" style="align=left;fillColor=none;spacingLeft=8;fontSize=8;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="view3" vertex="1">
+          <mxGeometry y="211" width="280" height="12" as="geometry" />
+        </mxCell>
+        
+        <!-- DATA FLOW ARROWS -->
+        <mxCell id="flow1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#9673a6;strokeWidth=2;" edge="1" parent="1" source="base_patients" target="view1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#f79646;strokeWidth=3;" edge="1" parent="1" source="base_claims" target="view1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#9673a6;strokeWidth=2;" edge="1" parent="1" source="base_patients" target="view2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#f79646;strokeWidth=3;" edge="1" parent="1" source="base_claims" target="view2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#9673a6;strokeWidth=3;" edge="1" parent="1" source="base_patients" target="view3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;strokeColor=#f79646;strokeWidth=3;" edge="1" parent="1" source="base_claims" target="view3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- LEGEND -->
+        <mxCell id="legend_title" value="VIEW USAGE GUIDE" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=#f0f0f0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="560" width="940" height="25" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend_content" value="VIEW 1: v_claims_tableau (Primary Detail View)&#10;   - All 6 normalized tables denormalized into single row per claim&#10;   - Includes geographical coordinates for Tableau map visualization (latitude, longitude)&#10;   - Calculated fields: cost_tier, age_group, bmi_category, denial_flag&#10;   - Tableau Use: Worksheets 1-5 (Maps, Regional Analysis, Provider, Diagnosis, Time-Series)&#10;   - Connection Type: LIVE MySQL connection (real-time)&#10;&#10;VIEW 2: v_demographic_segmentation (Pre-aggregated Heatmap Data - 40 cells)&#10;   - Structure: 5 age groups X 4 BMI categories X 2 smoking statuses = 40 demographic cells&#10;   - Metrics: patient_count, claim_count, total_cost, denial_rate_pct, risk_tier, min/max/avg/stddev&#10;   - Tableau Use: Worksheet 7 (Demographic Heatmap - Age vs BMI vs Smoking Risk Analysis)&#10;   - Performance: Pre-aggregated view eliminates real-time computation overhead&#10;&#10;VIEW 3: v_rfm_analysis (Customer Lifetime Value RFM Segmentation - 8 Segments)&#10;   - Customer segments based on Recency, Frequency, Monetary value analysis&#10;   - Segments: Champions, Loyal, Potential Loyalists, New Members, At-Risk, Hibernating, Lost&#10;   - Metrics: RFM score (0-4 quartiles), lifetime value, claim behavior, demographics&#10;   - Tableau Use: Worksheet 8 (RFM Bubble Chart for Member Lifecycle Analysis)&#10;   - Strategic Use: Customer retention planning, lifetime value optimization, engagement strategy" style="text;html=1;fontSize=9;align=left;verticalAlign=top;fillColor=#f9f9f9;spacingLeft=10;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="50" y="590" width="940" height="240" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+        
