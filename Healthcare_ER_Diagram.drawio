@@ -1,200 +1,174 @@
-<mxfile host="draw.io" modified="2026-09-18T00:00:00.000Z" agent="5.0" etag="abc123" version="21.0" type="device">
+<mxfile host="app.diagrams.net" agent="5.0">
   <diagram id="R2lblf5eoEe2fBQcAMza" name="Healthcare ER Diagram">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="ffffff" math="0" shadow="0">
+    <mxGraphModel dx="1393" dy="825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        
-        <!-- PATIENTS Table -->
-        <mxCell id="patients" value="patients" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="50" y="50" width="200" height="230" as="geometry" />
+        <mxCell id="patients" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;" value="patients" vertex="1">
+          <mxGeometry height="230" width="200" x="50" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="patients_pk" value="PK patient_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="30" width="200" height="30" as="geometry" />
+        <mxCell id="patients_pk" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK patient_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="200" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="patients_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="patients" vertex="1">
-          <mxGeometry y="60" width="200" height="1" as="geometry" />
+        <mxCell id="patients_sep" parent="patients" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="200" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="patients_1" value="age INT" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="61" width="200" height="30" as="geometry" />
+        <mxCell id="patients_1" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="age INT" vertex="1">
+          <mxGeometry height="30" width="200" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="patients_2" value="sex ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="91" width="200" height="30" as="geometry" />
+        <mxCell id="patients_2" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="sex ENUM" vertex="1">
+          <mxGeometry height="30" width="200" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="patients_3" value="bmi DECIMAL" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="121" width="200" height="30" as="geometry" />
+        <mxCell id="patients_3" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="bmi DECIMAL" vertex="1">
+          <mxGeometry height="30" width="200" y="121" as="geometry" />
         </mxCell>
-        <mxCell id="patients_4" value="smoking_status ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="151" width="200" height="30" as="geometry" />
+        <mxCell id="patients_4" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="smoking_status ENUM" vertex="1">
+          <mxGeometry height="30" width="200" y="151" as="geometry" />
         </mxCell>
-        <mxCell id="patients_5" value="region ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="181" width="200" height="30" as="geometry" />
+        <mxCell id="patients_5" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="region ENUM" vertex="1">
+          <mxGeometry height="30" width="200" y="181" as="geometry" />
         </mxCell>
-        <mxCell id="patients_6" value="num_dependents INT" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="patients" vertex="1">
-          <mxGeometry y="211" width="200" height="30" as="geometry" />
+        <mxCell id="patients_6" parent="patients" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="num_dependents INT" vertex="1">
+          <mxGeometry height="30" width="200" y="211" as="geometry" />
         </mxCell>
-        
-        <!-- HOSPITALS Table -->
-        <mxCell id="hospitals" value="hospitals" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="220" height="280" as="geometry" />
+        <mxCell id="hospitals" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;" value="hospitals" vertex="1">
+          <mxGeometry height="280" width="220" x="400" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_pk" value="PK hospital_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="30" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_pk" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK hospital_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="hospitals" vertex="1">
-          <mxGeometry y="60" width="220" height="1" as="geometry" />
+        <mxCell id="hospitals_sep" parent="hospitals" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="220" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_1" value="hospital_name VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="61" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_1" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="hospital_name VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_2" value="location VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="91" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_2" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="location VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_3" value="state VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="121" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_3" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="state VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="121" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_4" value="city VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="151" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_4" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="city VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="151" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_5" value="region ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="181" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_5" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="region ENUM" vertex="1">
+          <mxGeometry height="30" width="220" y="181" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_6" value="hospital_type ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="211" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_6" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="hospital_type ENUM" vertex="1">
+          <mxGeometry height="30" width="220" y="211" as="geometry" />
         </mxCell>
-        <mxCell id="hospitals_7" value="bed_count INT" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="hospitals" vertex="1">
-          <mxGeometry y="241" width="220" height="30" as="geometry" />
+        <mxCell id="hospitals_7" parent="hospitals" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="bed_count INT" vertex="1">
+          <mxGeometry height="30" width="220" y="241" as="geometry" />
         </mxCell>
-        
-        <!-- PROVIDERS Table -->
-        <mxCell id="providers" value="providers" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#d4e6f1;strokeColor=#4472c4;" vertex="1" parent="1">
-          <mxGeometry x="750" y="50" width="220" height="180" as="geometry" />
+        <mxCell id="providers" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#d4e6f1;strokeColor=#4472c4;" value="providers" vertex="1">
+          <mxGeometry height="180" width="220" x="750" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="providers_pk" value="PK provider_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="providers" vertex="1">
-          <mxGeometry y="30" width="220" height="30" as="geometry" />
+        <mxCell id="providers_pk" parent="providers" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK provider_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="providers_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="providers" vertex="1">
-          <mxGeometry y="60" width="220" height="1" as="geometry" />
+        <mxCell id="providers_sep" parent="providers" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="220" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="providers_1" value="provider_name VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="providers" vertex="1">
-          <mxGeometry y="61" width="220" height="30" as="geometry" />
+        <mxCell id="providers_1" parent="providers" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="provider_name VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="providers_2" value="specialty VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="providers" vertex="1">
-          <mxGeometry y="91" width="220" height="30" as="geometry" />
+        <mxCell id="providers_2" parent="providers" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="specialty VARCHAR" vertex="1">
+          <mxGeometry height="30" width="220" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="providers_3" value="FK hospital_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="providers" vertex="1">
-          <mxGeometry y="121" width="220" height="30" as="geometry" />
+        <mxCell id="providers_3" parent="providers" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK hospital_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="121" as="geometry" />
         </mxCell>
-        <mxCell id="providers_4" value="years_experience INT" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="providers" vertex="1">
-          <mxGeometry y="151" width="220" height="30" as="geometry" />
+        <mxCell id="providers_4" parent="providers" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="years_experience INT" vertex="1">
+          <mxGeometry height="30" width="220" y="151" as="geometry" />
         </mxCell>
-        
-        <!-- DIAGNOSES Table -->
-        <mxCell id="diagnoses" value="diagnoses" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e2efda;strokeColor:#70ad47;" vertex="1" parent="1">
-          <mxGeometry x="50" y="380" width="240" height="180" as="geometry" />
+        <mxCell id="diagnoses" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#e2efda;strokeColor:#70ad47;" value="diagnoses" vertex="1">
+          <mxGeometry height="180" width="240" x="370" y="630" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_pk" value="PK diagnosis_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="diagnoses" vertex="1">
-          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        <mxCell id="diagnoses_pk" parent="diagnoses" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK diagnosis_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="240" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="diagnoses" vertex="1">
-          <mxGeometry y="60" width="240" height="1" as="geometry" />
+        <mxCell id="diagnoses_sep" parent="diagnoses" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="240" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_1" value="diagnosis_name VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="diagnoses" vertex="1">
-          <mxGeometry y="61" width="240" height="30" as="geometry" />
+        <mxCell id="diagnoses_1" parent="diagnoses" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="diagnosis_name VARCHAR" vertex="1">
+          <mxGeometry height="30" width="240" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_2" value="diagnosis_code VARCHAR" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="diagnoses" vertex="1">
-          <mxGeometry y="91" width="240" height="30" as="geometry" />
+        <mxCell id="diagnoses_2" parent="diagnoses" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="diagnosis_code VARCHAR" vertex="1">
+          <mxGeometry height="29" width="240" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_3" value="severity_level ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="diagnoses" vertex="1">
-          <mxGeometry y="121" width="240" height="30" as="geometry" />
+        <mxCell id="diagnoses_3" parent="diagnoses" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="severity_level ENUM" vertex="1">
+          <mxGeometry height="30" width="240" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="diagnoses_4" value="avg_treatment_cost DECIMAL" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="diagnoses" vertex="1">
-          <mxGeometry y="151" width="240" height="30" as="geometry" />
+        <mxCell id="diagnoses_4" parent="diagnoses" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="avg_treatment_cost DECIMAL" vertex="1">
+          <mxGeometry height="30" width="240" y="150" as="geometry" />
         </mxCell>
-        
-        <!-- CLAIMS Table -->
-        <mxCell id="claims" value="claims" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#fce5cd;strokeColor=#f79646;" vertex="1" parent="1">
-          <mxGeometry x="350" y="380" width="220" height="210" as="geometry" />
+        <mxCell id="claims" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#fce5cd;strokeColor=#f79646;" value="claims" vertex="1">
+          <mxGeometry height="210" width="220" x="350" y="380" as="geometry" />
         </mxCell>
-        <mxCell id="claims_pk" value="PK claim_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="30" width="220" height="30" as="geometry" />
+        <mxCell id="claims_pk" parent="claims" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK claim_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="claims_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="claims" vertex="1">
-          <mxGeometry y="60" width="220" height="1" as="geometry" />
+        <mxCell id="claims_sep" parent="claims" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="220" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="claims_1" value="FK patient_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="61" width="220" height="30" as="geometry" />
+        <mxCell id="claims_1" parent="claims" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK patient_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="claims_2" value="claim_date DATE" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="91" width="220" height="30" as="geometry" />
+        <mxCell id="claims_2" parent="claims" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="claim_date DATE" vertex="1">
+          <mxGeometry height="30" width="220" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="claims_3" value="claim_amount DECIMAL" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="121" width="220" height="30" as="geometry" />
+        <mxCell id="claims_3" parent="claims" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="claim_amount DECIMAL" vertex="1">
+          <mxGeometry height="30" width="220" y="121" as="geometry" />
         </mxCell>
-        <mxCell id="claims_4" value="claim_status ENUM" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="151" width="220" height="30" as="geometry" />
+        <mxCell id="claims_4" parent="claims" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="claim_status ENUM" vertex="1">
+          <mxGeometry height="30" width="220" y="151" as="geometry" />
         </mxCell>
-        <mxCell id="claims_5" value="FK hospital_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claims" vertex="1">
-          <mxGeometry y="181" width="220" height="30" as="geometry" />
+        <mxCell id="claims_5" parent="claims" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK hospital_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="220" y="181" as="geometry" />
         </mxCell>
-        
-        <!-- CLAIM_DETAILS Table -->
-        <mxCell id="claim_details" value="claim_details" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#f3e5f5;strokeColor=#c2185b;" vertex="1" parent="1">
-          <mxGeometry x="650" y="380" width="240" height="210" as="geometry" />
+        <mxCell id="claim_details" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRowHeight=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=12;fillColor=#f3e5f5;strokeColor=#c2185b;" value="claim_details" vertex="1">
+          <mxGeometry height="210" width="240" x="650" y="380" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_pk" value="PK detail_id BIGINT" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="30" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_pk" parent="claim_details" style="align=left;fillColor=none;spacingLeft=4;fontSize=12;fontStyle=5;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="PK detail_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="240" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_sep" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" parent="claim_details" vertex="1">
-          <mxGeometry y="60" width="240" height="1" as="geometry" />
+        <mxCell id="claim_details_sep" parent="claim_details" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0],[1,0],[1,1],[0,1]];portConstraint=eastwest;html=1;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="1" width="240" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_1" value="FK claim_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="61" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_1" parent="claim_details" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK claim_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="240" y="61" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_2" value="FK diagnosis_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="91" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_2" parent="claim_details" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK diagnosis_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="240" y="91" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_3" value="FK provider_id BIGINT" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="121" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_3" parent="claim_details" style="align=left;fillColor=#ffcccc;spacingLeft=4;fontSize=11;fontStyle=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="FK provider_id BIGINT" vertex="1">
+          <mxGeometry height="30" width="240" y="121" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_4" value="procedure_cost DECIMAL" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="151" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_4" parent="claim_details" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="procedure_cost DECIMAL" vertex="1">
+          <mxGeometry height="30" width="240" y="151" as="geometry" />
         </mxCell>
-        <mxCell id="claim_details_5" value="service_date DATE" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="claim_details" vertex="1">
-          <mxGeometry y="181" width="240" height="30" as="geometry" />
+        <mxCell id="claim_details_5" parent="claim_details" style="align=left;fillColor=none;spacingLeft=4;fontSize=11;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" value="service_date DATE" vertex="1">
+          <mxGeometry height="30" width="240" y="181" as="geometry" />
         </mxCell>
-        
-        <!-- Relationships -->
-        <!-- providers -> hospitals (Many-to-One) -->
-        <mxCell id="rel1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#4472c4;strokeWidth=2;" edge="1" parent="1" source="providers_3" target="hospitals_pk">
+        <mxCell id="rel1" edge="1" parent="1" source="providers_3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#4472c4;strokeWidth=2;" target="hospitals_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- claims -> patients (Many-to-One) -->
-        <mxCell id="rel2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#f79646;strokeWidth=2;" edge="1" parent="1" source="claims_1" target="patients_pk">
+        <mxCell id="rel2" edge="1" parent="1" source="claims_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#f79646;strokeWidth=2;" target="patients_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- claims -> hospitals (Many-to-One) -->
-        <mxCell id="rel3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#f79646;strokeWidth=2;" edge="1" parent="1" source="claims_5" target="hospitals_pk">
+        <mxCell id="rel3" edge="1" parent="1" source="claims_5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#f79646;strokeWidth=2;" target="hospitals_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- claim_details -> claims (Many-to-One) -->
-        <mxCell id="rel4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#c2185b;strokeWidth=2;" edge="1" parent="1" source="claim_details_1" target="claims_pk">
+        <mxCell id="rel4" edge="1" parent="1" source="claim_details_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#c2185b;strokeWidth=2;" target="claims_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- claim_details -> diagnoses (Many-to-One) -->
-        <mxCell id="rel5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#70ad47;strokeWidth=2;" edge="1" parent="1" source="claim_details_2" target="diagnoses_pk">
+        <mxCell id="rel5" edge="1" parent="1" source="claim_details_2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#70ad47;strokeWidth=2;" target="diagnoses_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- claim_details -> providers (Many-to-One) -->
-        <mxCell id="rel6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#70ad47;strokeWidth=2;" edge="1" parent="1" source="claim_details_3" target="providers_pk">
+        <mxCell id="rel6" edge="1" parent="1" source="claim_details_3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERoneToMany;strokeColor=#70ad47;strokeWidth=2;" target="providers_pk" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
       </root>
     </mxGraphModel>
   </diagram>
