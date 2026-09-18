@@ -12,7 +12,7 @@
 |-----------|---------|
 | **Chart Type** | KPI Cards (4 side-by-side cards in one worksheet) |
 | **Data Source** | v_claims_tableau |
-| **Row Count** | ~1,591 claims (aggregated) |
+| **Row Count** | ~1,549 claims (aggregated) |
 | **Dimensions** | None (aggregate only) |
 | **Measures** | Total Claims, Total Cost, Approval Rate, Avg Cost/Claim |
 | **Filters** | None required |
@@ -27,7 +27,7 @@ Before starting, verify:
 - [ ] MySQL database `healthcare_claims_db` is running
 - [ ] Tableau Desktop has data source `v_claims_tableau` connected
 - [ ] All data fields load without errors in Data Source pane
-- [ ] Query test: Row count = 1,591 records
+- [ ] Query test: Row count = 1,549 records
 
 ---
 
@@ -94,7 +94,7 @@ Average Cost per Claim = SUM([Claim Amount]) / COUNTD([Claim ID])
 ## ✔️ VALIDATION CHECKLIST
 
 **Data Validation**
-- [ ] KPI #1 value: **1,591** (or exact count from database)
+- [ ] KPI #1 value: **1,549** (or exact count from database)
 - [ ] KPI #2 value: **~$4.3M** (sum of all claim amounts)
 - [ ] KPI #3 value: **~80-85%** (percentage of approved vs. total claims)
 - [ ] KPI #4 value: **~$2,689** (average = total ÷ count)
@@ -125,7 +125,7 @@ Average Cost per Claim = SUM([Claim Amount]) / COUNTD([Claim ID])
 ╠════════════════════════════════════════════════════════════════════╣
 ║                                                                    ║
 ║  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-║  │ 1,591        │  │ $4,345,000   │  │ 82%          │  │ $2,689       │
+║  │ 1,549        │  │ $20,401,350  │  │ 80.05%       │  │ $13,171      │
 ║  │              │  │              │  │              │  │              │
 ║  │ TOTAL CLAIMS │  │ TOTAL COST   │  │ APPROVAL     │  │ AVG COST     │
 ║  │              │  │              │  │ RATE         │  │ PER CLAIM    │
@@ -216,8 +216,8 @@ Total Cost (Unfiltered) = {FIXED : SUM([Claim Amount])}
 
 **Story Point 1: SCALE — Portfolio Baseline**
 - Status: ✅ **Featured in Story Point 1**
-- Role: Establishes portfolio context ($4.3M, 1,591 claims, 82% approval)
-- Caption: "Our Portfolio: 1,591 Claims Worth $4.3M"
+- Role: Establishes portfolio context ($20.4M, 1,549 claims, 80.05% approval)
+- Caption: "Our Portfolio: 1,549 Claims Worth $4.3M"
 - Interaction: No filters applied (show full portfolio as baseline)
 - Annotations: 4 KPI cards with $4.3M and 18% denial rate highlighted
 
@@ -237,9 +237,9 @@ Total Cost (Unfiltered) = {FIXED : SUM([Claim Amount])}
 
 | Metric | Expected Value | Formula | Color |
 |--------|-----------------|---------|-------|
-| Total Claims | 1,591 | COUNT DISTINCT([Claim ID]) | Blue |
+| Total Claims | 1,549 | COUNT DISTINCT([Claim ID]) | Blue |
 | Total Cost | $4.3M | SUM([Claim Amount]) | Blue |
-| Approval Rate | 82% | SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID]) | Green |
+| Approval Rate | 80.05% | SUM(IF [Claim Status] = "Approved" THEN 1 ELSE 0 END) / COUNTD([Claim ID]) | Green |
 | Avg Cost | $2,689 | SUM($) / COUNT(Claims) | Blue |
 
 ---

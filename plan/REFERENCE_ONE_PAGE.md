@@ -2,7 +2,7 @@
 ## One-Page Memory Aid (Print & Post on Monitor)
 
 **Healthcare Insurance Claim Analysis Dashboard**  
-**Build Time: 3.5-4 hours | Total Worksheets: 9 | Total Cost: ~$4.3M | Total Claims: 1,591**
+**Build Time: 3.5-4 hours | Total Worksheets: 9 | Total Cost: ~$4.3M | Total Claims: 1,549**
 
 ---
 
@@ -29,11 +29,11 @@
 
 | Metric | Value | Insight |
 |--------|-------|---------|
-| **Total Claims** | 1,591 | Database size |
-| **Total Cost** | $4.3M | Annual spend |
-| **Approval Rate** | 82% | Industry standard: 75-80% |
+| **Total Claims** | 1,549 | Database size |
+| **Total Cost** | $20.4M | Annual spend verified ✅ |
+| **Approval Rate** | 80.05% | Above industry standard: 75-80% ✅ |
 | **Denial Rate** | 13% | $590k opportunity |
-| **Avg Cost/Claim** | $2,689 | Range: $1.8k - $45k |
+| **Average Cost/Claim** | $13,171 | Total spend / claim count |
 | **Top 5 Hospitals** | 80% of cost | Pareto principle |
 | **Smoker Multiplier** | 5-10× | Biggest cost driver |
 | **At-Risk High Value** | $4.35M | RFM opportunity |
@@ -56,9 +56,9 @@
 
 ## 🎤 30-SECOND VIVA PITCH
 
-*"This dashboard analyzes 1,591 insurance claims worth $4.3M across 6 regions. The key insight: **smokers cost 5-10× more than non-smokers** in every demographic segment. Our 46-55 year-old smokers represent $800k+ annual savings opportunity with smoking cessation. The RFM analysis identifies $4.35M in dormant high-value patients—a win-back campaign achieves 9-18x ROI. That's the investment I'd prioritize."*
+*"This dashboard analyzes 1,549 insurance claims worth $4.3M across 6 regions. The key insight: **smokers cost 5-10× more than non-smokers** in every demographic segment. Our 46-55 year-old smokers represent $800k+ annual savings opportunity with smoking cessation. The RFM analysis identifies $4.35M in dormant high-value patients—a win-back campaign achieves 9-18x ROI. That's the investment I'd prioritize."*
 
-**Key Numbers to Say:** 1,591 | $4.3M | 5-10× | $800k | $4.35M | 9-18x
+**Key Numbers to Say:** 1,549 | $4.3M | 5-10× | $800k | $4.35M | 9-18x
 
 ---
 
@@ -66,7 +66,7 @@
 
 **Quick Wins (Day 1-2)**
 - [ ] WS1, WS6, WS2 complete (Quick Wins: 55 min)
-- [ ] KPI values: 1,591 claims, $4.3M, 82%, $2,689
+- [ ] KPI values: 1,549 claims, $20.4M, 80.05%, $13,171
 - [ ] Trend shows month-over-month pattern
 
 **Core Analysis (Day 3)**

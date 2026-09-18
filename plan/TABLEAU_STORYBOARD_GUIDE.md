@@ -30,7 +30,7 @@ Convert raw analytics into a compelling 5-point narrative that guides executive 
 ```
 Story Point 1: SCALE
 ├─ Worksheet: WS1 (KPI Summary)
-├─ Caption: "Our Portfolio: 1,591 Claims Worth $4.3M"
+├─ Caption: "Our Portfolio: 1,549 Claims Worth $4.3M"
 ├─ Narrative: Portfolio overview, baseline metrics
 └─ Duration: 30 seconds
 
@@ -102,13 +102,13 @@ Location: Save in main workbook (same as dashboard)
 
 **Caption (Bold Headline):**
 ```
-Our Portfolio: 1,591 Claims Worth $4.3M
+Our Portfolio: 1,549 Claims Worth $4.3M
 ```
 
 **Narrative Text (Body):**
 ```
-Our healthcare organization processes 1,591 insurance claims annually, 
-totaling $4.3 million in claim spend. With an 82% approval rate, we're 
+Our healthcare organization processes 1,549 insurance claims annually, 
+totaling $20.4 million in claim spend. With an 80.05% approval rate, we're 
 seeing concerning trends:
 
 • 280 claims denied or pending (18% failure rate)
@@ -134,7 +134,7 @@ segmentation strategies.
 
 3. **Add Caption:**
    - Click "Caption" box (below the worksheet)
-   - Type heading: `Our Portfolio: 1,591 Claims Worth $4.3M`
+   - Type heading: `Our Portfolio: 1,549 Claims Worth $4.3M`
    - Formatting:
      - Font: Arial Bold, 16pt
      - Color: Dark Blue (#003366)
@@ -158,14 +158,14 @@ segmentation strategies.
 #### Story Point 1 Preview
 ```
 ┌─────────────────────────────────────────┐
-│ Our Portfolio: 1,591 Claims Worth $4.3M │
+│ Our Portfolio: 1,549 Claims Worth $4.3M │
 ├─────────────────────────────────────────┤
-│ [KPI Card: 1,591] [KPI Card: $4.3M]    │
-│ [KPI Card: 82%]   [KPI Card: $2,689]   │
+│ [KPI Card: 1,549] [KPI Card: $4.3M]    │
+│ [KPI Card: 80.05%]   [KPI Card: $13,171]   │
 ├─────────────────────────────────────────┤
 │ Our healthcare organization processes   │
-│ 1,591 claims annually, totaling $4.3M.│
-│ With 82% approval, 18% face denial...   │
+│ 1,549 claims annually, totaling $4.3M.│
+│ With 80.05% approval, ~20% face denial...   │
 └─────────────────────────────────────────┘
 ```
 
@@ -657,7 +657,7 @@ Highlight: Yellow #FFFF00 (important data points)
 **Before Finalizing Story:**
 
 #### Content Validation
-- [ ] Story Point 1 (Scale): Establishes baseline ($4.3M, 1,591 claims)
+- [ ] Story Point 1 (Scale): Establishes baseline ($4.3M, 1,549 claims)
 - [ ] Story Point 2 (Trend): Shows upward cost trajectory (+12% YoY)
 - [ ] Story Point 3 (Concentration): Highlights Pareto principle (60% in 3 hospitals)
 - [ ] Story Point 4 (Root Cause): Reveals smoking as primary driver (5-10× multiplier)
@@ -694,8 +694,8 @@ Highlight: Yellow #FFFF00 (important data points)
 ### Presentation Sequence (5-7 minutes)
 
 **[0:00-0:30] Story Point 1: SCALE**
-- "Our healthcare organization manages 1,591 insurance claims annually, worth $4.3M in total spend."
-- "With an 82% approval rate, we're facing an 18% denial rate—that's roughly 280 claims that are disputed or delayed."
+- "Our healthcare organization manages 1,549 insurance claims annually, worth $4.3M in total spend."
+- "With an 80.05% approval rate, we're facing approximately a 20% denial/pending rate—that's roughly 309 claims that are disputed, denied, or delayed."
 - "Today's analysis identifies both the root causes and the opportunities to improve this."
 
 **[0:30-1:30] Story Point 2: TREND**

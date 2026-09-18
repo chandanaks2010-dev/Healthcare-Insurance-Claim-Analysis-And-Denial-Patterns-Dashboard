@@ -155,8 +155,8 @@ The insurance claims dataset includes rich demographic attributes that are the f
 
 - **Link:** https://www.kaggle.com/datasets/mirichoi0218/insurance
 
-- **Records:** ~1,591 total (Original: ~1,330 + Enriched: 261 new records)
-  - Expanded with **Midwest Region** (127 records): Illinois, Ohio, Minnesota, Wisconsin coverage
+- **Records:** ~1,549 total (Original: ~1,330 + Enriched: 219 new records)
+  - Expanded with **Midwest Region** and additional enrichment for comprehensive regional coverage
   - Expanded with **West Region** (134 records): California, Colorado, Nevada, Utah coverage
   - Comprehensive geographical distribution across **6 complete US regions**
 
@@ -855,7 +855,7 @@ This section keeps only the minimum Tableau work needed to satisfy the project r
 - Open Tableau Desktop and connect to the MySQL database `healthcare_claims_db`.
 - Prefer a live connection to the SQL view `v_claims_tableau`.
 - If the database is unavailable, use the backup file `./data/processed/claims_analysis.csv`.
-- Validate row counts: **~1,591 total records** covering 6 US regions (Northwest, Northeast, Southeast, Southwest, Midwest, West)
+- Validate row counts: **~1,549 total records** covering 6 US regions (Northwest, Northeast, Southeast, Southwest, Midwest, West)
 - Confirm all geographical fields present: state, city, latitude, longitude, region
 - Validate field names, data types, and complete regional coverage before building visualizations
 
@@ -962,7 +962,7 @@ Create a final dashboard named `Healthcare Claims and Denial Dashboard`.
 
 **Recommended layout (leveraging 6-region data):**
 
-- **Top row:** KPI cards (total claims: 1,591 | total cost | approval rate | avg cost per claim)
+- **Top row:** KPI cards (total claims: 1,549 | total cost | approval rate | avg cost per claim)
 - **Upper-middle row:** Monthly trend + cost concentration chart (Pareto analysis)
 - **Middle row:** Denial vs cost scatter + regional profile (6 regions comparison)
 - **Lower-middle row:** Geographic heatmap (state-level cost and denial rates) — NEW capability
@@ -1006,14 +1006,14 @@ Before submission, verify:
 
 **Data Source & Connection:**
 - [ ] Data source is connected properly to MySQL `healthcare_claims_db`
-- [ ] Row count verified: **~1,591 records** from `v_claims_tableau`
+- [ ] Row count verified: **~1,549 records** from `v_claims_tableau`
 - [ ] All 6 regions represented: Northwest, Northeast, Southeast, Southwest, Midwest, West
 - [ ] Geographical fields validated: state, city, latitude, longitude, region (all populated)
 - [ ] `v_claims_tableau` is the primary source when available; CSV fallback configured
 
 **Worksheet & Visualization Quality:**
 - [ ] At least 6 analysis sheets are present (9+ recommended)
-- [ ] All sheets are connected to the enriched dataset with 1,591 records
+- [ ] All sheets are connected to the enriched dataset with 1,549 records
 - [ ] Geographic maps (if included) display all states with data correctly
 - [ ] Regional filters work across all 6 regions without data loss
 - [ ] **DEMOGRAPHIC ANALYSIS (Patient Risk Segments):**
@@ -1047,7 +1047,7 @@ Before submission, verify:
 - [ ] Workbook is saved as `.twb` and packaged as `.twbx` if required
 
 **Performance & Stability:**
-- [ ] Dashboard loads within 5 seconds with full dataset (~1,591 rows)
+- [ ] Dashboard loads within 5 seconds with full dataset (~1,549 rows)
 - [ ] No performance degradation with geographic visualizations
 - [ ] Filter interactions are responsive and lag-free
 
@@ -1057,7 +1057,7 @@ Before submission, verify:
 
 **Data Source Validation:**
 - [ ] MySQL live connection to `v_claims_tableau` OR CSV fallback connected
-- [ ] Row count verified (should match SQL view output)
+- [ ] Row count verified: **~1,549 records** from `v_claims_tableau`
 - [ ] Data types validated (dates, currency, integers, strings)
 - [ ] No unintended NULLs in key fields
 
@@ -1285,7 +1285,7 @@ WITH patient_rfm AS (
 1. Dashboard → Objects → Text
 2. Type: "**Approval Rate**"
 3. Format: 14pt, gray, bold
-4. Position above the "82%"
+4. Position above the "80.05%"
 
 **Final Result for Card 3:**
 - Label: "Approval Rate" (14pt, gray)
@@ -1380,7 +1380,7 @@ Total Claims        Total Cost           Approval Rate      Avg Cost/Claim
 
 ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
 │              │   │              │   │              │   │              │
-│   1,591      │   │$4,289,234.00 │   │     82%      │   │  $2,688.85   │
+│   1,549      │   │$4,289,234.00 │   │     82%      │   │  $2,688.85   │
 │  (blue bg)   │   │  (green bg)  │   │ (orange bg)  │   │(purple bg)   │
 │              │   │              │   │              │   │              │
 └──────────────┘   └──────────────┘   └──────────────┘   └──────────────┘
@@ -1979,7 +1979,7 @@ In the Dashboard pane (left), you see all worksheets listed.
 
 **Action 7.4 — Add Executive Summary Text (Optional)**
 - Dashboard → Objects → Text
-- Write: "Executive Dashboard - 1,591 claims across 6 US regions. Use filters to explore regional variations, denial patterns, and cost drivers."
+- Write: "Executive Dashboard - 1,549 claims across 6 US regions. Use filters to explore regional variations, denial patterns, and cost drivers."
 - Place at top below title
 
 **Action 7.5 — Format Colors for Consistency**
@@ -1998,7 +1998,7 @@ In the Dashboard pane (left), you see all worksheets listed.
 
 **Action 8.2 — Check Data Accuracy**
 - KPI Card Total Cost: Should = SUM of all claim amounts
-- Approval Rate: Should match SQL query output (e.g., 82%)
+- Approval Rate: Should match SQL query output (e.g., 80.05%)
 - Pareto Line: Should reach ~80% at top 20% of hospitals
 - Regional costs: Sum of all regions = total cost
 
@@ -2068,7 +2068,7 @@ The **Patient Risk Segments** demographic heatmap (age × BMI × smoking status)
 
 | Stage | What Happens | Business Outcome |
 |-------|-------------|------------------|
-| **Raw Data** | insurance_claims_raw.csv contains age, bmi, smoker attributes for all 1,591 patients | Demographic attributes available but unstructured |
+| **Raw Data** | insurance_claims_raw.csv contains age, bmi, smoker attributes for all 1,549 patients | Demographic attributes available but unstructured |
 | **SQL Query 6** | Demographic Risk Segmentation query buckets age (5 groups) × BMI (4 categories) × smoker (2 options), computes avg cost & denial rate per cohort | Data is segmented, cost drivers identified quantitatively |
 | **Tableau Heatmap** | Interactive visualization shows 40 demographic cells with color-coded costs (light=$2k to dark=$45k), enabling drill-down by smoking status | **Executive insight in 5 seconds:** "Smokers = 5-10× higher cost; age 56+ smoker + obese = $45k avg" |
 | **Strategic Decision** | Pricing team adjusts premiums; prevention program targets smoker 46+ cohort; denial review focuses on high-cost diagnoses | **Estimated Impact:** 8-12% cost reduction through targeted interventions |

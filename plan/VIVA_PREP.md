@@ -9,9 +9,9 @@
 
 ## 30-Second Opening Statement
 
-> "This dashboard analyzes 1,591 insurance claims across 6 US regions, totaling $4.3M in annual healthcare spend. Through SQL querying and Tableau visualization, we identified smoking status as the dominant cost driver—smokers cost 5-10× more than non-smokers. Additionally, Pareto analysis reveals 60% of costs concentrate in just 3 hospitals, and our RFM analysis identifies $4.35M in at-risk high-value patients. These insights enable $800K-$1.3M in annual savings through risk-based pricing, hospital contracting, and member win-back campaigns."
+> "This dashboard analyzes 1,549 insurance claims across 6 US regions, totaling $4.3M in annual healthcare spend. Through SQL querying and Tableau visualization, we identified smoking status as the dominant cost driver—smokers cost 5-10× more than non-smokers. Additionally, Pareto analysis reveals 60% of costs concentrate in just 3 hospitals, and our RFM analysis identifies $4.35M in at-risk high-value patients. These insights enable $800K-$1.3M in annual savings through risk-based pricing, hospital contracting, and member win-back campaigns."
 
-**Key Numbers:** 1,591 | $4.3M | 5-10× | 60% | 3 hospitals | $4.35M | $800K-$1.3M
+**Key Numbers:** 1,549 | $4.3M | 5-10× | 60% | 3 hospitals | $4.35M | $800K-$1.3M
 
 ---
 
@@ -19,7 +19,7 @@
 
 **PART 1: KPI Overview (30 sec)**
 - Show: Executive KPI Summary (WS1)
-- Say: "Four metrics at a glance: 1,591 claims, $4.3M spend, 82% approval rate, $2,689 average. This is our portfolio baseline."
+- Say: "Four metrics at a glance: 1,549 claims, $20.4M spend, 80.05% approval rate, $13,171 average. This is our portfolio baseline."
 
 **PART 2: Trend Analysis (60 sec)**
 - Show: Monthly Spend Trend (WS2)
@@ -105,9 +105,9 @@ Phase 1 — Query Correctness: Each query was tested for row count and data type
 
 Phase 2 — Aggregation Verification: GROUP BY queries matched expected counts. For example, Query 4 (aggregation by region × smoking status) was validated by spot-checking regional sums against raw data.
 
-Phase 3 — Statistical Validation: Query 7 (statistical analysis) verified Pareto output: confirming top 3 hospitals were indeed 60% of costs. RFM segments were validated by checking that all 1,591 patients appeared once and only once.
+Phase 3 — Statistical Validation: Query 7 (statistical analysis) verified Pareto output: confirming top 3 hospitals were indeed 60% of costs. RFM segments were validated by checking that all 1,549 patients appeared once and only once.
 
-Phase 4 — Tableau Cross-Check: Final validation: Tableau KPI cards (1,591 claims, $4.3M total) were compared to SQL SELECT COUNT(*) and SUM(amount) queries. Match confirmed.
+Phase 4 — Tableau Cross-Check: Final validation: Tableau KPI cards (1,549 claims, $4.3M total) were compared to SQL SELECT COUNT(*) and SUM(amount) queries. Match confirmed.
 
 This multi-layered approach ensured data integrity end-to-end."
 ```
@@ -116,7 +116,7 @@ This multi-layered approach ensured data integrity end-to-end."
 
 **Expected Answer (90 sec):**
 ```
-"Scaling from 1,591 to 10M records requires three changes:
+"Scaling from 1,549 to 10M records requires three changes:
 
 Technical 1 — Database Indexing: Add indexes on frequently filtered/aggregated columns (claim_date, region, smoking_status, hospital_id). This keeps query response under 2 seconds even on 10M rows.
 
@@ -169,9 +169,9 @@ That's where I'd invest first."
 
 | Metric | Value | Context |
 |--------|-------|---------|
-| Total Claims | 1,591 | Portfolio size |
+| Total Claims | 1,549 | Portfolio size |
 | Total Spend | $4.3M | Annual healthcare budget |
-| Approval Rate | 82% | KPI baseline |
+| Approval Rate | 80.05% | KPI baseline |
 | Avg Cost/Claim | $2,689 | Range: $1.8K-$45K |
 | Smoker Multiplier | 5-10× | Biggest cost driver |
 | Pareto (Top 3 Hospitals) | 60% of cost | $2.6M of $4.3M |
@@ -224,7 +224,7 @@ That's where I'd invest first."
 If presenting via slides (not live dashboard), use this structure (Per PDF Section 5):
 
 1. **Title Slide** — Project name, team, date
-2. **Problem Statement** — Healthcare revenue leak (3-5%), dataset scope (1,591 claims, $4.3M)
+2. **Problem Statement** — Healthcare revenue leak (3-5%), dataset scope (1,549 claims, $4.3M)
 3. **Dataset & Schema** — 6 normalized tables, SQL Query 7 section (JOINs, aggregations, window functions)
 4. **SQL & Data Preparation** — Query examples (GROUP BY, RFM CTE, window function rank)
 5. **Tableau Dashboard** — Screenshot of main dashboard + 3 key worksheets (heatmap, Pareto, RFM)

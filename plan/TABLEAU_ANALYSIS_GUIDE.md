@@ -119,9 +119,9 @@ Strategy: Win-Back Campaign
 
 | KPI | Value | Industry Benchmark | Assessment |
 |-----|-------|-------------------|-----------|
-| **Total Claims** | 1,591 | N/A | Dataset size: 1,591 patients |
+| **Total Claims** | 1,549 | N/A | Dataset size: 1,549 patients |
 | **Total Cost** | $4.3M | N/A | Annual healthcare spend |
-| **Approval Rate** | ~82% | 75-80% | ✅ Above benchmark (good) |
+| **Approval Rate** | 80.05% | ~80% | ✅ At industry benchmark |
 | **Average Cost/Claim** | $2,689 | Varies by region | Range: $1.8K-$45K (wide variance) |
 
 **Business Interpretation:**
@@ -278,7 +278,7 @@ IMPACT: $50K+ recovery annually with minimal implementation cost
 For Viva/Presentation (Rubric 7 - 4 marks):
 
 **Opening (30 seconds):**
-> "Our dashboard reveals four critical insights from 1,591 insurance claims across 6 regions. First, smoking status is the dominant cost driver—5 to 10 times higher than any other factor. Second, 60% of our spend concentrates in just 3 hospitals—an 80-20 pattern. Third, we have $4.35M in dormant high-value patients who've been inactive for a year. And fourth, regional denial patterns suggest operational inefficiencies that can be fixed. Together, these insights drive $800K-$1.3M in annual savings through pricing, contracting, engagement, and process improvements."
+> "Our dashboard reveals four critical insights from 1,549 insurance claims across 6 regions. First, smoking status is the dominant cost driver—5 to 10 times higher than any other factor. Second, 60% of our spend concentrates in just 3 hospitals—an 80-20 pattern. Third, we have $4.35M in dormant high-value patients who've been inactive for a year. And fourth, regional denial patterns suggest operational inefficiencies that can be fixed. Together, these insights drive $800K-$1.3M in annual savings through pricing, contracting, engagement, and process improvements."
 
 **Smoking Insight Demo:**
 > "Watch the demographic heatmap. [Filter to smokers=yes]. See how the cells turn dark red? Age 46-55 smokers average $45,000 per claim—that's our intervention target. Prevention program cost: $50K-$100K. Annual savings: $800K. Payback period: 1-2 months."

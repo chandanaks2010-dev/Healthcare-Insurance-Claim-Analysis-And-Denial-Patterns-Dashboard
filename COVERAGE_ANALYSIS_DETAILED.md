@@ -329,7 +329,7 @@ A comprehensive guide: **VIVA_PREPARATION_GUIDE.md** should include:
 ### Q1: "Walk us through your dashboard narrative"
 **Answer (2 minutes):**
 "Our dashboard tells a five-point story:
-1. **KPIs** show the scale: 1,591 claims, $4.3M cost, 82% approval rate
+1. **KPIs** show the scale: 1,549 claims, $20.4M cost, 80.05% approval rate
 2. **Trends** reveal direction: Spend trending +12% YoY
 3. **Concentration** exposes root cause: Top 3 hospitals = 60% of cost
 4. **Demographics** identify the leverage point: Smokers = 5-10× higher cost
@@ -346,7 +346,7 @@ cohort at $45K average. THIS insight drives our prevention program targeting thi
 **Answer:**
 "For each query, I ran it in MySQL Workbench and compared output to business logic:
 - Query 3 (JOINs): Row count matched patient records in source data
-- Query 6 (Demographic): Sum of patient counts = 1,591 total
+- Query 6 (Demographic): Sum of patient counts = 1,549 total
 - Query 7 (RFM): 8 segments identified; largest = Champions (high frequency + recent)"
 
 ### Q4: "Can you live-filter to show smokers only?"

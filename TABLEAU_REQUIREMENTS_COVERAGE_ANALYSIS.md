@@ -132,7 +132,7 @@ Add SQL Query in Phase 2 to calculate recency, then create optional WORKSHEET 9 
 ```
 Story Arc for Executive Presentation:
 1. Context: "3-5% revenue loss from denials" (Business Context slide)
-2. Data: "1,591 claims, 6 regions, $4.3M total cost" (KPI cards)
+2. Data: "1,549 claims, 6 regions, $4.3M total cost" (KPI cards)
 3. Trend: "Spend trending up 12% year-over-year" (Monthly Trend + trendline)
 4. Problem: "Top 3 hospitals drive 60% of cost" (Pareto chart)
 5. Root Cause: "Smokers = 5-10× higher cost; denial rate 2× higher" (Demographic heatmap)

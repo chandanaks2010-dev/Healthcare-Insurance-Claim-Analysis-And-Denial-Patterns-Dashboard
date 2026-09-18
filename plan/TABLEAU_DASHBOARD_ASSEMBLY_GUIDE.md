@@ -18,7 +18,7 @@
 │ FILTERS: Region | Smoking Status | Date Range              │
 ├─────────────────────────────────────────────────────────────┤
 │ Row 1: Executive KPI Summary (Full Width)                   │
-│ [1,591 Claims] [4.3M Cost] [82% Approval] [$2,689 Avg]    │
+│ [1,549 Claims] [20.4M Cost] [80.05% Approval] [$13,171 Avg]    │
 ├─────────────────────────────────────────────────────────────┤
 │ Row 2 (50/50 Split)                                         │
 │ [WS2: Monthly Trend]       | [WS3: Pareto 80/20]          │
@@ -80,7 +80,7 @@ Enable tooltips: Yes
 3. Content:
 ```
 Healthcare Insurance Claim Analysis & Denial Patterns Dashboard
-Executive-Level Analytics | 1,591 Claims | $4.3M Annual Spend
+Executive-Level Analytics | 1,549 Claims | $20.4M Annual Spend
 ```
 4. Formatting:
    - Font: Arial Bold, 24pt
@@ -510,7 +510,7 @@ Location: /tableau/ folder
 - [ ] No errors in Tableau console
 
 ### Data Integrity
-- [ ] KPI totals match SQL query results (1,591 claims, $4.3M spend)
+- [ ] KPI totals match SQL query results (1,549 claims, $20.4M spend)
 - [ ] Heatmap cells populate correctly
 - [ ] Pareto chart shows top hospitals
 - [ ] RFM bubbles show 8 distinct segments

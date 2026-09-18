@@ -36,7 +36,7 @@
 - [ ] MySQL database healthcare_claims_db is running
 - [ ] Connected to v_claims_tableau view in Tableau
 - [ ] All fields load without errors (check Data Source pane)
-- [ ] Row count shows ~1,591 records
+- [ ] Row count shows ~1,549 records
 
 ### 🔨 Build Steps
 
@@ -72,9 +72,9 @@
 - [ ] Font: Arial or Tableau-standard, consistent sizing
 
 ### ✔️ Validation Checklist
-- [ ] KPI 1 (Total Claims): Should show 1,591
+- [ ] KPI 1 (Total Claims): Should show 1,549
 - [ ] KPI 2 (Total Cost): Should show ~$4,300,000
-- [ ] KPI 3 (Approval Rate): Should show ~82% (or actual rate from SQL)
+- [ ] KPI 3 (Approval Rate): Should show ~80.05% (or actual rate from SQL)
 - [ ] KPI 4 (Avg Cost): Should show ~$2,689
 - [ ] All 4 cards visible side-by-side without scrolling
 - [ ] No errors in formula bar
@@ -84,7 +84,7 @@
 ```
 ╔════════════════╦════════════════╦════════════════╦════════════════╗
 ║  TOTAL CLAIMS  ║   TOTAL COST   ║  APPROVAL RATE ║   AVG COST     ║
-║     1,591      ║   $4,345,000   ║      82%       ║    $2,689      ║
+║     1,549      ║   $20,401,350   ║     80.05%      ║    $13,171     ║
 ╚════════════════╩════════════════╩════════════════╩════════════════╝
 ```
 
@@ -795,7 +795,7 @@ KEY INSIGHT: Southeast concentrated (TX, FL, GA, SC states show highest cost)
 - [ ] Data Source: Change to v_rfm_analysis
   - Right-click Connection pill → Edit connection
   - Select: healthcare_claims_db → v_rfm_analysis
-- [ ] Verify ~1,591 patient rows load
+- [ ] Verify ~1,549 patient rows load
 
 **STEP 9.2: Build Bubble Chart - Segments**
 - [ ] Drag `Customer Segment` to ROWS
@@ -1270,7 +1270,7 @@ Per PDF Section 2.3: "Develop interactive storyboards for business storytelling"
 
 ### Storyboard Purpose
 Guide executive audience through 5-step narrative:
-1. **Scale** — Portfolio overview (1,591 claims, $4.3M)
+1. **Scale** — Portfolio overview (1,549 claims, $4.3M)
 2. **Trend** — Cost trajectory (12-month pattern)
 3. **Concentration** — Pareto 80/20 rule (60% in 3 hospitals)
 4. **Root Cause** — Smoking cost multiplier (5-10×)
@@ -1282,8 +1282,8 @@ Guide executive audience through 5-step narrative:
 1. Workbook → New Story
 2. Name: `Healthcare Claims Story`
 3. Drag WS1 (KPI Summary) to first story point
-4. Caption: "**Our Portfolio: 1,591 Claims Worth $4.3M**"
-5. Body text: "Our healthcare organization processes 1,591 insurance claims annually, totaling $4.3 million in claim spend across 6 US regions. With an 82% approval rate, we identify significant opportunity in the 18% that face issues."
+4. Caption: "**Our Portfolio: 1,549 Claims Worth $4.3M**"
+5. Body text: "Our healthcare organization processes 1,549 insurance claims annually, totaling $20.4 million in claim spend across 6 US regions. With an 80.05% approval rate, we identify significant opportunity in the ~20% that face denial or pending status."
 
 **STEP 2: Create Story Point 2 - TREND**
 1. Click "Add Story Point" (+ button)

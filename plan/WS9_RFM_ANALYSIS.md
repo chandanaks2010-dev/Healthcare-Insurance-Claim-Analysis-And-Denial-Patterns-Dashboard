@@ -60,7 +60,7 @@ Rename: "Patient Lifetime Value - RFM Analysis"
 - [ ] Current: v_claims_tableau
 - [ ] Change to: v_rfm_analysis
   - [ ] MySQL connection → healthcare_claims_db → v_rfm_analysis
-- [ ] Verify: Data grid shows ~1,591 rows, ~7 columns
+- [ ] Verify: Data grid shows ~1,549 rows, ~7 columns
 
 ### STEP 9.2: Build Y-Axis (Segments)
 

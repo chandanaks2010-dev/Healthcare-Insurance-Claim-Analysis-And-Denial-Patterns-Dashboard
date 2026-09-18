@@ -61,7 +61,7 @@ WITH rfm_segments AS (... segment assignment logic for 8 segments ...)
 - **Dimensions:** customer_segment (8 types), smoking_status, age_group, bmi_category
 - **Measures:** lifetime_monetary_value, claim_frequency, rfm_score, days_since_last_claim
 - **Use Case:** Tableau WORKSHEET 9 (RFM bubble chart visualization)
-- **Data:** 1,591 patients × 8 segments with lifecycle classification
+- **Data:** 1,549 patients × 8 segments with lifecycle classification
 
 **Updated Documentation:**
 - Sections 9 & 10 added to file header
@@ -149,7 +149,7 @@ Query 7.6 (Demographic Bucketing)
 Query 7.7 (RFM Calculation with NTILE)
     ↓
 v_demographic_segmentation (40 cells)
-v_rfm_analysis (1,591 patients × 8 segments)
+v_rfm_analysis (1,549 patients × 8 segments)
     ↓
 Tableau Desktop (Live Connection)
     ↓
@@ -255,7 +255,7 @@ SELECT COUNT(*) as demographic_cells FROM v_demographic_segmentation;
 
 -- Verify data in RFM analysis
 SELECT COUNT(*) as total_patients FROM v_rfm_analysis;
--- Expected: 1,591 rows (all patients)
+-- Expected: 1,549 rows (all patients)
 
 SELECT customer_segment, COUNT(*) FROM v_rfm_analysis 
 GROUP BY customer_segment;
